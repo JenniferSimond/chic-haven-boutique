@@ -11,7 +11,7 @@ Chic Haven Boutique is a full stack E-commerce site that was created using the P
 -
 -
 
-## Technologies Used
+## Technologies and Tools Used
 
 - React:
 - Node.js
@@ -21,12 +21,6 @@ Chic Haven Boutique is a full stack E-commerce site that was created using the P
 - JSX
 - CSS
 - Figma
-
-## Database & Back-end
-
-![photo](/glob-imgages/database_schema.png)
-
-## UI/UX & Front-end
 
 ## Live Demo
 
