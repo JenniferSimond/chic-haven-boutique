@@ -1,0 +1,10 @@
+//I may update final project to use Sequalize
+
+Will add to gitignore after class submission 
+
+Sequalize --> new tech learned  for project 
+Official docs: https://sequelize.org/docs/v6/getting-started/
+
+Learning resources:
+Medium article: https://medium.com/@ahsankhaleeq10/how-to-use-postgresql-with-sequelize-in-node-js-1bed818c9f02
+Wittcode Youtube Series: https://www.youtube.com/watch?v=YNyGD4rakmc&t=26s

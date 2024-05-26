@@ -20,7 +20,6 @@ Chic Haven Boutique is a full stack E-commerce site that was created using the P
 - Javascript
 - JSX
 - CSS
-- Figma
 
 ## Live Demo
 
