@@ -1,6 +1,9 @@
 ** Learning resources **
  used to complete this project
 
+AUIT LOG ---> Go back to this
+https://exaspark.medium.com/the-ultimate-guide-to-postgresql-data-change-tracking-c3fa88779572
+
 
 ~ Sequalize Resources ~
  --> possible new tech learned  for project 

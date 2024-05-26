@@ -1,15 +1,14 @@
 const pg = require('pg');
 const dotenv = require('dotenv').config();
 const { v4: uuidv4 } = require('uuid');
+const bcrypt = require('bcrypt');
 
 const client = new pg.Client({ connectionString: process.env.DATABASE_URL });
 
 const createTables = async () => {
-  // enum used to create type for user_roles --> see notes for more info
-  /* a customer can only see self, a site_admin can see/manipulate all customers, but can only see/manipulate their empoyee data -->
-   * a super_admin can manipulate/see everyone -- we don't want a disgruntaled admin (regular employee) to change employee roles and lock out supervisor/owner */
-
   const SQL = `
+  CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+  
   DROP TABLE IF EXISTS users CASCADE;
   DROP TABLE IF EXISTS user_roles CASCADE;
   DROP TABLE IF EXISTS user_addresses CASCADE;
@@ -25,9 +24,6 @@ const createTables = async () => {
   DROP TABLE IF EXISTS customer_wishlist CASCADE;
   DROP TABLE IF EXISTS wishlist_items CASCADE;
   DROP TYPE IF EXISTS role;
-
-  -- have to drope role too
-  -- TYPE role created to set default from pre-defined list
 
   CREATE TYPE role AS ENUM ('customer', 'site_admin', 'super_admin');
 
@@ -70,9 +66,9 @@ const createTables = async () => {
     created_at TIMESTAMP DEFAULT current_timestamp,
     updated_at TIMESTAMP DEFAULT current_timestamp,
     modified_by UUID REFERENCES users(id)
-);
+  );
 
-CREATE TABLE merchants(
+  CREATE TABLE merchants(
     id UUID PRIMARY KEY,
     name VARCHAR(30) NOT NULL,
     website_link VARCHAR(255),
@@ -81,7 +77,7 @@ CREATE TABLE merchants(
     created_at TIMESTAMP DEFAULT current_timestamp,
     updated_at TIMESTAMP DEFAULT current_timestamp,
     modified_by UUID REFERENCES users(id)
-);
+  );
 
   CREATE TABLE products(
       id UUID PRIMARY KEY, 
@@ -174,7 +170,7 @@ CREATE TABLE merchants(
       updated_at TIMESTAMP DEFAULT current_timestamp,
       modified_by UUID REFERENCES users(id)
   );
--- functions to set created_at and updated_at stamp
+
   CREATE OR REPLACE FUNCTION set_updated_timestamp() RETURNS TRIGGER AS $$ 
   BEGIN
       NEW.updated_at = CURRENT_TIMESTAMP;
@@ -191,18 +187,18 @@ CREATE TABLE merchants(
   END;
   $$ LANGUAGE plpgsql;
 
-  -- creating trigger functions that auto generates records for users
-
   CREATE OR REPLACE FUNCTION create_user_associated_records() RETURNS TRIGGER AS $$
   BEGIN 
-      INSERT INTO user_roles (id, user_role, created_at, updated_at, modified_by) 
-      VALUES (NEW.id, 'customer', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL);
+      IF NOT EXISTS (SELECT 1 FROM user_roles WHERE id = NEW.id) THEN
+        INSERT INTO user_roles (id, user_role, created_at, updated_at, modified_by) 
+        VALUES (NEW.id, 'customer', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL);
+      END IF;
 
       INSERT INTO customer_cart (id, user_id, created_at, updated_at)
-      VALUES (uuidv4(), NEW.id, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+      VALUES (uuid_generate_v4(), NEW.id, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
       INSERT INTO customer_wishlist (id, user_id, created_at, updated_at)
-      VALUES (uuidv4(), NEW.id, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+      VALUES (uuid_generate_v4(), NEW.id, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
       RETURN NEW;
   END;
@@ -212,9 +208,65 @@ CREATE TABLE merchants(
   AFTER INSERT ON users
   FOR EACH ROW
   EXECUTE FUNCTION create_user_associated_records();
-`;
+  `;
 
   await client.query(SQL);
 };
 
-module.exports = { client, createTables };
+const createCustomer = async ({
+  last_name,
+  first_name,
+  password,
+  email,
+  phone_number,
+}) => {
+  const SQL = `
+    INSERT INTO users(id, last_name, first_name, password, email, phone_number) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *
+    `;
+  const response = await client.query(SQL, [
+    uuidv4(),
+    last_name,
+    first_name,
+    await bcrypt.hash(password, 10),
+    email,
+    phone_number,
+  ]);
+  return response.rows[0];
+};
+
+const createEmployee = async ({
+  last_name,
+  first_name,
+  password,
+  email,
+  phone_number,
+  role = 'site_admin',
+}) => {
+  const userId = uuidv4();
+  const SQL = `
+      WITH new_user AS (
+        INSERT INTO users(id, last_name, first_name, password, email, phone_number) 
+        VALUES ($1, $2, $3, $4, $5, $6) 
+        RETURNING *
+      ),
+      new_role AS (
+        INSERT INTO user_roles(id, user_role, created_at, updated_at) 
+        VALUES ($1, $7, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
+      )
+      SELECT * FROM new_user;
+    `;
+  const response = await client.query(SQL, [
+    userId,
+    last_name,
+    first_name,
+    await bcrypt.hash(password, 10),
+    email,
+    phone_number,
+    role,
+  ]);
+  return response.rows[0];
+};
+
+const getUserRole = async ({}) => {};
+
+module.exports = { client, createTables, createCustomer, createEmployee };

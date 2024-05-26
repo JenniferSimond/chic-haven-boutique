@@ -2,10 +2,10 @@
   "name": "chic-haven-boutique",
   "version": "1.0.0",
   "description": "Chic Haven Boutique is a full stack E-commerce site that was created using the PERN stack. The application features a customer and admin portal to seperate users from employees. Both portals utilize RESTful APIs that allow their respective clients to consume data using CRUD operations.",
-  "main": "APIs/shared/index.js",
+  "main": "APIs/server/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start:dev": "nodemon APIs/shared/index.js"
+    "start:dev": "nodemon APIs/server/index.js"
   },
   "keywords": [],
   "author": "",
@@ -13,9 +13,9 @@
   "dependencies": {
     "bcrypt": "^5.1.1",
     "dotenv": "^16.4.5",
+    "express": "^4.19.2",
     "nodemon": "^3.1.1",
     "pg": "^8.11.5",
-    "uuid": "^9.0.1",
-    "express": "^4.19.2"
+    "uuid": "^9.0.1"
   }
 }

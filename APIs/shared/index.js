@@ -1,46 +1,23 @@
 const express = require('express');
-const dotenv = require('dotenv').config();
-const { client, createTables } = require('../../database/database.js');
-const customerApi = require('../customer-api');
-const employeeApi = require('../employee-api');
+const router = express.Router();
+const { fetchProducts } = require('../../database/database.js');
 
-const app = express();
-const port = process.env.PORT || 3000;
-
-// Middleware
-app.use(express.json());
-
-//for deployment only
-const path = require('path');
-// API Routes
-app.use('/api/customer', customerApi);
-app.use('/api/employee', employeeApi);
-app.use('/api/shared', (req, res) => {
-  res.send('Shared API');
+// Define your shared routes here
+router.get('/', (req, res) => {
+  res.send('Shared API Home');
 });
 
-// Serve static files for deployment
-app.get('/', (req, res) =>
-  res.sendFile(path.join(__dirname, '../../client/dist/index.html'))
-);
-app.use(
-  '/assets',
-  express.static(path.join(__dirname, '../../client/dist/assets'))
-);
+router.get('/status', (req, res) => {
+  res.json({ status: 'API is running' });
+});
 
-const init = async () => {
+router.get('/products', async (req, res, next) => {
   try {
-    await client.connect();
-    console.log('Connected to database');
-    await createTables();
-    console.log('Database setup completed');
-
-    app.listen(port, () => {
-      console.log(`Server running on port ${port}`);
-    });
+    const products = await fetchProducts();
+    res.json(products);
   } catch (error) {
-    console.error('Initialization error:', error);
+    next(error);
   }
-};
+});
 
-init();
+module.exports = router;
