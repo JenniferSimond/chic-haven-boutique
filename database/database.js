@@ -56,27 +56,99 @@ const createTables = async () => {
             status VARCHAR(25),
             created_at TIMESTAMP NOT NULL,
             updated_at TIMESTAMP NOT NULL,
-            updated_by user_id REFERENCES users(id),
+            modified_by user_id REFERENCES users(id),
         );
 
-        CREATE TABLE categories();
+        CREATE TABLE categories(
+            id UUID PRIMARY KEY,
+            name VARCHAR(30) NOT NULL,
+            updated_at TIMESTAMP,
+            modified_by UUID REFERENCES users(id)
+        );
         
-        CREATE TABLE merchants();
+        CREATE TABLE merchants(
+            id UUID PRIMARY KEY,
+            name VARCHAR(30) NOT NULL,
+            website_link VARCHAR,
+            email VARCHAR(100),
+            phone INTEGER,
+            created_at TIMESTAMP,
+            updated_at TIMESTAMP,
+            modified_by UUID REFERENCES users(id)
+        );
 
-        CREATE TABLE inventory_orders();
+        CREATE TABLE inventory_orders(
+            id UUID PRIMARY KEY,
+            product_id UUID REFERENCES products(id),
+            order_qty INTEGER,
+            received_qty INTEGER,
+            price DECIMAL,
+            order_status VARCHAR,
+            created_at TIMESTAMP,
+            updated_at TIMESTAMP,
+            modified_by UUID REFERENCES users(id)
+        );
 
-        CREATE TABLE product_reviews();
+        CREATE TABLE product_reviews(
+                id UUID PRIMARY KEY,
+                product_id UUID REFERENCES products(id),
+                user_id UUID REFERENCES users(id),
+                rating INTEGER,
+                comment VARCHAR,
+                created_at TIMESTAMP,
+                updated_at TIMESTAMP
+        );
 
-        CREATE TABLE customer_orders();
+        CREATE TABLE customer_orders(
+            id UUID PRIMARY KEY,
+            user_id UUID REFERENCES users(id),
+            total_price DECIMAL,
+            status VARCHAR(24),
+            created_at TIMESTAMP,
+            updated_at TIMESTAMP
+        );
 
-        CREATE TABLE ordered_items();
+        CREATE TABLE ordered_items(
+            id UUID PRIMARY KEY,
+            customer_order_id UUID REFERENCES customer_orders(id),
+            product_id UUID REFERENCES products(id),
+            quantity INTEGER,
+            item_price DECIMAL,
+            total_price DECIMAL
+        );
 
-        CREATE TABLE customer_cart();
+        CREATE TABLE customer_cart(
+            id UUID PRIMARY KEY,
+            user_id UUID REFERENCES users(id),
+        );
 
-        CREATE TABLE cart_items();
+        CREATE TABLE cart_items(
+            id UUID PRIMARY KEY,
+            customer_cart_id UUID REFERENCES customer_cart(id),
+            product_id UUID REFERENCES products(id),
+            quantity INTEGER,
+            save_for_later BOOL DEFAULT FALSE ,
+            price DECIMAL,
+            total_price DECIMAL
+        );
 
-        CREATE TABLE customer_wishlist();
+        CREATE TABLE customer_wishlist(
+            id UUID PRIMARY KEY,
+            user_id UUID REFERENCES users(id),
+        );
 
-        CREATE TABLE wishlist_items();
+        CREATE TABLE wishlist_items(
+            id UUID PRIMARY KEY,
+            customer_wishlist_id UUID REFERENCES customer_wishlist(id),
+            product_id UUID REFERENCES products(id),
+            created_at TIMESTAMP,
+            updated_at TIMESTAMP
+        );
     `;
+
+  await client.query(SQL);
 };
+
+// insert functions
+
+module.exports = { client, createTables };
