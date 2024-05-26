@@ -8,3 +8,10 @@ Official docs: https://sequelize.org/docs/v6/getting-started/
 Learning resources:
 Medium article: https://medium.com/@ahsankhaleeq10/how-to-use-postgresql-with-sequelize-in-node-js-1bed818c9f02
 Wittcode Youtube Series: https://www.youtube.com/watch?v=YNyGD4rakmc&t=26s
+
+
+Enums in PSQL --->
+    * Enumerated (enum) types are data types that comprise a static, ordered set of values.
+
+Explanation of enums (enumerations) in SQL: https://www.scaler.com/topics/enum-sql/ 
+PSQL docs on Enums: https://www.postgresql.org/docs/current/datatype-enum.html
