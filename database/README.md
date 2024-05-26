@@ -1,4 +1,4 @@
 ## Chic Haven Boutique Database
 
-![photo](/database/glob-imgages/database-schema.png)
-![photo](/database/glob-imgages/schema-logic.png)
+![photo](../glob-imgages/database-schema.png)
+![photo](../glob-imgages/schema-logic.png)
