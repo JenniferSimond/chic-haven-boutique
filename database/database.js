@@ -1,6 +1,6 @@
 const pg = require('pg');
 const dotenv = require('dotenv').config();
-const { uuid } = require('uuidv4');
+const { v4: uuidv4 } = require('uuid');
 
 const client = new pg.Client({ connectionString: process.env.DATABASE_URL });
 
@@ -8,147 +8,213 @@ const createTables = async () => {
   // enum used to create type for user_roles --> see notes for more info
   /* a customer can only see self, a site_admin can see/manipulate all customers, but can only see/manipulate their empoyee data -->
    * a super_admin can manipulate/see everyone -- we don't want a disgruntaled admin (regular employee) to change employee roles and lock out supervisor/owner */
+
   const SQL = `
-        DROP TABLE IF EXISTS users;
-        DROP TABLE IF EXISTS user_roles;
-        DROP TABLE IF EXISTS user_addresses;
-        DROP TABLE IF EXISTS products;
+  DROP TABLE IF EXISTS users CASCADE;
+  DROP TABLE IF EXISTS user_roles CASCADE;
+  DROP TABLE IF EXISTS user_addresses CASCADE;
+  DROP TABLE IF EXISTS products CASCADE;
+  DROP TABLE IF EXISTS categories CASCADE;
+  DROP TABLE IF EXISTS merchants CASCADE;
+  DROP TABLE IF EXISTS inventory_orders CASCADE;
+  DROP TABLE IF EXISTS product_reviews CASCADE;
+  DROP TABLE IF EXISTS customer_orders CASCADE;
+  DROP TABLE IF EXISTS ordered_items CASCADE;
+  DROP TABLE IF EXISTS customer_cart CASCADE;
+  DROP TABLE IF EXISTS cart_items CASCADE;
+  DROP TABLE IF EXISTS customer_wishlist CASCADE;
+  DROP TABLE IF EXISTS wishlist_items CASCADE;
+  DROP TYPE IF EXISTS role;
 
-        CREATE TABLE users(
-            id UUID PRIMARY KEY, 
-            last_name VARCHAR(50) NOT NULL,
-            first_name VARCHAR(50) NOT NULL,
-            password VARCHAR(n) NOT NULL,
-            email NOT NULL UNIQUE NOT NULL,
-            phone_number VARCHAR(25),
-            created_at TIMESTAMP,
-            updated_at TIMESTAMP,
-            updated_by TIMESTAMP,
-            modified_by UUID REFERENCES users(id)
-        );
+  -- have to drope role too
+  -- TYPE role created to set default from pre-defined list
 
-        CREATE TYPE role AS ENUM ('customer', 'site_admin', super_admin);
+  CREATE TYPE role AS ENUM ('customer', 'site_admin', 'super_admin');
 
-        CREATE Table user_roles(
-            id UUID PRIMARY KEY, 
-            user_role role DEFAULT 'customer',
-            created_at TIMESTAMP,
-            updated_at TIMESTAMP,
-            modified_by UUID REFERENCES users(id)
+  CREATE TABLE users(
+      id UUID PRIMARY KEY, 
+      last_name VARCHAR(50) NOT NULL,
+      first_name VARCHAR(50) NOT NULL,
+      password VARCHAR(255) NOT NULL,
+      email VARCHAR(100) UNIQUE NOT NULL,
+      phone_number VARCHAR(25),
+      created_at TIMESTAMP DEFAULT current_timestamp,
+      updated_at TIMESTAMP DEFAULT current_timestamp,
+      modified_by UUID REFERENCES users(id)
+  );
 
-        );
+  CREATE TABLE user_roles(
+      id UUID PRIMARY KEY, 
+      user_role role DEFAULT 'customer',
+      created_at TIMESTAMP DEFAULT current_timestamp,
+      updated_at TIMESTAMP DEFAULT current_timestamp,
+      modified_by UUID REFERENCES users(id)
+  );
 
-        CREATE TABLE user_addresses(
-            id UUID PRIMARY KEY, 
-            user_id UUID REFERENCES users(id) NOT NULL,
-            address_1 VARCHAR(100) NOT NULL,
-            address_1 VARCHAR(50),
-            city VARCHAR(50) NOT NULL
-        );
+  CREATE TABLE user_addresses(
+      id UUID PRIMARY KEY, 
+      user_id UUID REFERENCES users(id) NOT NULL,
+      address_1 VARCHAR(100) NOT NULL,
+      address_2 VARCHAR(50),
+      city VARCHAR(50) NOT NULL,
+      state VARCHAR(100) NOT NULL,
+      zip_code INTEGER NOT NULL,
+      created_at TIMESTAMP DEFAULT current_timestamp,
+      updated_at TIMESTAMP DEFAULT current_timestamp,
+      modified_by UUID REFERENCES users(id)
+  );
 
-        CREATE TABLE products(
-            id UUID PRIMARY KEY, 
-            name VARCHAR(50) NOT NULL,
-            description VARCHAR(n),
-            price decimal NOT NULL,
-            category_id UUID REFERENCES categories(id),
-            merchant_id UUID REFERENCES merchants(id),
-            status VARCHAR(25),
-            created_at TIMESTAMP NOT NULL,
-            updated_at TIMESTAMP NOT NULL,
-            modified_by user_id REFERENCES users(id),
-        );
+  CREATE TABLE categories(
+    id UUID PRIMARY KEY,
+    name VARCHAR(30) NOT NULL,
+    created_at TIMESTAMP DEFAULT current_timestamp,
+    updated_at TIMESTAMP DEFAULT current_timestamp,
+    modified_by UUID REFERENCES users(id)
+);
 
-        CREATE TABLE categories(
-            id UUID PRIMARY KEY,
-            name VARCHAR(30) NOT NULL,
-            updated_at TIMESTAMP,
-            modified_by UUID REFERENCES users(id)
-        );
-        
-        CREATE TABLE merchants(
-            id UUID PRIMARY KEY,
-            name VARCHAR(30) NOT NULL,
-            website_link VARCHAR,
-            email VARCHAR(100),
-            phone INTEGER,
-            created_at TIMESTAMP,
-            updated_at TIMESTAMP,
-            modified_by UUID REFERENCES users(id)
-        );
+CREATE TABLE merchants(
+    id UUID PRIMARY KEY,
+    name VARCHAR(30) NOT NULL,
+    website_link VARCHAR(255),
+    email VARCHAR(100),
+    phone INTEGER,
+    created_at TIMESTAMP DEFAULT current_timestamp,
+    updated_at TIMESTAMP DEFAULT current_timestamp,
+    modified_by UUID REFERENCES users(id)
+);
 
-        CREATE TABLE inventory_orders(
-            id UUID PRIMARY KEY,
-            product_id UUID REFERENCES products(id),
-            order_qty INTEGER,
-            received_qty INTEGER,
-            price DECIMAL,
-            order_status VARCHAR,
-            created_at TIMESTAMP,
-            updated_at TIMESTAMP,
-            modified_by UUID REFERENCES users(id)
-        );
+  CREATE TABLE products(
+      id UUID PRIMARY KEY, 
+      name VARCHAR(50) NOT NULL,
+      description VARCHAR(255),
+      price DECIMAL NOT NULL,
+      category_id UUID REFERENCES categories(id),
+      merchant_id UUID REFERENCES merchants(id),
+      status VARCHAR(25),
+      created_at TIMESTAMP DEFAULT current_timestamp,
+      updated_at TIMESTAMP DEFAULT current_timestamp,
+      modified_by UUID REFERENCES users(id)
+  );
 
-        CREATE TABLE product_reviews(
-                id UUID PRIMARY KEY,
-                product_id UUID REFERENCES products(id),
-                user_id UUID REFERENCES users(id),
-                rating INTEGER,
-                comment VARCHAR,
-                created_at TIMESTAMP,
-                updated_at TIMESTAMP
-        );
+  CREATE TABLE inventory_orders(
+      id UUID PRIMARY KEY,
+      product_id UUID REFERENCES products(id),
+      order_qty INTEGER,
+      received_qty INTEGER,
+      price DECIMAL,
+      order_status VARCHAR,
+      created_at TIMESTAMP DEFAULT current_timestamp,
+      updated_at TIMESTAMP DEFAULT current_timestamp,
+      created_by UUID REFERENCES users(id),
+      modified_by UUID REFERENCES users(id)
+  );
 
-        CREATE TABLE customer_orders(
-            id UUID PRIMARY KEY,
-            user_id UUID REFERENCES users(id),
-            total_price DECIMAL,
-            status VARCHAR(24),
-            created_at TIMESTAMP,
-            updated_at TIMESTAMP
-        );
+  CREATE TABLE product_reviews(
+      id UUID PRIMARY KEY,
+      product_id UUID REFERENCES products(id),
+      user_id UUID REFERENCES users(id),
+      rating INTEGER,
+      comment VARCHAR(255),
+      created_at TIMESTAMP DEFAULT current_timestamp,
+      updated_at TIMESTAMP DEFAULT current_timestamp,
+      modified_by UUID REFERENCES users(id)
+  );
 
-        CREATE TABLE ordered_items(
-            id UUID PRIMARY KEY,
-            customer_order_id UUID REFERENCES customer_orders(id),
-            product_id UUID REFERENCES products(id),
-            quantity INTEGER,
-            item_price DECIMAL,
-            total_price DECIMAL
-        );
+  CREATE TABLE customer_orders(
+      id UUID PRIMARY KEY,
+      user_id UUID REFERENCES users(id),
+      total_price DECIMAL,
+      status VARCHAR(24),
+      created_at TIMESTAMP DEFAULT current_timestamp,
+      updated_at TIMESTAMP DEFAULT current_timestamp,
+      modified_by UUID REFERENCES users(id)
+  );
 
-        CREATE TABLE customer_cart(
-            id UUID PRIMARY KEY,
-            user_id UUID REFERENCES users(id),
-        );
+  CREATE TABLE ordered_items(
+      id UUID PRIMARY KEY,
+      customer_order_id UUID REFERENCES customer_orders(id),
+      product_id UUID REFERENCES products(id),
+      quantity INTEGER,
+      item_price DECIMAL,
+      total_price DECIMAL,
+      created_at TIMESTAMP DEFAULT current_timestamp,
+      updated_at TIMESTAMP DEFAULT current_timestamp,
+      modified_by UUID REFERENCES users(id)
+  );
 
-        CREATE TABLE cart_items(
-            id UUID PRIMARY KEY,
-            customer_cart_id UUID REFERENCES customer_cart(id),
-            product_id UUID REFERENCES products(id),
-            quantity INTEGER,
-            save_for_later BOOL DEFAULT FALSE ,
-            price DECIMAL,
-            total_price DECIMAL
-        );
+  CREATE TABLE customer_cart(
+      id UUID PRIMARY KEY,
+      user_id UUID REFERENCES users(id),
+      created_at TIMESTAMP DEFAULT current_timestamp,
+      updated_at TIMESTAMP DEFAULT current_timestamp
+  );
 
-        CREATE TABLE customer_wishlist(
-            id UUID PRIMARY KEY,
-            user_id UUID REFERENCES users(id),
-        );
+  CREATE TABLE cart_items(
+      id UUID PRIMARY KEY,
+      customer_cart_id UUID REFERENCES customer_cart(id),
+      product_id UUID REFERENCES products(id),
+      quantity INTEGER,
+      save_for_later BOOL DEFAULT FALSE,
+      price DECIMAL,
+      total_price DECIMAL
+  );
 
-        CREATE TABLE wishlist_items(
-            id UUID PRIMARY KEY,
-            customer_wishlist_id UUID REFERENCES customer_wishlist(id),
-            product_id UUID REFERENCES products(id),
-            created_at TIMESTAMP,
-            updated_at TIMESTAMP
-        );
-    `;
+  CREATE TABLE customer_wishlist(
+      id UUID PRIMARY KEY,
+      user_id UUID REFERENCES users(id),
+      created_at TIMESTAMP DEFAULT current_timestamp,
+      updated_at TIMESTAMP DEFAULT current_timestamp
+  );
+
+  CREATE TABLE wishlist_items(
+      id UUID PRIMARY KEY,
+      customer_wishlist_id UUID REFERENCES customer_wishlist(id),
+      product_id UUID REFERENCES products(id),
+      created_at TIMESTAMP DEFAULT current_timestamp,
+      updated_at TIMESTAMP DEFAULT current_timestamp,
+      modified_by UUID REFERENCES users(id)
+  );
+-- functions to set created_at and updated_at stamp
+  CREATE OR REPLACE FUNCTION set_updated_timestamp() RETURNS TRIGGER AS $$ 
+  BEGIN
+      NEW.updated_at = CURRENT_TIMESTAMP;
+      RETURN NEW;
+  END;
+  $$ LANGUAGE plpgsql;
+
+  CREATE OR REPLACE FUNCTION set_created_timestamp() RETURNS TRIGGER AS $$
+  BEGIN
+      IF (TG_OP = 'INSERT') THEN
+          NEW.created_at = CURRENT_TIMESTAMP;
+      END IF;
+      RETURN NEW;
+  END;
+  $$ LANGUAGE plpgsql;
+
+  -- creating trigger functions that auto generates records for users
+
+  CREATE OR REPLACE FUNCTION create_user_associated_records() RETURNS TRIGGER AS $$
+  BEGIN 
+      INSERT INTO user_roles (id, user_role, created_at, updated_at, modified_by) 
+      VALUES (NEW.id, 'customer', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL);
+
+      INSERT INTO customer_cart (id, user_id, created_at, updated_at)
+      VALUES (uuidv4(), NEW.id, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
+      INSERT INTO customer_wishlist (id, user_id, created_at, updated_at)
+      VALUES (uuidv4(), NEW.id, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
+      RETURN NEW;
+  END;
+  $$ LANGUAGE plpgsql;
+
+  CREATE TRIGGER after_user_insert
+  AFTER INSERT ON users
+  FOR EACH ROW
+  EXECUTE FUNCTION create_user_associated_records();
+`;
 
   await client.query(SQL);
 };
-
-// insert functions
 
 module.exports = { client, createTables };

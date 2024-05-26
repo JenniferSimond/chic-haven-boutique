@@ -1,27 +1,47 @@
-Learning resources
+** Learning resources **
+ used to complete this project
 
 
-
-Sequalize --> possible new tech learned  for project 
+~ Sequalize Resources ~
+ --> possible new tech learned  for project 
 Official docs: https://sequelize.org/docs/v6/getting-started/
 
-I may update final project to use Sequalize
 
-Will add to gitignore after class submission 
 
+ ~ PSQL Resources ~
+
+ comments in PSQL: https://www.techonthenet.com/postgresql/comments.php
+
+ current_timestamp - tracking created_at/updated_at:
+https://www.morling.dev/blog/last-updated-columns-with-postgres/
+postgresql tutorial --> EASY TO UNDERSTAND: https://www.postgresqltutorial.com/postgresql-date-functions/postgresql-current_timestamp/
 
 Medium article: https://medium.com/@ahsankhaleeq10/how-to-use-postgresql-with-sequelize-in-node-js-1bed818c9f02
 Wittcode Youtube Series: https://www.youtube.com/watch?v=YNyGD4rakmc&t=26s
 
+Trigger Functions:
 
-Enums in PSQL --->
+PSQL docs: https://www.postgresql.org/docs/current/sql-createtrigger.html
+enterprisedc article: https://www.enterprisedb.com/postgres-tutorials/everything-you-need-know-about-postgresql-triggers
+
+
+Enums in PSQL:
 * Enumerated (enum) types are data types that comprise a static, ordered set of values.
 
 Explanation of enums (enumerations) in SQL: https://www.scaler.com/topics/enum-sql/ 
 PSQL docs on Enums: https://www.postgresql.org/docs/current/datatype-enum.html
+postgres tutorial --> EASY TO UNDERSTAND: https://www.postgresqltutorial.com/postgresql-triggers/creating-first-trigger-postgresql/
 
+Dollar-Quoted String Constant:
 
-Node Refresher resources:
+postgres tutorial: https://www.postgresqltutorial.com/postgresql-plpgsql/dollar-quoted-string-constants/
+postgres docs: https://www.postgresql.org/docs/current/sql-syntax-lexical.html 
+
+** Node resources **
+
+__direname:
+https://www.digitalocean.com/community/tutorials/nodejs-how-to-use__dirname
+
 
 https://www.sitepoint.com/understanding-module-exports-exports-node-js/
 
