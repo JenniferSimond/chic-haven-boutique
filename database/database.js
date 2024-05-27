@@ -25,7 +25,9 @@ const createTables = async () => {
   DROP TABLE IF EXISTS wishlist_items CASCADE;
   DROP TYPE IF EXISTS role;
 
+
   CREATE TYPE role AS ENUM ('customer', 'site_admin', 'super_admin');
+ 
 
   CREATE TABLE users(
       id UUID PRIMARY KEY, 
@@ -215,48 +217,54 @@ const createTables = async () => {
 
 const authenticateUser = async ({ email, password }) => {
   const SQL = `
-  SELECT id, password FROM users WHERE email = $1;
+  SELECT u.id, u.password, ur.user_role 
+  FROM users u
+  JOIN user_roles ur ON u.id = ur.id
+  WHERE email = $1;
   `;
   const response = await client.query(SQL, [email]);
   const user = response.rows[0];
 
-  const passwordMatches = await bcrypt.compare(password, user.password);
-  console.log('Password Match -->', user.password);
-
-  if (!response.rows.length || !passwordMatches) {
-    const error = Error('not authorized');
+  if (!user) {
+    const error = new Error('User not found');
     error.status = 401;
     throw error;
   }
-  const token = jwt.sign({ id: user.id }, secret);
-  console.log('Token -->', token);
 
+  const passwordMatches = await bcrypt.compare(password, user.password);
+  if (!passwordMatches) {
+    const error = new Error('Invalid password');
+    error.status = 401;
+    throw error;
+  }
+
+  const token = jwt.sign({ id: user.id, role: user.user_role }, secret);
   return { token };
 };
 
 const findUserWithToken = async (token) => {
-  let userId;
+  let userId, userRole;
   try {
-    console.log(token);
     const decoded = jwt.verify(token, secret);
-
     userId = decoded.id;
+    userRole = decoded.role;
   } catch (ex) {
-    const error = Error('not authorized');
+    const error = new Error('Not Authorized');
     error.status = 401;
     throw error;
   }
-  console.log('Decoded -->', userId);
+
   const SQL = `
-    SELECT id, username FROM users WHERE id = $1;
+    SELECT id, email FROM users WHERE id = $1;
   `;
   const response = await client.query(SQL, [userId]);
-  if (!response.rows.length) {
-    const error = Error('not authorized');
+  if (response.rows.length === 0) {
+    const error = new Error('User not found');
     error.status = 401;
     throw error;
   }
-  return response.rows[0];
+
+  return { ...response.rows[0], role: userRole };
 };
 
 const createCustomer = async ({
@@ -313,9 +321,90 @@ const createEmployee = async ({
   return response.rows[0];
 };
 
-const customerLogin = async () => {};
+const fetchAllUsers = async () => {
+  const SQL = `
+  SELECT * FROM users
+  `;
+  const response = await client.query(SQL);
+  return response.rows;
+};
 
-const employeeLogin = async () => {};
+const fetchProducts = async () => {
+  const SQL = `
+      SELECT * FROM products
+    `;
+
+  const response = await client.query(SQL);
+  return response.rows;
+};
+
+const createCategory = async ({ name, user_id }) => {
+  const SQL = `
+    INSERT INTO categories(id, name, created_at, updated_at, modified_by) 
+    VALUES ($1, $2, current_timestamp, current_timestamp, $3) 
+    ON CONFLICT (name) DO UPDATE 
+    SET updated_at = excluded.updated_at, modified_by = excluded.modified_by
+    RETURNING *;
+  `;
+  const response = await client.query(SQL, [uuidv4(), name, user_id]);
+  return response.rows[0];
+};
+
+const createProduct = async ({
+  name,
+  description,
+  price,
+  category,
+  merchant_id,
+  status,
+  user_id,
+}) => {
+  const categoryRow = await createCategory({ name: category, user_id });
+  const SQL = `
+    INSERT INTO products(id, name, description, price, category_id, merchant_id, status, created_at, updated_at, modified_by) 
+    VALUES ($1, $2, $3, $4, $5, $6, $7, current_timestamp, current_timestamp, $8) RETURNING *
+  `;
+  const response = await client.query(SQL, [
+    uuidv4(),
+    name,
+    description,
+    price,
+    categoryRow.id,
+    merchant_id,
+    status,
+    user_id,
+  ]);
+  return response.rows[0];
+};
+
+const updateProduct = async ({
+  id,
+  name,
+  description,
+  price,
+  category,
+  merchant_id,
+  status,
+  user_id,
+}) => {
+  const categoryRow = await createCategory({ name: category, user_id });
+  const SQL = `
+    UPDATE products 
+    SET name = $2, description = $3, price = $4, category_id = $5, merchant_id = $6, status = $7, updated_at = current_timestamp, modified_by = $8
+    WHERE id = $1 RETURNING *
+  `;
+  const response = await client.query(SQL, [
+    id,
+    name,
+    description,
+    price,
+    categoryRow.id,
+    merchant_id,
+    status,
+    user_id,
+  ]);
+  return response.rows[0];
+};
 
 module.exports = {
   client,
@@ -324,4 +413,9 @@ module.exports = {
   createEmployee,
   authenticateUser,
   findUserWithToken,
+  fetchProducts,
+  createCategory,
+  createProduct,
+  updateProduct,
+  fetchAllUsers,
 };

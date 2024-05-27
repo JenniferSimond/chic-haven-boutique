@@ -22,7 +22,7 @@ const path = require('path');
 // API Routes
 app.use('/api/customer', customerApi);
 app.use('/api/employee', employeeApi);
-app.use('/api/shared', sharedApi);
+app.use('/api/boutique', sharedApi);
 
 // Serve static files for deployment
 app.get('/', (req, res) =>
@@ -76,7 +76,7 @@ const init = async () => {
         first_name: 'Jennifer',
         password: 'js_password',
         email: 'jsimond@gmail.com',
-        phone_number: '248-830-3337',
+        phone_number: '248-830-3330',
         role: 'super_admin',
       },
     ];

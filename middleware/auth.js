@@ -1,4 +1,5 @@
 var jwt = require('jsonwebtoken');
+const dotenv = require('dotenv').config();
 const { findUserWithToken } = require('../database/database.js');
 const secret = process.env.JWT_SECRET || 'shhhhhlocal';
 
