@@ -4,6 +4,6 @@ Chic Haven Boutique's database consists of 14 tables, with the "users" and "prod
 
 ## Schema and Relationship Logic
 
-![photo](../glob-images/database-schema.png)
+![photo](../glob-images/database_schema.png)
 
 ![photo](../glob-images/schema-logic.png)

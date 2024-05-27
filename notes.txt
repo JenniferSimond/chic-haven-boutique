@@ -52,3 +52,6 @@ https://www.freecodecamp.org/news/module-exports-how-to-export-in-node-js-and-ja
 
 
 
+** Auth **
+
+https://sandydev.medium.com/how-to-build-secure-and-scalable-authentication-system-with-node-js-and-mongodb-c50bf51c06b0

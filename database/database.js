@@ -267,6 +267,6 @@ const createEmployee = async ({
   return response.rows[0];
 };
 
-const getUserRole = async ({}) => {};
+const authorize = async () => {};
 
 module.exports = { client, createTables, createCustomer, createEmployee };
