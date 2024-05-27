@@ -2,7 +2,8 @@ var jwt = require('jsonwebtoken');
 const { findUserWithToken } = require('../database/database.js');
 const secret = process.env.JWT_SECRET || 'shhhhhlocal';
 
-const userAuthentication = async (req, res, next) => {
+//same as isLoggedIn in block 36user
+const isAuthenticated = async (req, res, next) => {
   try {
     if (!req.headers.authorization) {
       throw new Error('Not Authorized!');
@@ -56,8 +57,7 @@ const isAuthorizedCustomer = (req, res, next) => {
 };
 
 module.exports = {
-  userAuthentication,
   isSiteAdmin,
   isSuperAdmin,
-  isAuthorizedCustomer,
+  isAuthenticated,
 };

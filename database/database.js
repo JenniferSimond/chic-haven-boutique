@@ -213,6 +213,52 @@ const createTables = async () => {
   await client.query(SQL);
 };
 
+const authenticateUser = async ({ email, password }) => {
+  const SQL = `
+  SELECT id, password FROM users WHERE email = $1;
+  `;
+  const response = await client.query(SQL, [email]);
+  const user = response.rows[0];
+
+  const passwordMatches = await bcrypt.compare(password, user.password);
+  console.log('Password Match -->', user.password);
+
+  if (!response.rows.length || !passwordMatches) {
+    const error = Error('not authorized');
+    error.status = 401;
+    throw error;
+  }
+  const token = jwt.sign({ id: user.id }, secret);
+  console.log('Token -->', token);
+
+  return { token };
+};
+
+const findUserWithToken = async (token) => {
+  let userId;
+  try {
+    console.log(token);
+    const decoded = jwt.verify(token, secret);
+
+    userId = decoded.id;
+  } catch (ex) {
+    const error = Error('not authorized');
+    error.status = 401;
+    throw error;
+  }
+  console.log('Decoded -->', userId);
+  const SQL = `
+    SELECT id, username FROM users WHERE id = $1;
+  `;
+  const response = await client.query(SQL, [userId]);
+  if (!response.rows.length) {
+    const error = Error('not authorized');
+    error.status = 401;
+    throw error;
+  }
+  return response.rows[0];
+};
+
 const createCustomer = async ({
   last_name,
   first_name,
@@ -267,6 +313,15 @@ const createEmployee = async ({
   return response.rows[0];
 };
 
-const authorize = async () => {};
+const customerLogin = async () => {};
 
-module.exports = { client, createTables, createCustomer, createEmployee };
+const employeeLogin = async () => {};
+
+module.exports = {
+  client,
+  createTables,
+  createCustomer,
+  createEmployee,
+  authenticateUser,
+  findUserWithToken,
+};
