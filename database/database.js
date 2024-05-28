@@ -2,15 +2,16 @@ const pg = require('pg');
 const dotenv = require('dotenv').config();
 const { v4: uuidv4 } = require('uuid');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
 const client = new pg.Client({ connectionString: process.env.DATABASE_URL });
+const secret = process.env.JWT_SECRET || 'shhhhhlocal';
 
 const createTables = async () => {
   const SQL = `
   CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
   
   DROP TABLE IF EXISTS users CASCADE;
-  DROP TABLE IF EXISTS user_roles CASCADE;
   DROP TABLE IF EXISTS user_addresses CASCADE;
   DROP TABLE IF EXISTS products CASCADE;
   DROP TABLE IF EXISTS categories CASCADE;
@@ -25,12 +26,11 @@ const createTables = async () => {
   DROP TABLE IF EXISTS wishlist_items CASCADE;
   DROP TYPE IF EXISTS role;
 
-
   CREATE TYPE role AS ENUM ('customer', 'site_admin', 'super_admin');
- 
 
   CREATE TABLE users(
-      id UUID PRIMARY KEY, 
+      id UUID PRIMARY KEY,
+      role role DEFAULT 'customer',
       last_name VARCHAR(50) NOT NULL,
       first_name VARCHAR(50) NOT NULL,
       password VARCHAR(255) NOT NULL,
@@ -41,17 +41,9 @@ const createTables = async () => {
       modified_by UUID REFERENCES users(id)
   );
 
-  CREATE TABLE user_roles(
-      id UUID PRIMARY KEY, 
-      user_role role DEFAULT 'customer',
-      created_at TIMESTAMP DEFAULT current_timestamp,
-      updated_at TIMESTAMP DEFAULT current_timestamp,
-      modified_by UUID REFERENCES users(id)
-  );
-
   CREATE TABLE user_addresses(
       id UUID PRIMARY KEY, 
-      user_id UUID REFERENCES users(id) NOT NULL,
+      user_id UUID REFERENCES users(id) ON DELETE CASCADE,
       address_1 VARCHAR(100) NOT NULL,
       address_2 VARCHAR(50),
       city VARCHAR(50) NOT NULL,
@@ -64,7 +56,7 @@ const createTables = async () => {
 
   CREATE TABLE categories(
     id UUID PRIMARY KEY,
-    name VARCHAR(30) NOT NULL,
+    name VARCHAR(30) NOT NULL UNIQUE,
     created_at TIMESTAMP DEFAULT current_timestamp,
     updated_at TIMESTAMP DEFAULT current_timestamp,
     modified_by UUID REFERENCES users(id)
@@ -96,7 +88,7 @@ const createTables = async () => {
 
   CREATE TABLE inventory_orders(
       id UUID PRIMARY KEY,
-      product_id UUID REFERENCES products(id),
+      product_id UUID REFERENCES products(id) ON DELETE SET NULL,
       order_qty INTEGER,
       received_qty INTEGER,
       price DECIMAL,
@@ -109,7 +101,7 @@ const createTables = async () => {
 
   CREATE TABLE product_reviews(
       id UUID PRIMARY KEY,
-      product_id UUID REFERENCES products(id),
+      product_id UUID REFERENCES products(id) ON DELETE CASCADE,
       user_id UUID REFERENCES users(id),
       rating INTEGER,
       comment VARCHAR(255),
@@ -120,7 +112,7 @@ const createTables = async () => {
 
   CREATE TABLE customer_orders(
       id UUID PRIMARY KEY,
-      user_id UUID REFERENCES users(id),
+      user_id UUID REFERENCES users(id) ON DELETE SET NULL,
       total_price DECIMAL,
       status VARCHAR(24),
       created_at TIMESTAMP DEFAULT current_timestamp,
@@ -130,8 +122,8 @@ const createTables = async () => {
 
   CREATE TABLE ordered_items(
       id UUID PRIMARY KEY,
-      customer_order_id UUID REFERENCES customer_orders(id),
-      product_id UUID REFERENCES products(id),
+      customer_order_id UUID REFERENCES customer_orders(id) ON DELETE SET NULL,
+      product_id UUID REFERENCES products(id) ON DELETE SET NULL,
       quantity INTEGER,
       item_price DECIMAL,
       total_price DECIMAL,
@@ -142,15 +134,15 @@ const createTables = async () => {
 
   CREATE TABLE customer_cart(
       id UUID PRIMARY KEY,
-      user_id UUID REFERENCES users(id),
+      user_id UUID REFERENCES users(id) ON DELETE CASCADE,
       created_at TIMESTAMP DEFAULT current_timestamp,
       updated_at TIMESTAMP DEFAULT current_timestamp
   );
 
   CREATE TABLE cart_items(
       id UUID PRIMARY KEY,
-      customer_cart_id UUID REFERENCES customer_cart(id),
-      product_id UUID REFERENCES products(id),
+      customer_cart_id UUID REFERENCES customer_cart(id) ON DELETE CASCADE,
+      product_id UUID REFERENCES products(id) ON DELETE CASCADE,
       quantity INTEGER,
       save_for_later BOOL DEFAULT FALSE,
       price DECIMAL,
@@ -159,15 +151,15 @@ const createTables = async () => {
 
   CREATE TABLE customer_wishlist(
       id UUID PRIMARY KEY,
-      user_id UUID REFERENCES users(id),
+      user_id UUID REFERENCES users(id) ON DELETE CASCADE,
       created_at TIMESTAMP DEFAULT current_timestamp,
       updated_at TIMESTAMP DEFAULT current_timestamp
   );
 
   CREATE TABLE wishlist_items(
       id UUID PRIMARY KEY,
-      customer_wishlist_id UUID REFERENCES customer_wishlist(id),
-      product_id UUID REFERENCES products(id),
+      customer_wishlist_id UUID REFERENCES customer_wishlist(id) ON DELETE CASCADE,
+      product_id UUID REFERENCES products(id) ON DELETE CASCADE,
       created_at TIMESTAMP DEFAULT current_timestamp,
       updated_at TIMESTAMP DEFAULT current_timestamp,
       modified_by UUID REFERENCES users(id)
@@ -180,22 +172,8 @@ const createTables = async () => {
   END;
   $$ LANGUAGE plpgsql;
 
-  CREATE OR REPLACE FUNCTION set_created_timestamp() RETURNS TRIGGER AS $$
-  BEGIN
-      IF (TG_OP = 'INSERT') THEN
-          NEW.created_at = CURRENT_TIMESTAMP;
-      END IF;
-      RETURN NEW;
-  END;
-  $$ LANGUAGE plpgsql;
-
   CREATE OR REPLACE FUNCTION create_user_associated_records() RETURNS TRIGGER AS $$
   BEGIN 
-      IF NOT EXISTS (SELECT 1 FROM user_roles WHERE id = NEW.id) THEN
-        INSERT INTO user_roles (id, user_role, created_at, updated_at, modified_by) 
-        VALUES (NEW.id, 'customer', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL);
-      END IF;
-
       INSERT INTO customer_cart (id, user_id, created_at, updated_at)
       VALUES (uuid_generate_v4(), NEW.id, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
@@ -210,35 +188,41 @@ const createTables = async () => {
   AFTER INSERT ON users
   FOR EACH ROW
   EXECUTE FUNCTION create_user_associated_records();
+
+  CREATE TRIGGER set_updated_timestamp
+  BEFORE UPDATE ON users
+  FOR EACH ROW
+  EXECUTE FUNCTION set_updated_timestamp();
   `;
 
   await client.query(SQL);
 };
 
+// Authentication
+
 const authenticateUser = async ({ email, password }) => {
   const SQL = `
-  SELECT u.id, u.password, ur.user_role 
-  FROM users u
-  JOIN user_roles ur ON u.id = ur.id
+  SELECT id, password, role 
+  FROM users 
   WHERE email = $1;
   `;
   const response = await client.query(SQL, [email]);
   const user = response.rows[0];
 
   if (!user) {
-    const error = new Error('User not found');
+    const error = new Error('User Not Found');
     error.status = 401;
     throw error;
   }
 
   const passwordMatches = await bcrypt.compare(password, user.password);
   if (!passwordMatches) {
-    const error = new Error('Invalid password');
+    const error = new Error('Invalid Password');
     error.status = 401;
     throw error;
   }
 
-  const token = jwt.sign({ id: user.id, role: user.user_role }, secret);
+  const token = jwt.sign({ id: user.id, role: user.role }, secret);
   return { token };
 };
 
@@ -267,6 +251,8 @@ const findUserWithToken = async (token) => {
   return { ...response.rows[0], role: userRole };
 };
 
+// USERS
+
 const createCustomer = async ({
   last_name,
   first_name,
@@ -275,7 +261,7 @@ const createCustomer = async ({
   phone_number,
 }) => {
   const SQL = `
-    INSERT INTO users(id, last_name, first_name, password, email, phone_number) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *
+    INSERT INTO users(id, last_name, first_name, password, email, phone_number, role) VALUES ($1, $2, $3, $4, $5, $6, 'customer') RETURNING *
     `;
   const response = await client.query(SQL, [
     uuidv4(),
@@ -296,21 +282,11 @@ const createEmployee = async ({
   phone_number,
   role = 'site_admin',
 }) => {
-  const userId = uuidv4();
   const SQL = `
-      WITH new_user AS (
-        INSERT INTO users(id, last_name, first_name, password, email, phone_number) 
-        VALUES ($1, $2, $3, $4, $5, $6) 
-        RETURNING *
-      ),
-      new_role AS (
-        INSERT INTO user_roles(id, user_role, created_at, updated_at) 
-        VALUES ($1, $7, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
-      )
-      SELECT * FROM new_user;
+    INSERT INTO users(id, last_name, first_name, password, email, phone_number, role) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *
     `;
   const response = await client.query(SQL, [
-    userId,
+    uuidv4(),
     last_name,
     first_name,
     await bcrypt.hash(password, 10),
@@ -328,6 +304,19 @@ const fetchAllUsers = async () => {
   const response = await client.query(SQL);
   return response.rows;
 };
+
+const deleteUser = async (id) => {
+  const SQL = `
+  DELETE FROM users WHERE id = $1
+  `;
+  await client.query(SQL, [id]);
+};
+
+// update user
+
+//
+
+// PRODUCTS
 
 const fetchProducts = async () => {
   const SQL = `
@@ -357,13 +346,16 @@ const createProduct = async ({
   category,
   merchant_id,
   status,
-  user_id,
+  user_id, // Include user_id as a parameter
 }) => {
+  // Ensure the category exists or create a new one, passing user_id
   const categoryRow = await createCategory({ name: category, user_id });
+
   const SQL = `
     INSERT INTO products(id, name, description, price, category_id, merchant_id, status, created_at, updated_at, modified_by) 
     VALUES ($1, $2, $3, $4, $5, $6, $7, current_timestamp, current_timestamp, $8) RETURNING *
   `;
+
   const response = await client.query(SQL, [
     uuidv4(),
     name,
@@ -372,8 +364,9 @@ const createProduct = async ({
     categoryRow.id,
     merchant_id,
     status,
-    user_id,
+    user_id, // Track who created the product
   ]);
+
   return response.rows[0];
 };
 
@@ -385,14 +378,17 @@ const updateProduct = async ({
   category,
   merchant_id,
   status,
-  user_id,
+  user_id, // Include user_id as a parameter
 }) => {
+  // Ensure the category exists or create a new one, passing user_id
   const categoryRow = await createCategory({ name: category, user_id });
+
   const SQL = `
     UPDATE products 
     SET name = $2, description = $3, price = $4, category_id = $5, merchant_id = $6, status = $7, updated_at = current_timestamp, modified_by = $8
     WHERE id = $1 RETURNING *
   `;
+
   const response = await client.query(SQL, [
     id,
     name,
@@ -401,8 +397,9 @@ const updateProduct = async ({
     categoryRow.id,
     merchant_id,
     status,
-    user_id,
+    user_id, // Track who updated the product
   ]);
+
   return response.rows[0];
 };
 

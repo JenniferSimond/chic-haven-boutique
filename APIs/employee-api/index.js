@@ -13,7 +13,8 @@ const {
 } = require('../../middleware/auth.js');
 const router = express.Router();
 
-// should change this to /create --> a new employee woudn't register, they would be created
+// SUPER ADMIN ROUTES
+
 router.post('/register', async (req, res, next) => {
   try {
     const { last_name, first_name, password, email, phone_number, role } =
@@ -68,7 +69,7 @@ router.post(
   }
 );
 
-// Route to update a product
+// Update product
 router.put(
   '/super-admin/products/:id',
   isAuthenticated,

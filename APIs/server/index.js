@@ -5,6 +5,7 @@ const {
   createTables,
   createCustomer,
   createEmployee,
+  createProduct,
 } = require('../../database/database.js');
 const customerApi = require('../customer-api/index.js');
 const employeeApi = require('../employee-api/index.js');
@@ -85,6 +86,46 @@ const init = async () => {
       testEmployees.map(createEmployee)
     );
     console.log('Test employees created:', createdEmployees);
+
+    // Test Products
+
+    const adminUserId = createdEmployees.find(
+      (employee) => employee.role === 'super_admin'
+    ).id;
+    console.log('Admin User ID:', adminUserId);
+
+    // Test Products
+    const testProducts = [
+      {
+        name: 'Boho-Chic dress',
+        description: 'blue and white a-line dress made of breathable cotton.',
+        price: 35.95,
+        category: 'Dress',
+        status: 'in-stock',
+        user_id: adminUserId, // Use the valid admin user ID
+      },
+      {
+        name: 'High-Waisted Jeans',
+        description: 'High-waisted blue jeans.',
+        price: 25.5,
+        category: 'Pants',
+        status: 'in-stock',
+        user_id: adminUserId, // Use the valid admin user ID
+      },
+    ];
+
+    /* map over each object in array, log it, insert it into createProduct function, log it and return it . 
+    the async in map makes arrow function async */
+
+    const createdProducts = await Promise.all(
+      testProducts.map(async (product) => {
+        console.log('Creating product:', product);
+        const createdProduct = await createProduct(product);
+        console.log('Created product:', createdProduct);
+        return createdProduct;
+      })
+    );
+    console.log('Test Products created:', createdProducts);
 
     app.listen(port, () => {
       console.log(`Server running on port ${port}`);

@@ -2,7 +2,7 @@ const express = require('express');
 const { createCustomer } = require('../../database/database.js');
 const router = express.Router();
 
-router.post('/register', async (req, res, next) => {
+router.post('/signup', async (req, res, next) => {
   try {
     const { last_name, first_name, password, email, phone_number } = req.body;
     const newUser = await createCustomer({
@@ -17,5 +17,11 @@ router.post('/register', async (req, res, next) => {
     next(error);
   }
 });
+
+// cart routes
+
+// cart_items routes
+
+// wish_list routes
 
 module.exports = router;

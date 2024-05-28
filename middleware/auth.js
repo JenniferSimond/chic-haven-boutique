@@ -1,9 +1,9 @@
-var jwt = require('jsonwebtoken');
+const jwt = require('jsonwebtoken');
 const dotenv = require('dotenv').config();
 const { findUserWithToken } = require('../database/database.js');
 const secret = process.env.JWT_SECRET || 'shhhhhlocal';
 
-//same as isLoggedIn in block 36user
+// Middleware --> checks if user is authenticated
 const isAuthenticated = async (req, res, next) => {
   try {
     if (!req.headers.authorization) {
@@ -18,30 +18,31 @@ const isAuthenticated = async (req, res, next) => {
   }
 };
 
-// Create site admin middleware
-
+// Middleware --> checks if user is site admin or higher
 const isSiteAdmin = (req, res, next) => {
   try {
     if (req.user.role !== 'site_admin' && req.user.role !== 'super_admin') {
-      throw new Error('Not Authorized');
+      throw new Error('Forbidden');
     }
     next();
   } catch (error) {
-    res.status(403).json({ message: 'Forbbiden' });
+    res.status(403).json({ message: 'Forbidden' });
   }
 };
-// Create super admin middle ware
+
+// Middleware --> checks if user is a super admin
 const isSuperAdmin = (req, res, next) => {
   try {
     if (req.user.role !== 'super_admin') {
-      throw new Error('Not Authorized');
+      throw new Error('Forbidden');
     }
     next();
   } catch (error) {
-    res.status(403).json({ message: 'Forbbiden' });
+    res.status(403).json({ message: 'Forbidden' });
   }
 };
-// Creaete authorized customer middle ware
+
+// Middleware --> checks if user is an authorized customer or higher
 const isAuthorizedCustomer = (req, res, next) => {
   try {
     if (
@@ -49,7 +50,7 @@ const isAuthorizedCustomer = (req, res, next) => {
       req.user.role !== 'site_admin' &&
       req.user.role !== 'super_admin'
     ) {
-      throw new Error('Not Authorized');
+      throw new Error('Forbidden');
     }
     next();
   } catch (error) {
@@ -58,7 +59,8 @@ const isAuthorizedCustomer = (req, res, next) => {
 };
 
 module.exports = {
+  isAuthenticated,
   isSiteAdmin,
   isSuperAdmin,
-  isAuthenticated,
+  isAuthorizedCustomer,
 };
