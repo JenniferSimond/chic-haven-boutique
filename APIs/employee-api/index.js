@@ -9,6 +9,7 @@ const {
   updateUserById,
   updateCategory,
   deleteProduct,
+  deleteCategory,
 } = require('../../database/database.js');
 const {
   isSuperAdmin,
@@ -87,7 +88,7 @@ router.delete(
   permissionToModify,
   async (req, res, next) => {
     try {
-      const id = req.params;
+      const { id } = req.params;
       await deleteUserById(id);
       res.status(204).send();
     } catch (error) {
@@ -97,7 +98,23 @@ router.delete(
 );
 
 // CREATE Category
+router.post(
+  '/categories/',
+  isAuthenticated,
+  isSuperAdmin,
+  async (req, res, next) => {
+    try {
+      const { name } = req.body;
+      const modifiedBy = req.user.id;
+      const newCategory = await createCategory({ name, modifiedBy });
+      res.status(201).json(newCategory);
+    } catch (error) {
+      next(error);
+    }
+  }
+);
 
+// UPDATE category
 router.put(
   '/categories/:id',
   isAuthenticated,
@@ -111,7 +128,7 @@ router.put(
       const newCategory = await updateCategory({
         id,
         name,
-        user_id,
+        modifiedBy,
       });
       res.status(200).json(newCategory);
     } catch (error) {
@@ -120,11 +137,24 @@ router.put(
   }
 );
 
-//Update Category
+// DELETE Category
+router.delete(
+  '/categories/:id',
+  isAuthenticated,
+  isSuperAdmin,
+  async (req, res, next) => {
+    try {
+      const { id } = req.params;
+      await deleteCategory({ id });
+      res.sendStatus(204);
+    } catch (error) {
+      next(error);
+    }
+  }
+);
 
 // ADD a  Delete Category
 
-// CREATE product
 router.post(
   '/products',
   isAuthenticated,

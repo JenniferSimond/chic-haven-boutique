@@ -3,6 +3,7 @@ const dotenv = require('dotenv').config();
 const { v4: uuidv4 } = require('uuid');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const { query } = require('express');
 
 const client = new pg.Client({ connectionString: process.env.DATABASE_URL });
 const secret = process.env.JWT_SECRET || 'shhhhhlocal';
@@ -367,8 +368,17 @@ const updateUserById = async (id, customerNewData, modifiedBy) => {
 
 // ** PRODUCTS & CATEGORY  **
 
+const fetchAllCategories = async () => {
+  const SQL = `
+  SELECT * FROM categories;
+  `;
+  const response = await client.query(SQL);
+  return response.rows;
+};
+
 // CREATE CATEGORY
-const createCategory = async ({ name, user_id }) => {
+const createCategory = async ({ name, modifiedBy }) => {
+  // on a conflict (name already there, DO UPDATE the existing name --> DON'T create a new one)
   const SQL = `
     INSERT INTO categories(id, name, created_at, updated_at, modified_by) 
     VALUES ($1, $2, current_timestamp, current_timestamp, $3) 
@@ -376,7 +386,7 @@ const createCategory = async ({ name, user_id }) => {
     SET updated_at = excluded.updated_at, modified_by = excluded.modified_by
     RETURNING *;
   `;
-  const response = await client.query(SQL, [uuidv4(), name, user_id]);
+  const response = await client.query(SQL, [uuidv4(), name, modifiedBy]);
   return response.rows[0];
 };
 
@@ -398,6 +408,12 @@ const updateCategory = async ({ id, name, modifiedBy }) => {
 };
 
 // DELETE CATEGORY
+const deleteCategory = async ({ id }) => {
+  const SQL = `
+  DELETE FROM categories WHERE id = $1
+  `;
+  await client.query(SQL, [id]);
+};
 
 // CREATE PRODUCT
 
@@ -509,4 +525,6 @@ module.exports = {
   deleteUserById,
   updateCategory,
   deleteProduct,
+  deleteCategory,
+  fetchAllCategories,
 };

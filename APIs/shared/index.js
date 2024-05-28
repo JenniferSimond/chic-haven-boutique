@@ -5,6 +5,7 @@ const {
   fetchProducts,
   authenticateUser,
   updateUserById,
+  fetchAllCategories,
 } = require('../../database/database.js');
 const {
   isAuthorizedCustomer,
@@ -31,6 +32,15 @@ router.get('/products', async (req, res, next) => {
     // res.send(await fetchProducts());
     const products = await fetchProducts();
     res.json(products);
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.get('/categories', async (req, res, next) => {
+  try {
+    const categories = await fetchAllCategories();
+    res.json(categories);
   } catch (error) {
     next(error);
   }

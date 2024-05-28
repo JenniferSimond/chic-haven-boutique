@@ -47,6 +47,7 @@ router.get(
   }
 );
 
+// Update user by id
 router.put(
   '/:id',
   isAuthenticated,

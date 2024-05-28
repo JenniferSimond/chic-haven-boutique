@@ -1,6 +1,6 @@
 ## Chic Haven Boutique
 
-Chic Haven Boutique is a full stack E-commerce site that was created using the PERN stack. The application features a customer and admin portal to seperate users from employees. Both portals utilize RESTful APIs that allow their respective clients to consume data using CRUD operations.
+Chic Haven Boutique is a full stack E-commerce site that was created using the PERN stack. The application features a customer and admin portal to separate users from employees. Both portals utilize RESTful APIs that allow their respective clients to consume data using CRUD operations.
 
 // Insert app photo
 
