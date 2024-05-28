@@ -60,18 +60,40 @@ const isAuthorizedCustomer = (req, res, next) => {
 
 // Delete middlewear
 
-// const authorizedDelet = async () => {
-//   try {
-//     const { id } = req.params; // setting the :id as a required parameter
-//     const userToDelete = await
-//   } catch (error) {
+const permissionToModify = async (req, res, next) => {
+  try {
+    const { id } = req.params; // setting the :id as a required parameter
+    const userToBeDeleted = await fetchUserById(id);
 
-//   }
-// }
+    if (!userToBeDeleted) {
+      return res.status(404).json({ message: 'User Not Found' });
+    }
+    // super-admin
+
+    if (req.user.role === 'super_admin') {
+      return next();
+    }
+
+    // site-admin
+    if (req.user.role === 'site_admin' && userToBeDeleted.role === 'customer') {
+      return next();
+    }
+
+    // customer
+    if (req.user.role === 'customer' && req.user.role === userToBeDeleted.id) {
+      return next();
+    }
+
+    throw new Error('Forbidden');
+  } catch (error) {
+    res.status(403).json({ message: error.message });
+  }
+};
 
 module.exports = {
   isAuthenticated,
   isSiteAdmin,
   isSuperAdmin,
   isAuthorizedCustomer,
+  permissionToModify,
 };

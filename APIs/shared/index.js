@@ -17,6 +17,7 @@ router.get('/status', (req, res) => {
 
 // PUBLIC SHARED ROUTES
 
+// login
 router.post('/login', async (req, res, next) => {
   try {
     res.send(await authenticateUser(req.body));

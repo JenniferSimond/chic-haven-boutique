@@ -5,16 +5,18 @@ const {
   createProduct,
   updateProduct,
   fetchAllUsers,
+  deleteUserById,
+  updateUserById,
 } = require('../../database/database.js');
 const {
   isSuperAdmin,
   isSiteAdmin,
   isAuthenticated,
+  permissionToModify,
 } = require('../../middleware/auth.js');
 const router = express.Router();
 
-// SUPER ADMIN ROUTES
-// super admin can edit everyones details
+// ** SUPER ADMIN ROUTES **
 
 // CREATE employee
 router.post('/register', async (req, res, next) => {
@@ -46,20 +48,41 @@ router.get('/users', isAuthenticated, isSiteAdmin, async (req, res, next) => {
 });
 
 // UPDATE users by id
-
 router.put(
   '/users/:id',
   isAuthenticated,
-  isSiteAdmin,
+  permissionToModify,
   async (req, res, next) => {
     try {
       const { id } = req.params;
       const userNewData = req.body;
-      const updatedUserDetails = await updateUserById(id, userNewData);
+      modifiedBy = req.user.id;
+      const updatedUserDetails = await updateUserById(
+        id,
+        userNewData,
+        modifiedBy
+      );
       if (!updatedUserDetails) {
         return res.status(404).json({ message: 'Customer Not Found' });
       }
       res.json(updatedUserDetails);
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+
+// DELETE USERS
+router.delete(
+  '/users/:id',
+  isAuthenticated,
+  isSiteAdmin,
+  permissionToModify,
+  async (req, res, next) => {
+    try {
+      const id = req.params;
+      await deleteUserById(id);
+      res.status(204).send();
     } catch (error) {
       next(error);
     }
@@ -96,7 +119,8 @@ router.post(
 router.put(
   '/products/:id',
   isAuthenticated,
-  isSuperAdmin,
+  isSiteAdmin,
+
   async (req, res, next) => {
     try {
       const { id } = req.params;

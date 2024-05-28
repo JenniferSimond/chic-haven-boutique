@@ -21,8 +21,8 @@ app.use(express.json());
 const path = require('path');
 
 // API Routes
-app.use('/api/customer', customerApi);
-app.use('/api/employee', employeeApi);
+app.use('/api/boutique/users', customerApi);
+app.use('/api/boutique/employees', employeeApi);
 app.use('/api/boutique', sharedApi);
 
 // Serve static files for deployment
@@ -56,6 +56,13 @@ const init = async () => {
         first_name: 'John',
         password: 'jd_password',
         email: 'jdoe@gmail.com',
+        phone_number: '248-803-5555',
+      },
+      {
+        last_name: 'Ramirez',
+        first_name: 'Kimberly',
+        password: 'kr_password',
+        email: 'kramirez@gmail.com',
         phone_number: '248-833-7775',
       },
     ];
@@ -70,6 +77,14 @@ const init = async () => {
         password: 'ts_password',
         email: 'tstart@gmail.com',
         phone_number: '248-990-5559',
+        role: 'site_admin',
+      },
+      {
+        last_name: 'Bucky',
+        first_name: 'Barns',
+        password: 'bb_password',
+        email: 'bbarns@gmail.com',
+        phone_number: '248-990-6609',
         role: 'site_admin',
       },
       {

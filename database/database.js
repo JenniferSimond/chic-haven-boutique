@@ -287,7 +287,7 @@ const fetchAllUsers = async () => {
 };
 
 // DELETE USER
-const deleteUser = async (id) => {
+const deleteUserById = async (id) => {
   const SQL = `
   DELETE FROM users WHERE id = $1
   `;
@@ -344,7 +344,7 @@ const updateUserById = async (id, customerNewData, modifiedBy) => {
     email = COALESCE($3, email),
     password = COALESCE($4, password),
     phone_number = COALESCE($5, phone_number),
-    modified_by = $6
+    modified_by = $6,
     updated_at = current_timestamp
   WHERE id = $7
   RETURNING *;
@@ -356,6 +356,7 @@ const updateUserById = async (id, customerNewData, modifiedBy) => {
     email,
     hashedPassword || password,
     phone_number,
+    modifiedBy,
     id,
   ]);
 
@@ -484,4 +485,5 @@ module.exports = {
   fetchAllUsers,
   fetchUserById,
   updateUserById,
+  deleteUserById,
 };

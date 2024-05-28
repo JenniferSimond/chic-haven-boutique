@@ -8,6 +8,7 @@ const router = express.Router();
 const {
   isAuthorizedCustomer,
   isAuthenticated,
+  permissionToModify,
 } = require('../../middleware/auth.js');
 
 router.post('/signup', async (req, res, next) => {
@@ -35,7 +36,7 @@ router.get(
   async (req, res, next) => {
     try {
       const { id } = req.params;
-      const customer = await fetchCustomerById(id);
+      const customer = await fetchUserById(id);
       if (!customer) {
         return res.status(404).json({ message: 'Customer not found' });
       }
@@ -50,6 +51,7 @@ router.put(
   '/:id',
   isAuthenticated,
   isAuthorizedCustomer,
+  permissionToModify,
   async (req, res, next) => {
     try {
       const { id } = req.params;
@@ -64,6 +66,23 @@ router.put(
         return res.status(404).json({ message: 'Customer Not Found' });
       }
       res.json(updatedUserDetails);
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+
+// DELETE ACCOUNT
+router.delete(
+  '/:id',
+  isAuthenticated,
+  isAuthorizedCustomer,
+  permissionToModify,
+  async (req, res, next) => {
+    try {
+      const id = req.params;
+      await deleteUserById(id);
+      res.status(204).send();
     } catch (error) {
       next(error);
     }
