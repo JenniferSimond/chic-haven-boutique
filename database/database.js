@@ -198,7 +198,7 @@ const createTables = async () => {
   await client.query(SQL);
 };
 
-// Authentication
+// ** Authentication **
 
 const authenticateUser = async ({ email, password }) => {
   const SQL = `
@@ -251,29 +251,9 @@ const findUserWithToken = async (token) => {
   return { ...response.rows[0], role: userRole };
 };
 
-// USERS
+// ** USERS **
 
-const createCustomer = async ({
-  last_name,
-  first_name,
-  password,
-  email,
-  phone_number,
-}) => {
-  const SQL = `
-    INSERT INTO users(id, last_name, first_name, password, email, phone_number, role) VALUES ($1, $2, $3, $4, $5, $6, 'customer') RETURNING *
-    `;
-  const response = await client.query(SQL, [
-    uuidv4(),
-    last_name,
-    first_name,
-    await bcrypt.hash(password, 10),
-    email,
-    phone_number,
-  ]);
-  return response.rows[0];
-};
-
+// CREATE EMPLOYEE
 const createEmployee = async ({
   last_name,
   first_name,
@@ -297,6 +277,7 @@ const createEmployee = async ({
   return response.rows[0];
 };
 
+// FETCH USERS
 const fetchAllUsers = async () => {
   const SQL = `
   SELECT * FROM users
@@ -305,6 +286,7 @@ const fetchAllUsers = async () => {
   return response.rows;
 };
 
+// DELETE USER
 const deleteUser = async (id) => {
   const SQL = `
   DELETE FROM users WHERE id = $1
@@ -312,21 +294,81 @@ const deleteUser = async (id) => {
   await client.query(SQL, [id]);
 };
 
-// update user
+// CREATE CUSTOMER
+const createCustomer = async ({
+  last_name,
+  first_name,
+  password,
+  email,
+  phone_number,
+}) => {
+  const SQL = `
+    INSERT INTO users(id, last_name, first_name, password, email, phone_number, role) VALUES ($1, $2, $3, $4, $5, $6, 'customer') RETURNING *
+    `;
+  const response = await client.query(SQL, [
+    uuidv4(),
+    last_name,
+    first_name,
+    await bcrypt.hash(password, 10),
+    email,
+    phone_number,
+  ]);
+  return response.rows[0];
+};
+
+// FETCH USER BY ID
+fetchUserById = async (id) => {
+  const SQL = `
+  SELECT * FROM users WHERE id = $1
+  `;
+  const response = await client.query(SQL, [id]);
+  return response.rows[0];
+};
+
+// UPDATE USER BY ID
+const updateUserById = async (id, customerNewData, modifiedBy) => {
+  const { last_name, first_name, email, password, phone_number } =
+    customerNewData;
+
+  //if user changes password hash it
+  let hashedPassword;
+  if (password) {
+    hashedPassword = await bcrypt.hash(password, 10);
+  }
+
+  const SQL = `
+  UPDATE users
+  SET 
+    last_name = COALESCE($1, last_name),
+    first_name = COALESCE($2, first_name),
+    email = COALESCE($3, email),
+    password = COALESCE($4, password),
+    phone_number = COALESCE($5, phone_number),
+    modified_by = $6
+    updated_at = current_timestamp
+  WHERE id = $7
+  RETURNING *;
+  `;
+
+  const response = await client.query(SQL, [
+    last_name,
+    first_name,
+    email,
+    hashedPassword || password,
+    phone_number,
+    id,
+  ]);
+
+  return response.rows[0];
+};
 
 //
 
-// PRODUCTS
+// ** PRODUCTS & CATEGORY  **
 
-const fetchProducts = async () => {
-  const SQL = `
-      SELECT * FROM products
-    `;
+// FETCH PRODUCTS
 
-  const response = await client.query(SQL);
-  return response.rows;
-};
-
+// CREATE CATEGORY
 const createCategory = async ({ name, user_id }) => {
   const SQL = `
     INSERT INTO categories(id, name, created_at, updated_at, modified_by) 
@@ -338,6 +380,12 @@ const createCategory = async ({ name, user_id }) => {
   const response = await client.query(SQL, [uuidv4(), name, user_id]);
   return response.rows[0];
 };
+
+// UPDATE CATEGOTY
+
+// DELETE CATEGORY
+
+// CREATE PRODUCT
 
 const createProduct = async ({
   name,
@@ -370,6 +418,17 @@ const createProduct = async ({
   return response.rows[0];
 };
 
+// FETCH PRODUCT
+const fetchProducts = async () => {
+  const SQL = `
+      SELECT * FROM products
+    `;
+
+  const response = await client.query(SQL);
+  return response.rows;
+};
+
+// UPDATE PROdUCT
 const updateProduct = async ({
   id,
   name,
@@ -378,7 +437,7 @@ const updateProduct = async ({
   category,
   merchant_id,
   status,
-  user_id, // Include user_id as a parameter
+  user_id,
 }) => {
   // Ensure the category exists or create a new one, passing user_id
   const categoryRow = await createCategory({ name: category, user_id });
@@ -397,11 +456,19 @@ const updateProduct = async ({
     categoryRow.id,
     merchant_id,
     status,
-    user_id, // Track who updated the product
+    user_id,
   ]);
 
   return response.rows[0];
 };
+
+// DELETE PRODUCT
+
+// ** CARTS **
+
+// ** WISHLIST **
+
+// ** REVIEWS **
 
 module.exports = {
   client,
@@ -415,4 +482,6 @@ module.exports = {
   createProduct,
   updateProduct,
   fetchAllUsers,
+  fetchUserById,
+  updateUserById,
 };

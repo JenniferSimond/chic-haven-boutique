@@ -4,7 +4,12 @@ const router = express.Router();
 const {
   fetchProducts,
   authenticateUser,
+  updateUserById,
 } = require('../../database/database.js');
+const {
+  isAuthorizedCustomer,
+  isAuthenticated,
+} = require('../../middleware/auth.js');
 
 router.get('/status', (req, res) => {
   res.json({ status: 'API is running' });
@@ -29,6 +34,8 @@ router.get('/products', async (req, res, next) => {
     next(error);
   }
 });
+
+//get reviews
 
 // PROTECTED SHARED ROUTES
 

@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken');
 const dotenv = require('dotenv').config();
-const { findUserWithToken } = require('../database/database.js');
+const { findUserWithToken, fetchUserById } = require('../database/database.js');
 const secret = process.env.JWT_SECRET || 'shhhhhlocal';
 
 // Middleware --> checks if user is authenticated
@@ -57,6 +57,17 @@ const isAuthorizedCustomer = (req, res, next) => {
     res.status(403).json({ message: 'Forbidden' });
   }
 };
+
+// Delete middlewear
+
+// const authorizedDelet = async () => {
+//   try {
+//     const { id } = req.params; // setting the :id as a required parameter
+//     const userToDelete = await
+//   } catch (error) {
+
+//   }
+// }
 
 module.exports = {
   isAuthenticated,

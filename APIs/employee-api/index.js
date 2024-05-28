@@ -14,7 +14,9 @@ const {
 const router = express.Router();
 
 // SUPER ADMIN ROUTES
+// super admin can edit everyones details
 
+// CREATE employee
 router.post('/register', async (req, res, next) => {
   try {
     const { last_name, first_name, password, email, phone_number, role } =
@@ -33,26 +35,47 @@ router.post('/register', async (req, res, next) => {
   }
 });
 
-router.get(
-  'admin/users',
+// GET users
+router.get('/users', isAuthenticated, isSiteAdmin, async (req, res, next) => {
+  try {
+    const users = await fetchAllUsers();
+    res.json(users);
+  } catch (error) {
+    next(error);
+  }
+});
+
+// UPDATE users by id
+
+router.put(
+  '/users/:id',
   isAuthenticated,
   isSiteAdmin,
   async (req, res, next) => {
     try {
-    } catch (error) {}
+      const { id } = req.params;
+      const userNewData = req.body;
+      const updatedUserDetails = await updateUserById(id, userNewData);
+      if (!updatedUserDetails) {
+        return res.status(404).json({ message: 'Customer Not Found' });
+      }
+      res.json(updatedUserDetails);
+    } catch (error) {
+      next(error);
+    }
   }
 );
 
-//create product
+// CREATE product
 router.post(
-  '/super-admin/products',
+  '/products',
   isAuthenticated,
   isSuperAdmin,
   async (req, res, next) => {
     try {
       const { name, description, price, category, merchant_id, status } =
         req.body;
-      const user_id = req.user.id; // Get the authenticated user ID
+      const user_id = req.user.id; // Gets the authenticated user ID from isAuthenticated the req.user.id is defined there
       const newProduct = await createProduct({
         name,
         description,
@@ -69,9 +92,9 @@ router.post(
   }
 );
 
-// Update product
+// UPDATE product
 router.put(
-  '/super-admin/products/:id',
+  '/products/:id',
   isAuthenticated,
   isSuperAdmin,
   async (req, res, next) => {
@@ -79,7 +102,7 @@ router.put(
       const { id } = req.params;
       const { name, description, price, category, merchant_id, status } =
         req.body;
-      const user_id = req.user.id; // Get the authenticated user ID
+      const user_id = req.user.id; // Gets the authenticated user ID from isAuthenticated the req.user.id is defined there
       const updatedProduct = await updateProduct({
         id,
         name,
@@ -96,5 +119,10 @@ router.put(
     }
   }
 );
+
+// orders
+// ordered items
+
+// UPDATE user by id
 
 module.exports = router;

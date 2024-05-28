@@ -122,10 +122,8 @@ const init = async () => {
         console.log('Creating product:', product);
         const createdProduct = await createProduct(product);
         console.log('Created product:', createdProduct);
-        return createdProduct;
       })
     );
-    console.log('Test Products created:', createdProducts);
 
     app.listen(port, () => {
       console.log(`Server running on port ${port}`);
