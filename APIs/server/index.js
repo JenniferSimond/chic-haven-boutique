@@ -127,6 +127,14 @@ const init = async () => {
         status: 'in-stock',
         user_id: adminUserId, // Use the valid admin user ID
       },
+      {
+        name: 'Leather Jacket',
+        description: 'Calf skin leather jacket.',
+        price: 450.25,
+        category: 'Jacket',
+        status: 'in-stock',
+        user_id: adminUserId, // Use the valid admin user ID
+      },
     ];
 
     /* map over each object in array, log it, insert it into createProduct function, log it and return it . 

@@ -367,8 +367,6 @@ const updateUserById = async (id, customerNewData, modifiedBy) => {
 
 // ** PRODUCTS & CATEGORY  **
 
-// FETCH PRODUCTS
-
 // CREATE CATEGORY
 const createCategory = async ({ name, user_id }) => {
   const SQL = `
@@ -382,7 +380,22 @@ const createCategory = async ({ name, user_id }) => {
   return response.rows[0];
 };
 
-// UPDATE CATEGOTY
+// UPDATE CATEGORY
+
+const updateCategory = async ({ id, name, modifiedBy }) => {
+  const SQL = `
+  UPDATE categories 
+  SET 
+    name = $2, 
+    updated_at = current_timestamp, 
+    modified_by = $3
+    WHERE id = $1 
+    RETURNING *;
+  `;
+
+  const response = await client.query(SQL, [id, name, modifiedBy]);
+  return response.rows[0];
+};
 
 // DELETE CATEGORY
 
@@ -465,6 +478,14 @@ const updateProduct = async ({
 
 // DELETE PRODUCT
 
+const deleteProduct = async ({ id }) => {
+  const SQL = `
+  
+  DELETE FROM products WHERE id = $1 RETURNING *
+  `;
+  await client.query(SQL, [id]);
+};
+
 // ** CARTS **
 
 // ** WISHLIST **
@@ -486,4 +507,6 @@ module.exports = {
   fetchUserById,
   updateUserById,
   deleteUserById,
+  updateCategory,
+  deleteProduct,
 };

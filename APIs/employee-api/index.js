@@ -7,6 +7,8 @@ const {
   fetchAllUsers,
   deleteUserById,
   updateUserById,
+  updateCategory,
+  deleteProduct,
 } = require('../../database/database.js');
 const {
   isSuperAdmin,
@@ -19,23 +21,28 @@ const router = express.Router();
 // ** SUPER ADMIN ROUTES **
 
 // CREATE employee
-router.post('/register', async (req, res, next) => {
-  try {
-    const { last_name, first_name, password, email, phone_number, role } =
-      req.body;
-    const newEmployee = await createEmployee({
-      last_name,
-      first_name,
-      password,
-      email,
-      phone_number,
-      role,
-    });
-    res.status(201).json(newEmployee);
-  } catch (error) {
-    next(error);
+router.post(
+  '/register',
+  isAuthenticated,
+  isSuperAdmin,
+  async (req, res, next) => {
+    try {
+      const { last_name, first_name, password, email, phone_number, role } =
+        req.body;
+      const newEmployee = await createEmployee({
+        last_name,
+        first_name,
+        password,
+        email,
+        phone_number,
+        role,
+      });
+      res.status(201).json(newEmployee);
+    } catch (error) {
+      next(error);
+    }
   }
-});
+);
 
 // GET users
 router.get('/users', isAuthenticated, isSiteAdmin, async (req, res, next) => {
@@ -89,6 +96,34 @@ router.delete(
   }
 );
 
+// CREATE Category
+
+router.put(
+  '/categories/:id',
+  isAuthenticated,
+  isSuperAdmin,
+  async (req, res, next) => {
+    try {
+      const { id } = req.params;
+      const { name } = req.body;
+      const modifiedBy = req.user.id;
+
+      const newCategory = await updateCategory({
+        id,
+        name,
+        user_id,
+      });
+      res.status(200).json(newCategory);
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+
+//Update Category
+
+// ADD a  Delete Category
+
 // CREATE product
 router.post(
   '/products',
@@ -138,6 +173,22 @@ router.put(
         user_id,
       });
       res.status(200).json(updatedProduct);
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+
+// Delete Product
+router.delete(
+  '/products/:id',
+  isAuthenticated,
+  isSuperAdmin,
+  async (req, res, next) => {
+    try {
+      const { id } = req.params;
+      await deleteProduct({ id });
+      res.sendStatus(204);
     } catch (error) {
       next(error);
     }
