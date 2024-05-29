@@ -3,6 +3,7 @@ const {
   createCustomer,
   fetchUserById,
   updateUserById,
+  fetchCartById,
 } = require('../../database/database.js');
 const router = express.Router();
 const {
@@ -90,6 +91,21 @@ router.delete(
   }
 );
 // cart routes
+
+router.get(
+  '/:id/cart',
+  isAuthenticated,
+  isAuthorizedCustomer,
+  async (req, res, next) => {
+    try {
+      const id = req.params;
+      const cart = await fetchCartById(id);
+      res.status(201).json(cart);
+    } catch (error) {
+      next(error);
+    }
+  }
+);
 
 // cart_items routes
 

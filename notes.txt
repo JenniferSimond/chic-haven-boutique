@@ -29,6 +29,10 @@ Trigger Functions:
 PSQL docs: https://www.postgresql.org/docs/current/sql-createtrigger.html
 enterprisedc article: https://www.enterprisedb.com/postgres-tutorials/everything-you-need-know-about-postgresql-triggers
 
+https://hevodata.com/learn/postgresql-triggers/
+
+https://www.postgresqltutorial.com/postgresql-triggers/postgresql-trigger-when-condition/
+
 
 Enums in PSQL:
 * Enumerated (enum) types are data types that comprise a static, ordered set of values.

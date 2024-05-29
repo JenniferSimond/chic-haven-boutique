@@ -144,17 +144,20 @@ const createTables = async () => {
       id UUID PRIMARY KEY,
       customer_cart_id UUID REFERENCES customer_cart(id) ON DELETE CASCADE,
       product_id UUID REFERENCES products(id) ON DELETE CASCADE,
+      product_name VARCHAR(100)
+      product_price DECIMAL,
       quantity INTEGER,
-      save_for_later BOOL DEFAULT FALSE,
-      price DECIMAL,
-      total_price DECIMAL
+      total_price DECIMAL,
+      created_at TIMESTAMP DEFAULT current_timestamp,
+      updated_at TIMESTAMP DEFAULT current_timestamp,
+      modified_by UUID REFERENCES users(id)
   );
 
   CREATE TABLE customer_wishlist(
       id UUID PRIMARY KEY,
       user_id UUID REFERENCES users(id) ON DELETE CASCADE,
       created_at TIMESTAMP DEFAULT current_timestamp,
-      updated_at TIMESTAMP DEFAULT current_timestamp
+      updated_at TIMESTAMP DEFAULT current_timestamp,
   );
 
   CREATE TABLE wishlist_items(
@@ -175,11 +178,13 @@ const createTables = async () => {
 
   CREATE OR REPLACE FUNCTION create_user_associated_records() RETURNS TRIGGER AS $$
   BEGIN 
+    IF NEW.role = 'customer' THEN
       INSERT INTO customer_cart (id, user_id, created_at, updated_at)
       VALUES (uuid_generate_v4(), NEW.id, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
       INSERT INTO customer_wishlist (id, user_id, created_at, updated_at)
       VALUES (uuid_generate_v4(), NEW.id, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+    END IF;
 
       RETURN NEW;
   END;
@@ -504,7 +509,41 @@ const deleteProduct = async ({ id }) => {
 
 // ** CARTS **
 
+//carts --> Not Sure If I need this
+
+// cart by id
+// not sure if I need this ---> May REMOVE
+const fetchCartById = async ({ user_id }) => {
+  const SQL = `
+    SELECT * FROM customer_cart WHERE user_id = $1;
+  `;
+
+  const response = await client.query(SQL, [user_id]);
+  return response.rows[0];
+};
+
+const addToCartItems = async ({ user_id, product_id, quantity }) => {
+  /* create cart_items table -->
+      id, cart id, product id, quantity, price, total price
+      not sure if total price should happen in items or cart  */
+
+  const SQL = `
+        INSERT INTO cart_items (id, customer_cart_id, product_id, product_name, product_price, quantity, total_price, created_at, updated_at, modified_by)
+        VALUES (uuid_generate_v4(), (SELECT id FROM customer_cart WHERE user_id = $1), $2, (SELECT name FROM products WHERE id = $2),
+        (SELECT price FROM products WHERE id = $2), $3, (SELECT price FROM products WHERE id = $2) * $3, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, $1 )
+        RETURNING *;
+      `;
+  const response = await client.query(SQL, [(user_id, product_id, quantity)]);
+  return response.rows[0];
+};
+
+// Need delete from cart functions
+
+// Not sure if I need to fetch cart items
+
 // ** WISHLIST **
+
+const addToWishListItems = async () => {};
 
 // ** REVIEWS **
 
@@ -527,4 +566,6 @@ module.exports = {
   deleteProduct,
   deleteCategory,
   fetchAllCategories,
+  fetchCartById,
+  addToCartItems,
 };
