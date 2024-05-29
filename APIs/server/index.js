@@ -116,7 +116,7 @@ const init = async () => {
         description: 'blue and white a-line dress made of breathable cotton.',
         price: 35.95,
         category: 'Dress',
-        status: 'in-stock',
+        product_status: 'in-stock',
         user_id: adminUserId, // Use the valid admin user ID
       },
       {
@@ -124,7 +124,7 @@ const init = async () => {
         description: 'High-waisted blue jeans.',
         price: 25.5,
         category: 'Pants',
-        status: 'in-stock',
+        product_status: 'in-stock',
         user_id: adminUserId, // Use the valid admin user ID
       },
       {
@@ -132,7 +132,7 @@ const init = async () => {
         description: 'Calf skin leather jacket.',
         price: 450.25,
         category: 'Jacket',
-        status: 'in-stock',
+        product_status: 'in-stock',
         user_id: adminUserId, // Use the valid admin user ID
       },
     ];
