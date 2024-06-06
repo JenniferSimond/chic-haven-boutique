@@ -71,6 +71,14 @@ const addOrderedItems = async ({ orderId, cartItems, modifiedBy }) => {
   return Promise.all(orderItems);
 };
 
+// get all orders
+
+// get ordered items by id
+
+//update ordered item
+
+// delete corder
+
 module.exports = {
   createCustomerOrder,
   addOrderedItems,

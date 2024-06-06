@@ -1,7 +1,5 @@
 // Create models for reviews
 
-// in real project the app needs to have customer_reviews table
-
 // create
 // user_id & product id
 

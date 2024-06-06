@@ -10,6 +10,10 @@ Trello Board: [here](https://docs.google.com/spreadsheets/d/12P3g-iGvFKMqc1FE_yd
 
 User Story and Logic [here](https://docs.google.com/spreadsheets/d/12P3g-iGvFKMqc1FE_yd0Fw41fo_1pcaz2AfFbJcMvvQ/edit?usp=sharing)
 
+## Postman Collection
+
+![photo](./images/postman.png)
+
 ## Local Setup & Enviornment Variables
 
 -- Create PostgreSQL database : chic_haven
