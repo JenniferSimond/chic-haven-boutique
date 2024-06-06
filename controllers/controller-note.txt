@@ -1,0 +1,3 @@
+Controller
+
+The controller is the middle man. It talks to the view and the database. 

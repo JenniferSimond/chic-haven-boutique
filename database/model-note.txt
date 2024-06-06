@@ -1,0 +1,28 @@
+Model View Model --> 
+
+The models are responsible for handeling the "do something to the data portion of the MVC design pattern
+the models are where the CRUD logic is created in the form of functions that do the following
+
+CRUD Models Function(s) Logic -->
+
+** CREATE **
+Create___(
+    --> INSERTs new data into tables --> from client
+)
+
+** READ ** 
+Fetch__(
+    --> SELECTs data from the table --> to be read by client
+)
+
+** UPDATE ** 
+update__(
+    --> PUTs updated data into table --> from client
+)
+
+** DELETE ** 
+delete__(
+    --> DELETEs data from table --> at the request of client
+)
+
+
