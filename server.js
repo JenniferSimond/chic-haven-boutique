@@ -16,6 +16,7 @@ const user = require('./controllers/userController.js');
 const carts = require('./controllers/cartController.js');
 const orders = require('./controllers/orderController.js');
 const reveiws = require('./controllers/reviewsController.js');
+const wishlist = require('./controllers/wishlistController.js');
 
 app.use(express.json());
 const path = require('path');
@@ -33,7 +34,8 @@ app.use('/api/admins', admins);
 app.use('/api/users', user);
 app.use('/api', carts);
 app.use('/api', orders);
-app.use('/api/reviews', reveiws);
+app.use('/api', wishlist);
+app.use('/api ', reveiws);
 
 const init = async () => {
   try {

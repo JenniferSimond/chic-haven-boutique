@@ -46,15 +46,12 @@ const fetchWishlistItemsById = async ({ customer_wishlist_id }) => {
   return response.rows;
 };
 
-const deleteWishlistItemByIds = async ({
-  customer_wishlist_id,
-  product_id,
-}) => {
+const deleteWishlistItemByIds = async ({ customer_wishlist_id }) => {
   const SQL = `
     DELETE FROM wishlist_items 
-        WHERE wishlist_id = $1 && product _id = $2
+        WHERE wishlist_id = $1 
   `;
-  await client.query(SQL, [customer_wishlist_id, product_id]);
+  await client.query(SQL, [customer_wishlist_id]);
 };
 
 module.exports = {

@@ -40,7 +40,14 @@ const {
   deleteCartItem,
 } = require('./models/cart.js');
 
-const { createCustomerOrder, addOrderedItems } = require('./models/orders.js');
+const {
+  createCustomerOrder,
+  addOrderedItems,
+  fetchAllOrders,
+  fetchOrdersById,
+  fetchAllOrderItems,
+  fetchOrderedItemsByID,
+} = require('./models/orders.js');
 const { createAdmin, fetchAllAdmins } = require('./models/admin.js');
 
 module.exports = {
@@ -73,6 +80,10 @@ module.exports = {
   updateCartItem,
   createCustomerOrder,
   addOrderedItems,
+  fetchAllOrders,
+  fetchOrdersById,
+  fetchAllOrderItems,
+  fetchOrderedItemsByID,
   deleteCartItem,
   fetchAllAdmins,
 };

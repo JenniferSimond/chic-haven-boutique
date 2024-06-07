@@ -23,11 +23,7 @@ const createCustomerOrder = async ({ userId, modifiedBy }) => {
     )
     RETURNING *;
   `;
-  const response = await client.query(SQL, [
-    uuidv4(),
-    userId, // Ensure this is passed correctly as a UUID
-    modifiedBy,
-  ]);
+  const response = await client.query(SQL, [uuidv4(), userId, modifiedBy]);
   return response.rows[0];
 };
 
@@ -73,13 +69,46 @@ const addOrderedItems = async ({ orderId, cartItems, modifiedBy }) => {
 
 // get all orders
 
-// get ordered items by id
+const fetchAllOrders = async () => {
+  const SQL = `
+    SELECT * FROM customer_orders;
+  `;
+  const response = await client.query(SQL);
+  return response.rows;
+};
 
-//update ordered item
+// get order by id
+const fetchOrdersById = async ({ userId }) => {
+  const SQL = `
+    SELECT * FROM customer_orders WHERE user_id = $1 ;
+  `;
+  const response = await client.query(SQL, [userId]);
+  return response.rows[0];
+};
 
-// delete corder
+const fetchAllOrderItems = async () => {
+  const SQL = `
+    SELECT * FROM ordered_items;
+  `;
+  const response = await client.query(SQL);
+  return response.rows;
+};
+
+const fetchOrderedItemsByID = async ({ customerOrderId }) => {
+  const SQL = `
+    SELECT * FROM ordered_items WHERE customer_order_id = $1 ;
+  `;
+  const response = await client.query(SQL, [customerOrderId]);
+  return response.rows[0];
+};
+
+// delete corder --> not sure if I'll use this
 
 module.exports = {
   createCustomerOrder,
   addOrderedItems,
+  fetchAllOrders,
+  fetchOrdersById,
+  fetchAllOrderItems,
+  fetchOrderedItemsByID,
 };
