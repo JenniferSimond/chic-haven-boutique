@@ -49,6 +49,11 @@ postgres docs: https://www.postgresql.org/docs/current/sql-syntax-lexical.html
 ** CONTROL FLOW psql:
 https://www.naukri.com/code360/library/conditionals-and-control-flow-in-postgresql
 
+** DELETE BASED ON MUTIPLE TABLES ** 
+
+https://www.guru99.com/postgresql-delete-row.html
+https://www.techonthenet.com/postgresql/delete.php
+https://www.postgresql.org/message-id/3E5F530B.1649.424D34C1@localhost
 ** Node resources **
 
 __direname:

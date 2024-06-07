@@ -102,7 +102,53 @@ const fetchOrderedItemsByID = async ({ customerOrderId }) => {
   return response.rows[0];
 };
 
-// delete corder --> not sure if I'll use this
+// update order
+
+const updateCustomerOrderStatus = async ({
+  customerOrderId,
+  newOrderStatus,
+  modifiedBy,
+}) => {
+  const SQL = `
+  UPDATE
+  SET 
+    customer_order_status = $2,
+    modified_by = $3
+  WHERE id = $1
+  RETURNING *;
+  `;
+
+  const response = await client.query(SQL, [
+    customerOrderId,
+    newOrderStatus,
+    modifiedBy,
+  ]);
+  return response.rows[0];
+};
+
+// may add later
+// const updateOrderedItem = async () => {
+
+// }
+
+const deleteCustomerOrder = async ({ customerOrderId }) => {
+  const SQL = `
+    DELETE FROM customer_orders WHERE id = $1 AND customer_order_status = 'initiated'
+  `;
+  await client.query(SQL, [customerOrderId]);
+};
+
+const deleteOrderdItem = async (customerOrderId, itemId) => {
+  const SQL = `
+    DELETE FROM ordered_items
+    WHERE customer_order_id = $1 AND id = $2
+    AND EXISTS (
+    SELECT 1 
+    FROM customer_orders
+    WHERE id = $1 AND customer_order_status = 'initiated'
+    )
+  `;
+};
 
 module.exports = {
   createCustomerOrder,
@@ -111,4 +157,7 @@ module.exports = {
   fetchOrdersById,
   fetchAllOrderItems,
   fetchOrderedItemsByID,
+  updateCustomerOrderStatus,
+  deleteCustomerOrder,
+  deleteOrderdItem,
 };

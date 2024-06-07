@@ -47,6 +47,8 @@ const {
   fetchOrdersById,
   fetchAllOrderItems,
   fetchOrderedItemsByID,
+  updateCustomerOrderStatus,
+  deleteOrderdItem,
 } = require('./models/orders.js');
 const { createAdmin, fetchAllAdmins } = require('./models/admin.js');
 
@@ -84,6 +86,8 @@ module.exports = {
   fetchOrdersById,
   fetchAllOrderItems,
   fetchOrderedItemsByID,
+  updateCustomerOrderStatus,
+  deleteOrderdItem,
   deleteCartItem,
   fetchAllAdmins,
 };

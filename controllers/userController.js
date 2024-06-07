@@ -50,7 +50,7 @@ router.get(
       const { id } = req.params;
       const customer = await fetchUserById(id);
       if (!customer) {
-        return res.status(404).json({ message: 'Customer not found' });
+        return res.status(404).json({ message: 'Customer Not Found' });
       }
       res.json(customer);
     } catch (error) {
@@ -62,6 +62,9 @@ router.get(
 router.get('/', isAuthenticated, isSiteAdmin, async (req, res, next) => {
   try {
     const users = await fetchAllUsers();
+    if (!users) {
+      return res.status(404).json({ message: 'User Not Found' });
+    }
     res.json(users);
   } catch (error) {
     next(error);

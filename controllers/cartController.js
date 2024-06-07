@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express('router');
-const { v4: uuidv4 } = require('uuid');
+
 const {
   addCartItem,
   fetchAllCarts,
@@ -99,6 +99,7 @@ router.put(
   }
 );
 
+// not sure if this the best place but it makes sense to me
 router.post(
   '/users/:user_id/carts/:cart_id/checkout',
   isAuthenticated,
