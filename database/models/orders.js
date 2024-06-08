@@ -83,7 +83,7 @@ const fetchOrdersById = async ({ userId }) => {
     SELECT * FROM customer_orders WHERE user_id = $1 ;
   `;
   const response = await client.query(SQL, [userId]);
-  return response.rows[0];
+  return response.rows;
 };
 
 const fetchAllOrderItems = async () => {

@@ -6,6 +6,7 @@ const {
   fetchOrdersById,
   fetchAllOrderItems,
   fetchOrderedItemsByID,
+  deleteCustomerOrder,
   deleteOrderdItem,
   updateCustomerOrderStatus,
 } = require('../database/index.js');
@@ -13,39 +14,35 @@ const {
 const {
   isAuthenticated,
   isAuthorizedCustomer,
+  isSiteAdmin,
 } = require('./shared/userAuth.js');
 
 // ** orders created in checkout checkout --> see cart controller
 
 // fetch all orders
 
-router.get(
-  '/users/:id/orders',
-  isAuthenticated,
-  isAuthorizedCustomer,
-  async (req, res, next) => {
-    try {
-      const orders = await fetchAllOrders();
-      if (!orders) {
-        return res.status(404).json({ message: 'Oder Not Found' });
-      }
-      res.json(orders);
-    } catch (error) {
-      next(error);
+router.get('/orders', isAuthenticated, isSiteAdmin, async (req, res, next) => {
+  try {
+    const orders = await fetchAllOrders();
+    if (!orders) {
+      return res.status(404).json({ message: 'Oder Not Found' });
     }
+    res.json(orders);
+  } catch (error) {
+    next(error);
   }
-);
+});
 
 // fetch orders by id
 
 router.get(
-  '/orders/:id',
+  '/users/:user_id/orders',
   isAuthenticated,
   isAuthorizedCustomer,
   async (req, res, next) => {
     try {
-      userId = req.params.id;
-      const customerOrders = await fetchOrdersById(userId);
+      const userId = req.params.user_id;
+      const customerOrders = await fetchOrdersById({ userId });
 
       if (!customerOrders) {
         return res.status(404).json({ message: 'Order Not Found' });
@@ -64,8 +61,8 @@ router.get(
   isAuthorizedCustomer,
   async (req, res, next) => {
     try {
-      customerOrderId = req.params.order_id;
-      const orderedItems = await fetchOrderedItemsByID(customerOrderId);
+      const customerOrderId = req.params.order_id;
+      const orderedItems = await fetchOrderedItemsByID({ customerOrderId });
 
       if (!orderedItems) {
         return res.status(404).json({ message: 'Item Not Found' });
@@ -77,6 +74,7 @@ router.get(
   }
 );
 
+// create order  --> admin may need
 router.put(
   '/orders/:id',
   isAuthenticated,
@@ -100,6 +98,7 @@ router.put(
   }
 );
 
+// Delete order
 router.delete('/orders/:id', async (req, res, next) => {
   try {
     const customerOrderId = req.params.id;
@@ -109,6 +108,8 @@ router.delete('/orders/:id', async (req, res, next) => {
     next(error);
   }
 });
+
+// Delete order item
 
 router.delete(
   '/orders/:order_id/items/:item_id',

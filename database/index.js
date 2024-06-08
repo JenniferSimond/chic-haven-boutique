@@ -48,6 +48,7 @@ const {
   fetchAllOrderItems,
   fetchOrderedItemsByID,
   updateCustomerOrderStatus,
+  deleteCustomerOrder,
   deleteOrderdItem,
 } = require('./models/orders.js');
 const { createAdmin, fetchAllAdmins } = require('./models/admin.js');
