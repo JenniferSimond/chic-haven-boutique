@@ -13,6 +13,7 @@ const carts = require('./controllers/cartController.js');
 const orders = require('./controllers/orderController.js');
 const reviews = require('./controllers/reviewsController.js');
 const wishlist = require('./controllers/wishlistController.js');
+const categories = require('./controllers/categoryController.js');
 
 app.use(express.json());
 const path = require('path');
@@ -32,6 +33,7 @@ app.use('/api', carts);
 app.use('/api', orders);
 app.use('/api', wishlist);
 app.use('/api', reviews);
+app.use('/api', categories);
 
 const init = async () => {
   try {

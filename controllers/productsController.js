@@ -18,7 +18,7 @@ const {
 
 // CREATE
 
-router.post('/', isAuthenticated, isSiteAdmin, async (req, res, next) => {
+router.post('/', isAuthenticated, isSuperAdmin, async (req, res, next) => {
   try {
     const { name, description, price, category, product_status } = req.body;
     const user_id = req.user.id; // Gets the authenticated user ID from isAuthenticated the req.user.id is defined there

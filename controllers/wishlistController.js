@@ -5,8 +5,6 @@ const {
   isAuthenticated,
   isAuthorizedCustomer,
   isSiteAdmin,
-  permissionToViewOrModify,
-  canPostReviews,
 } = require('./shared/userAuth.js');
 
 const {

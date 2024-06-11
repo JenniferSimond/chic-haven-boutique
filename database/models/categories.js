@@ -23,7 +23,7 @@ const fetchAllCategories = async () => {
   return response.rows;
 };
 
-const fetchCategoryById = async ({ id }) => {
+const fetchCategoryById = async (id) => {
   const SQL = `
           SELECT * FROM categories WHERE id = $1
   `;
@@ -51,6 +51,18 @@ const updateCategory = async ({ id, name, modifiedBy }) => {
 
 // DELETE CATEGORY
 const deleteCategory = async ({ id }) => {
+  const checkProductcategory = `
+  SELECT * FROM products WHERE category_id = $1
+  `;
+
+  const checkResponse = await client.query(checkProductcategory, [id]);
+
+  if (checkResponse.rowCount > 0) {
+    const error = new Error('Category attached to product, unable to delete.');
+    error.status = 405;
+    throw error;
+  }
+
   const SQL = `
         DELETE FROM categories WHERE id = $1
         `;
