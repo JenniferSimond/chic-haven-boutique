@@ -54,10 +54,10 @@ const fetchWishlistItemsById = async ({ wishlist_id }) => {
   return response.rows;
 };
 
-const deleteWishlistItemByIds = async ({ wishlist_id }) => {
+const deleteWishlistItemByIds = async ({ id }) => {
   const SQL = `
     DELETE FROM wishlist_items 
-        WHERE wishlist_id = $1 
+        WHERE id = $1 
   `;
   await client.query(SQL, [wishlist_id]);
 };
