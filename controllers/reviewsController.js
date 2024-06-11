@@ -131,7 +131,7 @@ router.delete(
 
       await deleteProductReview(id);
 
-      res.status(204).end();
+      res.sendStatus(204);
     } catch (error) {
       next(error);
     }

@@ -25,6 +25,7 @@ const {
 const {
   createWishlistItem,
   fetchAllWishlistItems,
+  fetchWishlistByUserId,
   fetchWishlistItemsById,
   fetchAllWishlists,
   deleteWishlistItemByIds,
@@ -83,6 +84,7 @@ module.exports = {
   deleteCategory,
   createWishlistItem,
   fetchAllWishlists,
+  fetchWishlistByUserId,
   fetchAllWishlistItems,
   fetchWishlistItemsById,
   deleteWishlistItemByIds,

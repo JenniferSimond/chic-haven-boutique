@@ -190,7 +190,8 @@ CREATE TABLE wishlist_items(
     product_price DECIMAL,
     created_at TIMESTAMP DEFAULT current_timestamp,
     updated_at TIMESTAMP DEFAULT current_timestamp,
-    modified_by UUID REFERENCES users(id)
+    modified_by UUID REFERENCES users(id),
+    CONSTRAINT unique_user_product UNIQUE (customer_wishlist_id, product_id)
 );
 
 -- UPDATE TIME STAMP TRIGGER/FUNCTION

@@ -45,6 +45,13 @@ const fetchUserById = async (id) => {
   return response.rows[0];
 };
 
+const fetchUserDetails = async () => {
+  // need to fetch all details
+  // -> cart id, wishlist id, customer account details
+};
+
+const fetchUserDetailsById = async () => {};
+
 // UPDATE USER BY ID
 const updateUser = async (id, customerNewData, modifiedBy) => {
   const {
