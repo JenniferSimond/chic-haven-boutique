@@ -45,12 +45,12 @@ const fetchWishlistById = async ({ userId }) => {
 
 // fetch wishlist item by id
 
-const fetchWishlistItemsById = async ({ wishlist_id }) => {
+const fetchWishlistItemsById = async ({ wishlistId }) => {
   const SQL = `
         SELECT * FROM wishlist_items 
         WHERE customer_wishlist_id = $1
     `;
-  const response = await client.query(SQL, [wishlist_id]);
+  const response = await client.query(SQL, [wishlistId]);
   return response.rows;
 };
 
