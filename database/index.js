@@ -26,6 +26,7 @@ const {
   createWishlistItem,
   fetchAllWishlistItems,
   fetchWishlistItemsById,
+  fetchAllWishlists,
   deleteWishlistItemByIds,
 } = require('./models/wishlist.js');
 
@@ -81,6 +82,7 @@ module.exports = {
   updateCategory,
   deleteCategory,
   createWishlistItem,
+  fetchAllWishlists,
   fetchAllWishlistItems,
   fetchWishlistItemsById,
   deleteWishlistItemByIds,
