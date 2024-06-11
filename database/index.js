@@ -51,7 +51,17 @@ const {
   deleteCustomerOrder,
   deleteOrderdItem,
 } = require('./models/orders.js');
+
 const { createAdmin, fetchAllAdmins } = require('./models/admin.js');
+
+const {
+  createProductReview,
+  fetchAllReviews,
+  fetchReviewsByProduct,
+  fetchReviewsByUser,
+  updateProductReview,
+  deleteProductReview,
+} = require('./models/reviews.js');
 
 module.exports = {
   createProduct,
@@ -91,4 +101,10 @@ module.exports = {
   deleteOrderdItem,
   deleteCartItem,
   fetchAllAdmins,
+  createProductReview,
+  fetchAllReviews,
+  fetchReviewsByProduct,
+  fetchReviewsByUser,
+  updateProductReview,
+  deleteProductReview,
 };

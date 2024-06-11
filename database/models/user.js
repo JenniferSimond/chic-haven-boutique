@@ -74,7 +74,7 @@ const updateUser = async (id, customerNewData, modifiedBy) => {
         user_role = COALESCE($7, user_role),
         can_post_reviews = $8,
         modified_by = $9,
-        updated_at = current_timestamp
+        updated_at = CURRENT_TIMESTAMP
       WHERE id = $1
       RETURNING *;
       `;

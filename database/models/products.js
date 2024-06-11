@@ -17,7 +17,7 @@ const createProduct = async ({
 
   const SQL = `
       INSERT INTO products(id, name, description, price, category_id, product_status, created_at, updated_at, modified_by) 
-      VALUES ($1, $2, $3, $4, $5, $6, current_timestamp, current_timestamp, $7) RETURNING *
+      VALUES ($1, $2, $3, $4, $5, $6, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, $7) RETURNING *
     `;
 
   const response = await client.query(SQL, [

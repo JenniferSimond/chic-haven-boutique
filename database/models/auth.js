@@ -6,7 +6,7 @@ const secret = process.env.JWT_SECRET || 'shhhhhlocal';
 
 const authenticateUser = async ({ email, password }) => {
   const SQL = `
-    SELECT id, password, user_role
+    SELECT id, password, user_role, can_post_reviews
     FROM users 
     WHERE email = $1;
   `;
@@ -27,7 +27,11 @@ const authenticateUser = async ({ email, password }) => {
   }
 
   const token = jwt.sign(
-    { id: user.id, user_role: user.user_role },
+    {
+      id: user.id,
+      user_role: user.user_role,
+      can_post_reviews: user.can_post_reviews,
+    },
     secret,
     {}
   );
@@ -35,11 +39,12 @@ const authenticateUser = async ({ email, password }) => {
 };
 
 const findUserByToken = async (token) => {
-  let userId, userRole;
+  let userId, userRole, canPostReviews;
   try {
     const decoded = jwt.verify(token, secret);
     userId = decoded.id;
     userRole = decoded.user_role;
+    canPostReviews = decoded.can_post_reviews;
   } catch (ex) {
     const error = new Error('Not Authorized');
     error.status = 401;
@@ -47,7 +52,7 @@ const findUserByToken = async (token) => {
   }
 
   const SQL = `
-    SELECT id, email, user_role FROM users WHERE id = $1;
+    SELECT id, email, user_role, can_post_reviews FROM users WHERE id = $1;
   `;
   const response = await client.query(SQL, [userId]);
   if (response.rows.length === 0) {
@@ -56,7 +61,11 @@ const findUserByToken = async (token) => {
     throw error;
   }
 
-  return { ...response.rows[0], user_role: userRole };
+  return {
+    ...response.rows[0],
+    user_role: userRole,
+    can_post_reviews: canPostReviews,
+  };
 };
 
 module.exports = {

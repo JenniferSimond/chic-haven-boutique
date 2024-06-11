@@ -97,10 +97,33 @@ const permissionToViewOrModify = async (req, res, next) => {
   }
 };
 
+const canPostReviews = (req, res, next) => {
+  try {
+    if (
+      req.user.user_role === 'super_admin' ||
+      req.user.user_role === 'site_admin'
+    ) {
+      return next();
+    }
+
+    if (
+      req.user.user_role === 'customer' &&
+      req.user.can_post_reviews === true // Assuming can_post_reviews is a boolean
+    ) {
+      return next();
+    }
+
+    throw new Error('Forbidden');
+  } catch (error) {
+    res.status(403).json({ message: 'Forbidden' });
+  }
+};
+
 module.exports = {
   isAuthenticated,
   isSiteAdmin,
   isSuperAdmin,
   isAuthorizedCustomer,
   permissionToViewOrModify,
+  canPostReviews,
 };

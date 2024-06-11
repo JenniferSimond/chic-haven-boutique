@@ -17,8 +17,8 @@ const createCustomerOrder = async ({ userId, modifiedBy }) => {
         $2,
         0.0, -- Setting the initial total price to zero
         'initiated',
-        current_timestamp,
-        current_timestamp,
+        CURRENT_TIMESTAMP,
+        CURRENT_TIMESTAMP,
         $3
     )
     RETURNING *;
@@ -48,8 +48,8 @@ const addOrderedItems = async ({ orderId, cartItems, modifiedBy }) => {
                 $4,
                 $5,
                 $6,
-                current_timestamp,
-                current_timestamp,
+                CURRENT_TIMESTAMP,
+                CURRENT_TIMESTAMP,
                 $7
             )
             RETURNING *;

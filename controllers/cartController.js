@@ -49,6 +49,8 @@ router.get(
 
 router.get(
   '/carts/:customer_cart_id/items',
+  isAuthenticated,
+  isAuthorizedCustomer,
 
   async (req, res, next) => {
     try {
@@ -128,11 +130,11 @@ router.post(
 router.delete(
   '/carts/:customer_cart_id/items/:id',
   isAuthenticated,
-  permissionToViewOrModify,
+  isAuthorizedCustomer,
   async (req, res, next) => {
     try {
       const { id } = req.params;
-      await deleteCartItem(id);
+      await deleteCartItem({ id });
       res.sendStatus(204);
     } catch (error) {
       next(error);

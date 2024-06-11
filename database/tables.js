@@ -91,11 +91,11 @@ CREATE TABLE products(
 );
 
 CREATE TABLE product_images(
-id UUID PRIMARY KEY,
-product_id UUID REFERENCES products(id),
-created_at TIMESTAMP DEFAULT current_timestamp,
-updated_at TIMESTAMP DEFAULT current_timestamp,
-modified_by UUID REFERENCES users(id)
+  id UUID PRIMARY KEY,
+  product_id UUID REFERENCES products(id),
+  created_at TIMESTAMP DEFAULT current_timestamp,
+  updated_at TIMESTAMP DEFAULT current_timestamp,
+  modified_by UUID REFERENCES users(id)
 );
 
 CREATE TABLE inventory(
@@ -123,11 +123,12 @@ CREATE TABLE product_reviews(
     id UUID PRIMARY KEY,
     product_id UUID REFERENCES products(id) ON DELETE CASCADE,
     user_id UUID REFERENCES users(id),
-    rating INTEGER,
+    rating INTEGER NOT NULL,
     comment VARCHAR(255),
     created_at TIMESTAMP DEFAULT current_timestamp,
     updated_at TIMESTAMP DEFAULT current_timestamp,
-    modified_by UUID REFERENCES users(id)
+    modified_by UUID REFERENCES users(id),
+    CONSTRAINT unique_user_review UNIQUE (product_id, user_id)
 );
 
 CREATE TABLE customer_orders(
