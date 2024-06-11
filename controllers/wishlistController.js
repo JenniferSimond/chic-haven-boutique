@@ -17,6 +17,7 @@ const {
   deleteWishlistItemByIds,
 } = require('../database/index');
 
+// add with list items -->
 router.post(
   '/wishlists/:wishlist_id/items',
   isAuthenticated,
@@ -40,6 +41,7 @@ router.post(
   }
 );
 
+// get all wishlists  -->
 router.get('/wishlists', async (req, res, next) => {
   try {
     const wishlists = await fetchAllWishlists();
@@ -50,7 +52,29 @@ router.get('/wishlists', async (req, res, next) => {
 });
 
 router.get(
-  '/wishlists/:wishlist_id/items/:item_id',
+  '/users/:user_id/wishlist',
+  isAuthenticated,
+  isAuthorizedCustomer,
+  async (req, res, next) => {}
+);
+
+// get wishlist items by Id -->
+router.get(
+  '/wishlists/:wishlist_id/items',
+  isAuthenticated,
+  isAuthorizedCustomer,
+  async (req, res, next) => {
+    try {
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+
+// delete items -->
+
+router.delete(
+  '/wisthlist/:wishlist_id/items/:item_id',
   isAuthenticated,
   isAuthorizedCustomer,
   async (req, res, next) => {
