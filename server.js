@@ -26,6 +26,11 @@ app.use(
   express.static(path.join(__dirname, '../../client/dist/assets'))
 );
 
+app.use(
+  '/product-images',
+  express.static(path.join(__dirname, '/public/productImages'))
+);
+
 app.use('/api/products', products);
 app.use('/api/admins', admins);
 app.use('/api/users', user);
@@ -39,10 +44,10 @@ const init = async () => {
   try {
     await client.connect();
     console.log('Connected to database');
-    // await createTables();
-    // console.log('Database setup completed');
-    // await seedDatabase();
-    // console.log('Database seeded');
+    await createTables();
+    console.log('Database setup completed');
+    await seedDatabase();
+    console.log('Database seeded');
 
     app.listen(port, () => {
       console.log(`Server running on port ${port}`);

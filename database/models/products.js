@@ -9,6 +9,7 @@ const createProduct = async ({
   price,
   category,
   product_status,
+  image_url,
   user_id,
 }) => {
   // checks if category exists or create a new one --> the check happens in createCategory model
@@ -16,8 +17,8 @@ const createProduct = async ({
   const categoryInfo = await createCategory({ name: category, user_id });
 
   const SQL = `
-      INSERT INTO products(id, name, description, price, category_id, product_status, created_at, updated_at, modified_by) 
-      VALUES ($1, $2, $3, $4, $5, $6, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, $7) RETURNING *
+      INSERT INTO products(id, name, description, price, category_id, product_status, image_url, created_at, updated_at, modified_by) 
+      VALUES ($1, $2, $3, $4, $5, $6, $7, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, $8) RETURNING *
     `;
 
   const response = await client.query(SQL, [
@@ -27,6 +28,7 @@ const createProduct = async ({
     price,
     categoryInfo.id,
     product_status,
+    image_url,
     user_id, // Track who created the product --> Taken from is req.user -> from auth
   ]);
 
@@ -61,6 +63,7 @@ const updateProduct = async ({
   price,
   category,
   product_status,
+  image_url,
   user_id,
 }) => {
   // Ensure the category exists or create a new one, passing user_id
@@ -77,8 +80,9 @@ const updateProduct = async ({
       price = COALESCE($4, price),
       category_id = COALESCE($5, category_id),
       product_status = COALESCE($6, product_status), 
+      image_url = COALESCE($7, image_url),
       updated_at = CURRENT_TIMESTAMP, 
-      modified_by = $7
+      modified_by = $8
     WHERE id = $1 
     RETURNING *;
   `;
@@ -90,6 +94,7 @@ const updateProduct = async ({
     price,
     categoryRow ? categoryRow.id : null,
     product_status,
+    image_url,
     user_id,
   ]);
 

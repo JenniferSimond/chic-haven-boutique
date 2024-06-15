@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express('router');
+const upload = require('./config/multerConfig.js');
 
 const {
   createProduct,
@@ -18,23 +19,36 @@ const {
 
 // CREATE
 
-router.post('/', isAuthenticated, isSuperAdmin, async (req, res, next) => {
-  try {
-    const { name, description, price, category, product_status } = req.body;
-    const user_id = req.user.id; // Gets the authenticated user ID from isAuthenticated the req.user.id is defined there
-    const newProduct = await createProduct({
-      name,
-      description,
-      price,
-      category,
-      product_status,
-      user_id,
-    });
-    res.status(201).json(newProduct);
-  } catch (error) {
-    next(error);
+router.post(
+  '/',
+  isAuthenticated,
+  isSuperAdmin,
+  upload.single('image'),
+  async (req, res, next) => {
+    try {
+      const { name, description, price, category, product_status } = req.body;
+      const user_id = req.user.id; // Gets the authenticated user ID from isAuthenticated the req.user.id is defined there
+
+      //handels images
+      const image_url = req.file
+        ? `/product-images/${req.file.filename}`
+        : null;
+
+      const newProduct = await createProduct({
+        name,
+        description,
+        price,
+        category,
+        product_status,
+        image_url,
+        user_id,
+      });
+      res.status(201).json(newProduct);
+    } catch (error) {
+      next(error);
+    }
   }
-});
+);
 
 // READ --> FETCH ALL
 router.get('/', async (req, res, next) => {
@@ -63,13 +77,18 @@ router.put(
   '/:id',
   isAuthenticated,
   isSuperAdmin,
-
+  upload.single('image'),
   async (req, res, next) => {
     try {
       const { id } = req.params;
       const { name, description, price, category, merchant_id, status } =
         req.body;
       const user_id = req.user.id; // Gets the authenticated user ID from isAuthenticated the req.user.id is defined there
+
+      const image_url = req.file
+        ? `/product-images/${req.file.filename}`
+        : null;
+
       const updatedProduct = await updateProduct({
         id,
         name,
@@ -78,6 +97,7 @@ router.put(
         category,
         merchant_id,
         status,
+        image_url,
         user_id,
       });
       res.status(200).json(updatedProduct);

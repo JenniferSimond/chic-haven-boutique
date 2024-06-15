@@ -14,7 +14,6 @@ DROP TABLE IF EXISTS users CASCADE;
 DROP TABLE IF EXISTS user_addresses CASCADE;
 DROP TABLE IF EXISTS product_reviews CASCADE;
 DROP TABLE IF EXISTS products CASCADE;
-DROP TABLE IF EXISTS product_images CASCADE;
 DROP TABLE IF EXISTS categories CASCADE;
 DROP TABLE IF EXISTS merchants CASCADE;
 DROP TABLE IF EXISTS inventory CASCADE;
@@ -85,17 +84,10 @@ CREATE TABLE products(
     price DECIMAL NOT NULL,
     category_id UUID REFERENCES categories(id),
     product_status VARCHAR(20),
+    image_url VARCHAR(50),
     created_at TIMESTAMP DEFAULT current_timestamp,
     updated_at TIMESTAMP DEFAULT current_timestamp,
     modified_by UUID REFERENCES users(id)
-);
-
-CREATE TABLE product_images(
-  id UUID PRIMARY KEY,
-  product_id UUID REFERENCES products(id),
-  created_at TIMESTAMP DEFAULT current_timestamp,
-  updated_at TIMESTAMP DEFAULT current_timestamp,
-  modified_by UUID REFERENCES users(id)
 );
 
 CREATE TABLE inventory(
