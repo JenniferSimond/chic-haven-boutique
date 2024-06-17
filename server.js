@@ -1,6 +1,6 @@
 const express = require('express');
+const cors = require('cors');
 const { client, createTables } = require('./database/tables.js');
-
 const { seedDatabase } = require('./database/seedDatabase.js');
 
 const app = express();
@@ -14,6 +14,13 @@ const orders = require('./controllers/orderController.js');
 const reviews = require('./controllers/reviewsController.js');
 const wishlist = require('./controllers/wishlistController.js');
 const categories = require('./controllers/categoryController.js');
+
+app.use(
+  cors({
+    origin: 'http://localhost:5173',
+    credentials: true,
+  })
+);
 
 app.use(express.json());
 const path = require('path');
@@ -44,10 +51,10 @@ const init = async () => {
   try {
     await client.connect();
     console.log('Connected to database');
-    await createTables();
-    console.log('Database setup completed');
-    await seedDatabase();
-    console.log('Database seeded');
+    // await createTables();
+    // console.log('Database setup completed');
+    // await seedDatabase();
+    // console.log('Database seeded');
 
     app.listen(port, () => {
       console.log(`Server running on port ${port}`);

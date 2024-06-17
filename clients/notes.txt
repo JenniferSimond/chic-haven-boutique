@@ -1,0 +1,25 @@
+
+
+Query Params
+
+https://www.dhiwise.com/post/unlock-the-power-of-react-router-query-params
+
+https://scientyficworld.org/how-to-use-query-parameters-with-react-router/
+
+
+https://reactrouter.com/en/main/hooks/use-search-params
+
+
+UseEffect Refresher --> 
+
+** https://dmitripavlutin.com/react-useeffect-explanation/
+
+** https://blog.logrocket.com/useeffect-react-hook-complete-guide/
+
+https://youtu.be/Yl0hbt_kK_I?si=et9kxuJU-9Vd3y0l
+
+https://www.sitepoint.com/understanding-react-useeffect/
+
+https://www.freecodecamp.org/news/react-useeffect-absolute-beginners/
+
+
