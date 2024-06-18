@@ -37,7 +37,7 @@ const ProductName = styled.h1`
 const ProductImageCard = styled.div`
   width: 540px;
   height: 540px;
-  background-image: url(${props => props.imageUrl});
+  background-image: url(${props => props.$imageUrl});
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -100,7 +100,7 @@ const Button = styled.button`
   cursor: pointer;
 
   &:hover {
-    background-color: #FFBC42;
+    background-color: #4A4E69;
   }
 `;
 
@@ -146,7 +146,7 @@ const Product = () => {
     <ProductWrapper>
       <NameImageWrapper>
         <ProductName>{selectedProduct.name}</ProductName>
-        <ProductImageCard imageUrl={imageUrl} />
+        <ProductImageCard $imageUrl={imageUrl} />
       </NameImageWrapper>
       <DescriptionPrice>
         <Description>{selectedProduct.description}</Description>
@@ -158,7 +158,7 @@ const Product = () => {
           </Button>
           <Button>
             <WishlistIcon src={wishlistLight} />
-  
+              Wishlist
           </Button>
         </ButtonWrapper>
       </DescriptionPrice>

@@ -66,7 +66,7 @@ const SearchBar = () => {
     setSearchInput(event.target.value)
   }
 
-  console.log('Search -->', searchInput)
+  console.log('Search Input (Search) -->', searchInput)
     return(
         <SearchBarWrapper onSubmit={handleSubmit} >
             <SearchBox type='text' onChange={handleChange} value={searchInput} placeholder='Search products'/>

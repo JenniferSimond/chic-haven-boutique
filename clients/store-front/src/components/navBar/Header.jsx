@@ -40,7 +40,7 @@ const Logo = styled.img`
     cursor: pointer;
 
     &:hover {
-    content: url(${props => props.hoverIcon})
+    content: url(${props => props.$hoverIcon})
 
 `;
 
@@ -50,7 +50,7 @@ const Account = styled.img`
     cursor: pointer;
 
     &:hover {
-    content: url(${props => props.hoverIcon})
+    content: url(${props => props.$hoverIcon})
 `
 
 const Cart = styled.img`
@@ -59,7 +59,7 @@ const Cart = styled.img`
     cursor: pointer;
 
     &:hover {
-    content: url(${props => props.hoverIcon})
+    content: url(${props => props.$hoverIcon})
 `;
 
 
@@ -81,14 +81,14 @@ const Header = () => {
 
     return(
         <Wrapper>
-            <Logo src={logo} alt='Logo' hoverIcon={logoLight} onClick={logoClickHandler} />
+            <Logo src={logo} alt='Logo' $hoverIcon={logoLight} onClick={logoClickHandler} />
             <SearchContainer>
                 <SearchBar />
                 <NavLinks />
             </SearchContainer>
             <IconContainer>
-                <Account  src={account} alt='Account' hoverIcon={accountLight} onClick={accountClickHandler}/>
-                <Cart src={cart} alt='Cart' hoverIcon={cartLight} onClick={cartClickHandler}/>
+                <Account  src={account} alt='Account' $hoverIcon={accountLight} onClick={accountClickHandler}/>
+                <Cart src={cart} alt='Cart' $hoverIcon={cartLight} onClick={cartClickHandler}/>
             </IconContainer>
             
          

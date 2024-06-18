@@ -33,7 +33,7 @@ const ProductName = styled.p`
 const ProductImageCard = styled.div`
   width: 199px;
   height: 254px;
-  background-image: url(${props => props.imageUrl});
+  background-image: url(${props => props.$imageUrl});
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -57,7 +57,7 @@ const SvgIcon = styled.img`
     cursor: pointer;
 
     &:hover {
-    content: url(${props => props.hoverIcon})
+    content: url(${props => props.$hoverIcon})
 
     }
 
@@ -79,7 +79,7 @@ const Price = styled.p`
 const ProductCard = ({ product }) => {
   const navigate = useNavigate();
   const imageUrl = `${BASE_URL}${product.image_url}`;
-  console.log("Product Image URL", imageUrl);
+  // console.log("Product Image URL", imageUrl);
 
   const handleViewClick = () => {
     navigate(`/products/${product.id}`)
@@ -88,11 +88,11 @@ const ProductCard = ({ product }) => {
   return (
     <CardWrapper>
       <ProductName>{product.name}</ProductName>
-      <ProductImageCard imageUrl={imageUrl} />
+      <ProductImageCard $imageUrl={imageUrl} />
       <PriceButtonWrapper>
         <SvgIcon 
         src={viewEye} 
-        hoverIcon={viewPink}
+        $hoverIcon={viewPink}
         onClick={handleViewClick}
         />
         <Price>${product.price}</Price>
@@ -100,7 +100,7 @@ const ProductCard = ({ product }) => {
         width={'21px'}
         height={'21px'}
         src={wishlist} 
-        hoverIcon={wishlistPink}
+        $hoverIcon={wishlistPink}
        
         />
       </PriceButtonWrapper>

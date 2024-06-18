@@ -18,9 +18,9 @@ const customerLogin = async (loginCredentials) => {
   }
 };
 
-const getUserDetails = async (userId, token) => {
+const getUserDetails = async (token) => {
   try {
-    const response = await fetch(`${API_URL}/users/${userId}`, {
+    const response = await fetch(`${API_URL}/users/me`, {
       method: 'GET',
       headers: {
         'content-type': 'application/json',
@@ -28,9 +28,12 @@ const getUserDetails = async (userId, token) => {
       },
     });
 
-    const userDetails = await response.json();
-    console.log('User Details (API) -->', userDetails);
-  } catch (error) {}
+    const user = await response.json();
+    console.log('User Details (API) -->', user);
+    return user;
+  } catch (error) {
+    console.error('Error fetching user details:', error);
+  }
 };
 
 export { customerLogin, getUserDetails };

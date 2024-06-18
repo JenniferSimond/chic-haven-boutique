@@ -193,7 +193,7 @@ const Login = ({ setToken }) => {
     }));
   };
 
-  console.log('Login Data ->', loginFormData);
+  console.log('Login Data (Login) ->', loginFormData);
   return (
     <OuterWrapper>
 

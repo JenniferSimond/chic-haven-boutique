@@ -41,6 +41,23 @@ router.post('/login', async (req, res, next) => {
 });
 
 router.get(
+  '/me',
+  isAuthenticated,
+  isAuthorizedCustomer,
+  async (req, res, next) => {
+    try {
+      const customer = await fetchUserById(req.user.id);
+      if (!customer) {
+        return res.status(404).json({ message: 'User not found' });
+      }
+      res.json(customer);
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+
+router.get(
   '/:id',
   isAuthenticated,
   permissionToViewOrModify,
