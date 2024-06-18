@@ -1,4 +1,4 @@
-const UserAccount = () => {
+const UserAccount = ({token}) => {
 
     return(
         <h2>User Account</h2>

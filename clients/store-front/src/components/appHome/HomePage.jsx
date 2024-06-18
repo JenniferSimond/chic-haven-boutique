@@ -9,8 +9,10 @@ import newCollection from '../../assets/img-png/newCollection.png';
 const HeroWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 40px;
-  margin-bottom: 15px;
+  gap: 30px;
+  margin-top: 55px;
+  margin-left: 105px;
+  margin-bottom: 10px;
 `;
 
 const InnerHeroWrapper = styled.div`

@@ -20,7 +20,7 @@ const AppWrapper = styled.div`
 
 const MainContent = styled.main`
     margin-top: 0px;
-    margin-left: 105px;
+    margin-left: 0px;
     flex-grow: 1;
 `
 function App() {

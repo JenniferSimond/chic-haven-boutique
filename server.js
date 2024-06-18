@@ -1,5 +1,7 @@
+// server.js
 const express = require('express');
 const cors = require('cors');
+const path = require('path');
 const { client, createTables } = require('./database/tables.js');
 const { seedDatabase } = require('./database/seedDatabase.js');
 
@@ -23,19 +25,11 @@ app.use(
 );
 
 app.use(express.json());
-const path = require('path');
 
-app.get('/', (req, res) =>
-  res.sendFile(path.join(__dirname, '../../client/dist/index.html'))
-);
-app.use(
-  '/assets',
-  express.static(path.join(__dirname, '../../client/dist/assets'))
-);
-
+// Serve static files from the 'public/productImages' directory
 app.use(
   '/product-images',
-  express.static(path.join(__dirname, '/public/productImages'))
+  express.static(path.join(__dirname, 'public/productImages'))
 );
 
 app.use('/api/products', products);
@@ -51,16 +45,13 @@ const init = async () => {
   try {
     await client.connect();
     console.log('Connected to database');
-    // await createTables();
-    // console.log('Database setup completed');
-    // await seedDatabase();
-    // console.log('Database seeded');
-
+    await createTables();
+    await seedDatabase();
     app.listen(port, () => {
       console.log(`Server running on port ${port}`);
     });
   } catch (error) {
-    console.error('error with server', error);
+    console.error('Error with server', error);
   }
 };
 

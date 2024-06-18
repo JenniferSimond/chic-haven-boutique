@@ -184,7 +184,7 @@ const seedDatabase = async () => {
 
   const testProducts = [
     {
-      name: 'Tropical Vibes Two-Piece',
+      name: 'Tropical Vibes set',
       description:
         'Vibrant two-piece set with a floral pattern, featuring a crop top and a ruffled skirt. Perfect for summer outings.',
       price: 49.99,
@@ -194,7 +194,7 @@ const seedDatabase = async () => {
       user_id: adminUserId,
     },
     {
-      name: 'Boho Breeze Two-Piece',
+      name: 'Boho Breeze Set',
       description:
         'Off-shoulder crop top with matching high-waisted pants, featuring a delicate leaf pattern. Ideal for a relaxed yet chic look.',
       price: 54.99,
@@ -204,7 +204,7 @@ const seedDatabase = async () => {
       user_id: adminUserId,
     },
     {
-      name: 'Elegant Cream Dress',
+      name: 'Elegant Dress',
       description:
         'Soft cream dress with a fitted bodice and flowy skirt, accentuated with a waist tie. A versatile piece for any occasion.',
       price: 65.99,
@@ -214,7 +214,7 @@ const seedDatabase = async () => {
       user_id: adminUserId,
     },
     {
-      name: 'Island Getaway Romper',
+      name: 'Island Romper',
       description:
         'Floral romper with adjustable straps and a comfortable fit, perfect for a tropical vacation.',
       price: 39.99,
@@ -224,7 +224,7 @@ const seedDatabase = async () => {
       user_id: adminUserId,
     },
     {
-      name: 'Paradise Halter Dress',
+      name: 'Halter Dress',
       description:
         'Colorful halter dress with a floral print, designed for beach parties and summer gatherings.',
       price: 58.99,
@@ -234,23 +234,13 @@ const seedDatabase = async () => {
       user_id: adminUserId,
     },
     {
-      name: 'Boho Princess Dress',
+      name: 'Boho Princess',
       description:
         'Multi-layered boho dress with ruffles and a vibrant floral design, bringing out the inner bohemian spirit.',
       price: 79.99,
       category: 'Dress',
       product_status: 'in-stock',
       image_url: '/product-images/fancy-boho-dress.png',
-      user_id: adminUserId,
-    },
-    {
-      name: 'African Queen Dress',
-      description:
-        'Bold and beautiful dress with puffed sleeves and a striking African-inspired print, perfect for making a statement.',
-      price: 69.99,
-      category: 'Dress',
-      product_status: 'in-stock',
-      image_url: '/product-images/africa-dress.png',
       user_id: adminUserId,
     },
     {
@@ -274,7 +264,7 @@ const seedDatabase = async () => {
       user_id: adminUserId,
     },
     {
-      name: 'Modern Tweed Suit',
+      name: 'Tweed Suit',
       description:
         'Chic tweed suit with a tailored fit, combining classic style with a contemporary twist.',
       price: 149.99,
@@ -304,16 +294,6 @@ const seedDatabase = async () => {
       user_id: adminUserId,
     },
     {
-      name: 'Executive Black Suit',
-      description:
-        'Sophisticated black suit designed for the modern executive, featuring a crisp white shirt.',
-      price: 139.99,
-      category: 'Suit',
-      product_status: 'in-stock',
-      image_url: '/product-images/suite 1.png',
-      user_id: adminUserId,
-    },
-    {
       name: 'Golden Glam Gown',
       description:
         'Stunning golden gown with off-shoulder sleeves and a thigh-high slit, perfect for formal occasions.',
@@ -324,7 +304,7 @@ const seedDatabase = async () => {
       user_id: adminUserId,
     },
     {
-      name: 'Sparkling Gold Two-Piece',
+      name: 'Goddess Gown',
       description:
         'Dazzling two-piece set with a crop top and a high-slit skirt, covered in gold sequins.',
       price: 179.99,
@@ -334,7 +314,7 @@ const seedDatabase = async () => {
       user_id: adminUserId,
     },
     {
-      name: 'Sophisticated Black Dress',
+      name: 'Boss Lady Dress',
       description:
         'Elegant black dress with a deep V-neck and long sleeves, ideal for evening events.',
       price: 89.99,
@@ -344,7 +324,7 @@ const seedDatabase = async () => {
       user_id: adminUserId,
     },
     {
-      name: 'High-Waisted Blue Jeans',
+      name: 'High-Waisted Jeans',
       description:
         'Trendy high-waisted blue jeans with a slim fit, perfect for casual outings.',
       price: 49.99,
@@ -354,7 +334,7 @@ const seedDatabase = async () => {
       user_id: adminUserId,
     },
     {
-      name: 'Vintage High-Waisted Jeans',
+      name: 'Vintage Jeans',
       description:
         'Classic high-waisted jeans with a vintage wash, ideal for everyday wear.',
       price: 54.99,
@@ -364,7 +344,7 @@ const seedDatabase = async () => {
       user_id: adminUserId,
     },
     {
-      name: 'Distressed High-Waisted Jeans',
+      name: '90s Mom Jeans',
       description:
         'Stylish high-waisted jeans with distressed detailing, adding an edge to any outfit.',
       price: 59.99,
@@ -374,17 +354,7 @@ const seedDatabase = async () => {
       user_id: adminUserId,
     },
     {
-      name: 'Classic Light-Wash Jeans',
-      description:
-        'Comfortable light-wash jeans with a high waist and a relaxed fit, perfect for a casual look.',
-      price: 44.99,
-      category: 'Jeans',
-      product_status: 'in-stock',
-      image_url: '/product-images/jeans3.png',
-      user_id: adminUserId,
-    },
-    {
-      name: 'Olive Crop Top and Jeans',
+      name: 'Distressed Jeans',
       description:
         'Chic olive green crop top paired with high-waisted jeans, ideal for a casual yet stylish look.',
       price: 34.99,
@@ -394,7 +364,7 @@ const seedDatabase = async () => {
       user_id: adminUserId,
     },
     {
-      name: 'White Crop Top and Jeans',
+      name: 'White Crop Top',
       description:
         'Trendy white crop top combined with high-waisted jeans, perfect for a fresh and modern outfit.',
       price: 34.99,
@@ -414,7 +384,7 @@ const seedDatabase = async () => {
       user_id: adminUserId,
     },
     {
-      name: 'Ruffled Floral Dress',
+      name: 'Floral Wrap Dress',
       description:
         'Delightful ruffled dress with a floral design, bringing a touch of elegance to casual wear.',
       price: 64.99,
@@ -434,7 +404,7 @@ const seedDatabase = async () => {
       user_id: adminUserId,
     },
     {
-      name: 'Casual Floral Top and Skirt',
+      name: 'Island Bae Set',
       description:
         'Casual set featuring a floral off-shoulder top and matching skirt, perfect for a day out in nature.',
       price: 59.99,
@@ -444,7 +414,7 @@ const seedDatabase = async () => {
       user_id: adminUserId,
     },
     {
-      name: 'Elegant Floral Dress',
+      name: '90s Chill Dress',
       description:
         'Elegant floral dress with a deep V-neck, perfect for a garden party or summer wedding.',
       price: 69.99,
@@ -454,33 +424,13 @@ const seedDatabase = async () => {
       user_id: adminUserId,
     },
     {
-      name: 'Relaxed Beige Top and Pants',
+      name: 'Knit Set',
       description:
         'Relaxed beige top and pants set, ideal for comfortable and stylish home wear.',
       price: 44.99,
       category: 'Set',
       product_status: 'in-stock',
       image_url: '/product-images/movement.png',
-      user_id: adminUserId,
-    },
-    {
-      name: 'Summer Crop Top and Jeans',
-      description:
-        'Light green crop top paired with high-waisted blue jeans, perfect for a casual summer look.',
-      price: 39.99,
-      category: 'Set',
-      product_status: 'in-stock',
-      image_url: '/product-images/jeans2.png',
-      user_id: adminUserId,
-    },
-    {
-      name: 'White Summer Top and Jeans',
-      description:
-        'White crop top with high-waisted jeans, perfect for a clean and fresh summer look.',
-      price: 39.99,
-      category: 'Set',
-      product_status: 'in-stock',
-      image_url: '/product-images/jeans1.png',
       user_id: adminUserId,
     },
   ];

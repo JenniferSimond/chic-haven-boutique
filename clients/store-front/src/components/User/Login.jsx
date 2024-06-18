@@ -9,6 +9,7 @@ const LoginWrapper = styled.div`
     flex-direction: column;
     gap: 35px;
     margin-top: 45px;
+    margin-left: 105px;
 `
 
 const InnerFormWrapper = styled.div`
@@ -91,7 +92,7 @@ height: 463.425px;
     position: absolute;
     top: 50%;
     left: 40%;
-    transform: translate(-155%, -54.6%);
+    transform: translate(-155%, -50.6%);
 `
 
 const H1 = styled.h1`

@@ -2,11 +2,11 @@ const multer = require('multer');
 const path = require('path');
 
 const storage = multer.diskStorage({
-  destination: (req, file, callBackFunc) => {
-    callBackFunc(null, path.join(__dirname, '../public/productImages')); // Ensure this folder exists
+  destination: (req, file, cb) => {
+    cb(null, path.join(__dirname, '../../public/productImages')); // Ensure this folder exists
   },
   filename: (req, file, cb) => {
-    callBackFunc(null, `${Date.now()}-${file.originalname}`);
+    cb(null, `${Date.now()}-${file.originalname}`);
   },
 });
 

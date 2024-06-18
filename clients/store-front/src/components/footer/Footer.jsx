@@ -10,7 +10,7 @@ const FooterDiv = styled.div`
 const FooterImage = styled.img`
     width: 85px;
     height: 27.917px;
-    margin-top: 22px;
+    margin-top: 20px;
     margin-left: 51px;
 `
 

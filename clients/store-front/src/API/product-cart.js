@@ -1,7 +1,5 @@
 import { API_URL } from './apiConfig';
 
-// fetch all product
-
 const fetchAllProducts = async () => {
   try {
     const response = await fetch(`${API_URL}/products`);

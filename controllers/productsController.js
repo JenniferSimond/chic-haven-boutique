@@ -1,6 +1,6 @@
 const express = require('express');
-const router = express('router');
-const upload = require('./config/multerConfig.js');
+const router = express.Router();
+const upload = require('./config/multerConfig.js'); // Correct the path here
 
 const {
   createProduct,
@@ -18,7 +18,6 @@ const {
 } = require('./shared/userAuth.js');
 
 // CREATE
-
 router.post(
   '/',
   isAuthenticated,
@@ -27,9 +26,7 @@ router.post(
   async (req, res, next) => {
     try {
       const { name, description, price, category, product_status } = req.body;
-      const user_id = req.user.id; // Gets the authenticated user ID from isAuthenticated the req.user.id is defined there
-
-      //handels images
+      const user_id = req.user.id; // Gets the authenticated user ID from isAuthenticated
       const image_url = req.file
         ? `/product-images/${req.file.filename}`
         : null;
@@ -53,7 +50,6 @@ router.post(
 // READ --> FETCH ALL
 router.get('/', async (req, res, next) => {
   try {
-    // res.send(await fetchProducts());
     const products = await fetchProducts();
     res.json(products);
   } catch (error) {
@@ -83,8 +79,7 @@ router.put(
       const { id } = req.params;
       const { name, description, price, category, merchant_id, status } =
         req.body;
-      const user_id = req.user.id; // Gets the authenticated user ID from isAuthenticated the req.user.id is defined there
-
+      const user_id = req.user.id;
       const image_url = req.file
         ? `/product-images/${req.file.filename}`
         : null;
@@ -108,7 +103,6 @@ router.put(
 );
 
 // DELETE
-
 router.delete('/:id', isAuthenticated, isSuperAdmin, async (req, res, next) => {
   try {
     const { id } = req.params;
