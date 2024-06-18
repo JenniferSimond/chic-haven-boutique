@@ -18,6 +18,19 @@ const customerLogin = async (loginCredentials) => {
   }
 };
 
-export { customerLogin };
+const getUserDetails = async (userId, token) => {
+  try {
+    const response = await fetch(`${API_URL}/users/${userId}`, {
+      method: 'GET',
+      headers: {
+        'content-type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+    });
 
-// admin login
+    const userDetails = await response.json();
+    console.log('User Details (API) -->', userDetails);
+  } catch (error) {}
+};
+
+export { customerLogin, getUserDetails };

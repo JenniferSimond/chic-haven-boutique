@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import logo2 from '../../assets/icons-svg/logo2.svg'
+import logo2 from '../../assets/icons-svg/logo/logo2.svg'
 
 const FooterDiv = styled.div`
     width: 100vw;

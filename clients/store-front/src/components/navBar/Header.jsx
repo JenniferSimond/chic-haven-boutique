@@ -1,11 +1,11 @@
 import {useNavigate} from 'react-router-dom'
 import styled from 'styled-components'
-import logo from '../../assets/icons-svg/logo.svg'
-import logoPink from '../../assets/icons-svg/logoPink.svg'
-import account from '../../assets/icons-svg/account.svg'
-import accountPink from '../../assets/icons-svg/accountPink.svg'
-import cart from '../../assets/icons-svg/cart.svg'
-import cartPink from '../../assets/icons-svg/cartPink.svg'
+import account from '../../assets/icons-svg/account/account.svg'
+import accountLight from '../../assets/icons-svg/account/accountLight.svg'
+import logo from '../../assets/icons-svg/logo/logo.svg'
+import logoLight from '../../assets/icons-svg/logo/logoLight.svg'
+import cart from '../../assets/icons-svg/cart/cart.svg'
+import cartLight from '../../assets/icons-svg/cart/cartLight.svg'
 import NavLinks from './NavLinks'
 import SearchBar from './searchBar'
 
@@ -81,14 +81,14 @@ const Header = () => {
 
     return(
         <Wrapper>
-            <Logo src={logo} alt='Logo' hoverIcon={logoPink} onClick={logoClickHandler} />
+            <Logo src={logo} alt='Logo' hoverIcon={logoLight} onClick={logoClickHandler} />
             <SearchContainer>
                 <SearchBar />
                 <NavLinks />
             </SearchContainer>
             <IconContainer>
-                <Account  src={account} alt='Account' hoverIcon={accountPink} onClick={accountClickHandler}/>
-                <Cart src={cart} alt='Cart' hoverIcon={cartPink} onClick={cartClickHandler}/>
+                <Account  src={account} alt='Account' hoverIcon={accountLight} onClick={accountClickHandler}/>
+                <Cart src={cart} alt='Cart' hoverIcon={cartLight} onClick={cartClickHandler}/>
             </IconContainer>
             
          

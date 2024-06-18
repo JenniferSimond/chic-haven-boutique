@@ -21,7 +21,7 @@ const LI = styled.li`
         padding-right: 24px;
 
         &:hover {
-        color: #FFBC42;
+        color: #F9F5E3;
         
         }
     }

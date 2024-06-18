@@ -3,8 +3,8 @@ import { useParams } from "react-router-dom";
 import { fetchProduct } from "../../API/product";
 import { BASE_URL } from "../../API/apiConfig";
 import styled from "styled-components";
-import cart from '../../assets/icons-svg/cart.svg';
-import wishlist2 from '../../assets/icons-svg/wishlist2.svg'
+import cartLight from '../../assets/icons-svg/cart/cartLight.svg'
+import wishlistLight from '../../assets/icons-svg/wishlist/wishlistLight.svg'
 
 const ProductWrapper = styled.div`
   display: flex;
@@ -22,13 +22,13 @@ const NameImageWrapper = styled.div`
 `;
 
 const ProductName = styled.h1`
-  color: #d81159;
+  color: #4A4E69;
   font-family: Cinzel;
   font-size: 55px;
   white-space: nowrap;
   text-align: start;
   font-style: normal;
-  font-weight: 700;
+  font-weight: 500;
   line-height: 1.5;
   letter-spacing: 1.32px;
   margin-bottom: 10px;
@@ -100,7 +100,7 @@ const Button = styled.button`
   cursor: pointer;
 
   &:hover {
-    background-color: #D81159;
+    background-color: #FFBC42;
   }
 `;
 
@@ -153,12 +153,12 @@ const Product = () => {
         <Price>{`$${selectedProduct.price}`}</Price>
         <ButtonWrapper>
           <Button>
-            <CartIcon src={cart} />
+            <CartIcon src={cartLight} />
             Cart 
           </Button>
           <Button>
-            <WishlistIcon src={wishlist2} />
-            Wishlist
+            <WishlistIcon src={wishlistLight} />
+  
           </Button>
         </ButtonWrapper>
       </DescriptionPrice>

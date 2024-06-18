@@ -1,10 +1,10 @@
 import React from "react";
 import styled from "styled-components";
 import { BASE_URL } from '../../API/apiConfig.js';
-import viewEye from '../../assets/icons-svg/viewEye.svg';
-import viewPink from '../../assets/icons-svg/viewPink.svg'
-import wishlist from '../../assets/icons-svg/wishlist.svg';
-import wishlistPink from '../../assets/icons-svg/wishlistPink.svg'
+import viewEye from '../../assets/icons-svg/eye/viewEye.svg'
+import viewPink from '../../assets/icons-svg/eye/viewPink.svg'
+import wishlist from '../../assets/icons-svg/wishlist/wishlist.svg'
+import wishlistPink  from '../../assets/icons-svg/wishlist/wishlistPink.svg'
 import { useNavigate } from "react-router-dom";
 
 const CardWrapper = styled.div`
@@ -24,7 +24,7 @@ const ProductName = styled.p`
   white-space: nowrap;
   text-align: center;
   font-style: normal;
-  font-weight: 700;
+  font-weight: 500;
   line-height: 1.5;
   letter-spacing: 1.32px;
   margin-bottom: 10px;
@@ -48,18 +48,20 @@ const PriceButtonWrapper = styled.div`
   justify-content: center;
   gap: 10px;
   width: 100%;
-  opacity: 0.8;
+  opacity: 0.9;
 `;
 
 const SvgIcon = styled.img`
-    width: 27px;
-    height: 27px;
+    width: ${props => props.width || '25px'};
+    height: ${props => props.width || '25px'};
     cursor: pointer;
 
     &:hover {
     content: url(${props => props.hoverIcon})
 
     }
+
+    opacity: 0.9;
 `
 
 const Price = styled.p`
@@ -95,6 +97,8 @@ const ProductCard = ({ product }) => {
         />
         <Price>${product.price}</Price>
         <SvgIcon 
+        width={'21px'}
+        height={'21px'}
         src={wishlist} 
         hoverIcon={wishlistPink}
        
