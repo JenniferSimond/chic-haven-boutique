@@ -1,8 +1,11 @@
 import {useNavigate} from 'react-router-dom'
 import styled from 'styled-components'
 import logo from '../../assets/icons-svg/logo.svg'
+import logoPink from '../../assets/icons-svg/logoPink.svg'
 import account from '../../assets/icons-svg/account.svg'
+import accountPink from '../../assets/icons-svg/accountPink.svg'
 import cart from '../../assets/icons-svg/cart.svg'
+import cartPink from '../../assets/icons-svg/cartPink.svg'
 import NavLinks from './NavLinks'
 import SearchBar from './searchBar'
 
@@ -36,12 +39,18 @@ const Logo = styled.img`
     height: 58.36px;
     cursor: pointer;
 
+    &:hover {
+    content: url(${props => props.hoverIcon})
+
 `;
 
 const Account = styled.img`
     width: 35px;
     height: 35.069px;
     cursor: pointer;
+
+    &:hover {
+    content: url(${props => props.hoverIcon})
 `
 
 const Cart = styled.img`
@@ -49,6 +58,8 @@ const Cart = styled.img`
     height: 35px;
     cursor: pointer;
 
+    &:hover {
+    content: url(${props => props.hoverIcon})
 `;
 
 
@@ -70,14 +81,14 @@ const Header = () => {
 
     return(
         <Wrapper>
-            <Logo src={logo} alt='Logo' onClick={logoClickHandler} />
+            <Logo src={logo} alt='Logo' hoverIcon={logoPink} onClick={logoClickHandler} />
             <SearchContainer>
                 <SearchBar />
                 <NavLinks />
             </SearchContainer>
             <IconContainer>
-                <Account  src={account} alt='Account' onClick={accountClickHandler}/>
-                <Cart src={cart} alt='Cart' onClick={cartClickHandler}/>
+                <Account  src={account} alt='Account' hoverIcon={accountPink} onClick={accountClickHandler}/>
+                <Cart src={cart} alt='Cart' hoverIcon={cartPink} onClick={cartClickHandler}/>
             </IconContainer>
             
          

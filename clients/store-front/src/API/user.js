@@ -19,3 +19,5 @@ const customerLogin = async (loginCredentials) => {
 };
 
 export { customerLogin };
+
+// admin login

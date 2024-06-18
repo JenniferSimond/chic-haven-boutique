@@ -2,17 +2,23 @@ import React from "react";
 import styled from "styled-components";
 import { BASE_URL } from '../../API/apiConfig.js';
 import viewEye from '../../assets/icons-svg/viewEye.svg';
+import viewPink from '../../assets/icons-svg/viewPink.svg'
 import wishlist from '../../assets/icons-svg/wishlist.svg';
+import wishlistPink from '../../assets/icons-svg/wishlistPink.svg'
+import { useNavigate } from "react-router-dom";
 
 const CardWrapper = styled.div`
-  width: 199px;
+  width: 255px;
   height: 335.461px;
   margin-top: 10px;
   margin-left: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 `;
 
 const ProductName = styled.p`
-  color: #d81159;
+  color: #4A4E69;
   font-family: Cinzel;
   font-size: 20px;
   white-space: nowrap;
@@ -31,7 +37,7 @@ const ProductImageCard = styled.div`
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  border-radius: 10px;
+  border-radius: 5px;
   margin-bottom: 10px;
 `;
 
@@ -42,12 +48,19 @@ const PriceButtonWrapper = styled.div`
   justify-content: center;
   gap: 10px;
   width: 100%;
+  opacity: 0.8;
 `;
 
-const ViewEye = styled.img`
-  width: 27px;
-  height: 27px;
-`;
+const SvgIcon = styled.img`
+    width: 27px;
+    height: 27px;
+    cursor: pointer;
+
+    &:hover {
+    content: url(${props => props.hoverIcon})
+
+    }
+`
 
 const Price = styled.p`
   color: #4a4e69;
@@ -59,23 +72,33 @@ const Price = styled.p`
   letter-spacing: 0.215px;
 `;
 
-const Wishlist = styled.img`
-  width: 22px;
-  height: 22px;
-`;
+
 
 const ProductCard = ({ product }) => {
+  const navigate = useNavigate();
   const imageUrl = `${BASE_URL}${product.image_url}`;
   console.log("Product Image URL", imageUrl);
+
+  const handleViewClick = () => {
+    navigate(`/products/${product.id}`)
+  }
 
   return (
     <CardWrapper>
       <ProductName>{product.name}</ProductName>
       <ProductImageCard imageUrl={imageUrl} />
       <PriceButtonWrapper>
-        <ViewEye src={viewEye} />
+        <SvgIcon 
+        src={viewEye} 
+        hoverIcon={viewPink}
+        onClick={handleViewClick}
+        />
         <Price>${product.price}</Price>
-        <Wishlist src={wishlist} />
+        <SvgIcon 
+        src={wishlist} 
+        hoverIcon={wishlistPink}
+       
+        />
       </PriceButtonWrapper>
     </CardWrapper>
   );

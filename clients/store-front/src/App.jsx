@@ -7,6 +7,7 @@ import Wishlist from "./components/User/Wishlist"
 import Login from "./components/User/Login"
 import UserAccount from "./components/User/UserAccount"
 import Products from './components/products/products'
+import Product from './components/products/Product'
 import Cart from "./components/cart/Cart"
 import Header from "./components/navBar/Header"
 import Footer from "./components/footer/Footer"
@@ -42,6 +43,7 @@ function App() {
           <Route path="/cart" element={<Cart />} />
           <Route path="/wishlist" element={<Wishlist />} />
           <Route path="/products" element={<Products />} />
+          <Route path="/products/:productId" element={<Product />} />
         </Routes>
       </MainContent>
       <Footer />

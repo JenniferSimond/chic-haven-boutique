@@ -19,6 +19,11 @@ const LI = styled.li`
         line-height: normal;
         letter-spacing: 0.34px;
         padding-right: 24px;
+
+        &:hover {
+        color: #FFBC42;
+        
+        }
     }
 `;
 

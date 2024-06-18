@@ -17,11 +17,11 @@ const SearchBarWrapper = styled.form`
 
 const SearchBox = styled.input`
     background-color: #F9F5E3;
-    width: 230px;
+    width: 220px;
     height: 29px;
     border: none;
   
-    margin: 5px;
+    margin: 8px;
     outline: none;
 `
 
@@ -35,6 +35,10 @@ const SearchButton = styled.button`
   justify-content: center;
   padding: 10px;
   cursor: pointer;
+
+  &:hover {
+  background-color: #D81159;
+  }
 `;
 
 const SearchIcon = styled.img`
@@ -53,6 +57,7 @@ const SearchBar = () => {
       // sedning the search input with url as a query parameter --> Learn more about this
       navigate(`/products?search=${searchInput.trim()}`)
     }
+    setSearchInput('')
     console.log('Search Form!')
   }
 

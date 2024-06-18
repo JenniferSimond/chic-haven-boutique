@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
-import { fetchAllProducts } from "../../API/product-cart";
+import { fetchAllProducts } from "../../API/product";
 import { ProductCard } from "./ProductCard";
 import styled from "styled-components";
 
@@ -14,7 +14,7 @@ const ProductWrapper = styled.div`
    flex-direction: row;
    flex-wrap: wrap;
    row-gap: 45px;
-   column-gap: 100px;
+   column-gap: 40px;
    justify-content: flex-start;  // Aligns items to the left
    align-content: flex-start;
    width: 90%;  // Adjustable as per design needs
