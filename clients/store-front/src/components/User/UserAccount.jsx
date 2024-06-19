@@ -111,17 +111,14 @@ const UserAccount = ({token, setUserId, setUserCartId}) => {
   }
 
     useEffect(() => {
-
+    
           const getUserCart = async () => {
-
-            if (!userDetails) {
-              return
-            }
+            
             try {
               const userCart = await fetchCart(userDetails.id, token);
               console.log('User Cart (users) --> ', userCart);
               setUserCartId(userCart.id);
-              setCarId(userCart.id)
+        
             } catch (error) {
               console.error('Error fetching cart');
             }
@@ -129,7 +126,7 @@ const UserAccount = ({token, setUserId, setUserCartId}) => {
     
           getUserCart();
         }
-      , [token, carId]);
+      , [token, userDetails]);
 
     
   

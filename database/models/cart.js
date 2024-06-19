@@ -49,8 +49,9 @@ const addCartItem = async ({
       product_id, 
       product_name, 
       product_price, 
+      product_img,
       quantity, 
-      total_price, 
+      total_price,
       created_at, 
       updated_at, 
       modified_by
@@ -61,6 +62,7 @@ const addCartItem = async ({
       $3, 
       (SELECT name FROM products WHERE id = $3), 
       (SELECT price FROM products WHERE id = $3), 
+      (SELECT image_url FROM products WHERE id = $3),
       $4::integer, 
       (SELECT price FROM products WHERE id = $3) * $4::integer, 
       CURRENT_TIMESTAMP, 

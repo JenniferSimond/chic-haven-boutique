@@ -84,7 +84,7 @@ CREATE TABLE products(
     price DECIMAL NOT NULL,
     category_id UUID REFERENCES categories(id),
     product_status VARCHAR(20),
-    image_url VARCHAR(50),
+    image_url VARCHAR(100),
     created_at TIMESTAMP DEFAULT current_timestamp,
     updated_at TIMESTAMP DEFAULT current_timestamp,
     modified_by UUID REFERENCES users(id)
@@ -160,6 +160,7 @@ CREATE TABLE cart_items(
     product_id UUID REFERENCES products(id) ON DELETE CASCADE,
     product_name VARCHAR(100),
     product_price DECIMAL,
+    product_img VARCHAR(100),
     quantity INTEGER,
     total_price DECIMAL,
     created_at TIMESTAMP DEFAULT current_timestamp,

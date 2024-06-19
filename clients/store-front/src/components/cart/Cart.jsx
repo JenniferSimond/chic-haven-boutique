@@ -49,7 +49,7 @@ const Cart = ({ userCartId, token}) => {
     console.log('Token from Cart -->', token)
     console.log('Cart ID (cart 1)', userCartId)
     const [cartItems, setCartItems] = useState([]);
-    
+    const [carId, setCarId] = useState('')
     const [pageRefresh, setPageRefresh] = useState(false)
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
@@ -58,7 +58,9 @@ const Cart = ({ userCartId, token}) => {
      
         console.log('CartId (cart.jsx)-->', userCartId)
         const getCartItems = async () => {
+           
             try {
+              
                 const fetchedItems = await fetchCartItems(userCartId, token);
                 console.log('Fetched Items (cart) -->',fetchedItems);
                 setCartItems(fetchedItems)
@@ -67,7 +69,7 @@ const Cart = ({ userCartId, token}) => {
             }
         }
         getCartItems()
-    }, [ token, ])
+    }, [ token])
 
     return(
       <CartWrapper>
