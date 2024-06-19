@@ -33,9 +33,9 @@ router.get('/carts', isAuthenticated, isSiteAdmin, async (req, res, next) => {
 
 // get cart
 router.get(
-  '/users/:id/carts',
+  '/users/:id/cart',
   isAuthenticated,
-  permissionToViewOrModify,
+  isAuthorizedCustomer,
   async (req, res, next) => {
     try {
       const { id } = req.params;
@@ -50,7 +50,6 @@ router.get(
 router.get(
   '/carts/:customer_cart_id/items',
   isAuthenticated,
-  isAuthorizedCustomer,
 
   async (req, res, next) => {
     try {
@@ -64,29 +63,33 @@ router.get(
 );
 
 // add item to cart
-router.post('/carts/:customer_cart_id/items', async (req, res, next) => {
-  try {
-    const { user_id, customer_cart_id } = req.params;
-    const { product_id, quantity } = req.body;
+router.post(
+  '/carts/:customer_cart_id/items',
+  isAuthenticated,
+  isAuthorizedCustomer,
+  async (req, res, next) => {
+    try {
+      const { user_id, customer_cart_id } = req.params;
+      const { product_id, quantity } = req.body;
 
-    const newCartItem = await addCartItem({
-      customer_cart_id,
-      product_id,
-      quantity,
-      user_id,
-    });
-    res.status(201).json(newCartItem);
-  } catch (error) {
-    next(error);
+      const newCartItem = await addCartItem({
+        customer_cart_id,
+        product_id,
+        quantity,
+        user_id,
+      });
+      res.status(201).json(newCartItem);
+    } catch (error) {
+      next(error);
+    }
   }
-});
+);
 
 // update cart item
 router.put(
   '/carts/:customer_cart_id/items/:id',
   isAuthenticated,
   isAuthorizedCustomer,
-
   async (req, res, next) => {
     try {
       const { id } = req.params;

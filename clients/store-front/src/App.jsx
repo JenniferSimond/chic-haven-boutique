@@ -25,10 +25,17 @@ const MainContent = styled.main`
     flex-grow: 1;
 `
 function App() {
-// TOKEN --> Passed down to children that need user authentication -->
+// TOKEN --> Passed down to children that need user authentication --> // -UPDATE TO STORE TOKEN IN STOREAGE LATER
+// UserId --> Passed down to children that need UserId -->
 // Remember --> PROPS are like Parameters 
-
   const [token, setToken] = useState('');
+  const [userId, setUserId] = useState('');
+  const [userCartId, setUserCartId] = useState('');
+  
+  console.log('TOKEN APP -->',token);
+  console.log('USER ID APP -->',userId);
+  console.log('CART ID --> ', userCartId)
+
   return (
     <AppWrapper>
       <Header />
@@ -38,12 +45,12 @@ function App() {
           <Route path="/home" element={<HomePage />} />
           <Route path="/signup" element={<Register />} />
           <Route path="/about" element={<About />} />
-          <Route path="/login" element={<Login setToken={setToken}/>} />
-          <Route path="/account" element={<UserAccount token={token} setToken={setToken}/>} />
-          <Route path="/cart" element={<Cart />} />
-          <Route path="/wishlist" element={<Wishlist />} />
-          <Route path="/products" element={<Products />} />
-          <Route path="/products/:productId" element={<Product />} />
+          <Route path="/login" element={<Login  setToken={setToken} />} />
+          <Route path="/account" element={<UserAccount token={token} setUserId={setUserId} setUserCartId={setUserCartId} />} />
+          <Route path="/cart" element={<Cart userId={userId}  token={token} userCartId={userCartId} />} />
+          <Route path="/wishlist" element={<Wishlist userId={userId}/>} />
+          <Route path="/products" element={<Products userCartId={userCartId} />} />
+          <Route path="/products/:productId" element={<Product token={token} userCartId={userCartId} />} />
         </Routes>
       </MainContent>
       <Footer />

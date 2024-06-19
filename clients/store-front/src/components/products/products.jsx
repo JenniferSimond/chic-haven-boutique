@@ -17,7 +17,7 @@ const ProductWrapper = styled.div`
    column-gap: 40px;
    justify-content: flex-start;  // Aligns items to the left
    align-content: flex-start;
-   width: 90%;  // Adjustable as per design needs
+   width: 90%;  
    max-height: 700px;
    overflow-y: auto;
    margin-left: 90px;
@@ -46,9 +46,9 @@ const Products = () => {
             }
         }
         getProducts()
-        console.log('Products (state) ->',products)
+        
     },[]); // dependency array --> controls when useEffect is called --> empty array means -> the side-effect runs once after the initial rendering.
-    
+   
     useEffect(() => {
         const params = new URLSearchParams(location.search);
         const searchTermQuery = params.get('search') || '';

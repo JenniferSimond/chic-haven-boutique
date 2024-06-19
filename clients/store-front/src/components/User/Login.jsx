@@ -3,12 +3,13 @@ import { customerLogin } from "../../API/user";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import loginModImg from '../../assets/img-png/loginModImg.png';
+import { fetchCart } from "../../API/cart";
 
 const OuterWrapper = styled.div`
 display: flex;
 flex-direction: column;
 margin-left: 105px;
-margin-top: 50px;
+margin-top: 65px;
 `
 
 const LoginWrapper = styled.div`
@@ -17,7 +18,7 @@ const LoginWrapper = styled.div`
 //   align-items: center;
   gap: 35px;
   margin-top: 45px;
-  margin-bottom: 25px;
+  margin-bottom: 22px;
 `;
 
 const InnerFormWrapper = styled.div`
@@ -36,6 +37,7 @@ const InputDivs = styled.div`
 
 const Input = styled.input`
   max-width: 313.965px;
+  min-width: 250px;
   height: 27px;
   border: none;
   border-radius: 3px;
@@ -49,7 +51,7 @@ const Input = styled.input`
   line-height: normal;
   letter-spacing: 0.361px;
   text-align: center;
-  text-transform: capitalize;
+  
 
   &::placeholder {
     color: #f9f5e3;
@@ -87,6 +89,7 @@ const ContentBox = styled.div`
   border: 3px solid #dc2e6a;
   align-items: center;
   position: relative;
+  margin-left: 15px;
   @media (max-width: 768px) {
     flex-direction: column;
   }
@@ -129,6 +132,7 @@ const H1 = styled.h1`
   font-weight: 700;
   line-height: normal;
   letter-spacing: 4.38px;
+  text-align: start;
 
   text-transform: uppercase;
   span {
@@ -142,10 +146,11 @@ const H1 = styled.h1`
 const P1 = styled.p`
   color: #d81159;
   font-family: Cinzel;
-  font-size: 72.947px;
+  font-size: 70px;
   font-style: normal;
-  font-weight: 400;
+  font-weight: 300;
   line-height: normal;
+  margin-left: 30px;
   text-transform: uppercase;
   @media (max-width: 768px) {
     text-align: center;

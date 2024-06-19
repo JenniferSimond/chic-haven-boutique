@@ -10,17 +10,18 @@ const LI = styled.li`
     // padding: 34px;
     a {
         text-decoration: none;
-        color: #22223B;
+        color: #19192D;
         text-align: center;
         font-family: Cinzel;
         font-size: 15px;
         font-style: normal;
         font-weight: 700;
         line-height: normal;
-        letter-spacing: 0.34px;
+        letter-spacing: 0.5px;
         padding-right: 24px;
 
         &:hover {
+          opacity: 0.9;
         color: #F9F5E3;
         
         }

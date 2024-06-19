@@ -9,16 +9,17 @@ const SearchBarWrapper = styled.form`
   background-color: #F9F5E3;
   border-radius: 3px;
   overflow: hidden;
-  width: 230px;
+  width: 300px;
   height: 29px;
+  border: 2px solid #4A4E69;
 
 `;
 
 
 const SearchBox = styled.input`
     background-color: #F9F5E3;
-    width: 220px;
-    height: 29px;
+    width: 300px;
+    height: 25px;
     border: none;
   
     margin: 8px;
@@ -29,7 +30,7 @@ const SearchButton = styled.button`
   background-color: #FFBC42;
   border: none;
   width: 41px;
-  height: 29px;
+  height: 25px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -42,8 +43,8 @@ const SearchButton = styled.button`
 `;
 
 const SearchIcon = styled.img`
-  width: 26px;
-  height: 26px;
+  width: 25px;
+  height: 25px;
 `;
 
 const SearchBar = () => {

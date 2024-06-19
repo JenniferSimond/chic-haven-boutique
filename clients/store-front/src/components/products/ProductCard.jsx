@@ -37,7 +37,7 @@ const ProductImageCard = styled.div`
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  border-radius: 5px;
+  border-radius: 3px;
   margin-bottom: 10px;
 `;
 

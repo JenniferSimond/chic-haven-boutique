@@ -17,6 +17,7 @@ const Wrapper = styled.div`
     background-color: #9A8C98;
     height: 127px;
     width: 100vw;
+    // opacity: 0.9;
 `;
 
 const IconContainer = styled.div`
@@ -32,34 +33,41 @@ display: flex;
 flex-direction: column;
 
 gap: 10px;
-`
+`;
 const Logo = styled.img`
     margin-left: 51px;
-    width: 85px;
-    height: 58.36px;
+    width: 55px;
+    height: 38.36px;
     cursor: pointer;
+    
 
     &:hover {
+    opacity: 0.7;
     content: url(${props => props.$hoverIcon})
-
+    
+    }
 `;
 
 const Account = styled.img`
-    width: 35px;
-    height: 35.069px;
+    width: 25px;
+    height: 25.069px;
     cursor: pointer;
 
     &:hover {
+      opacity: 0.7;
     content: url(${props => props.$hoverIcon})
-`
+}
+`;
 
 const Cart = styled.img`
-    width: 41.225px;
-    height: 35px;
+    width: 31.225px;
+    height: 25px;
     cursor: pointer;
 
     &:hover {
+      opacity: 0.7;
     content: url(${props => props.$hoverIcon})
+}
 `;
 
 

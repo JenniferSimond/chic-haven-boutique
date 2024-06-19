@@ -54,23 +54,27 @@ const P1 = styled.p`
 const P2 = styled.p`
   color: #D81159;
   font-family: Montserrat;
-  font-size: 46px;
+  font-size: 43px;
   font-style: normal;
-  font-weight: 400;
+  font-weight: 500;
   text-align: start;
-  line-height: normal;
+  line-height: .9;
   text-transform: uppercase;
+  padding-top: 0px;
+  padding-left: 1px;
 `;
 
 const P3 = styled.p`
   color: #4A4E69;
   font-family: Montserrat;
-  font-size: 20px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 33px;
+  font-size: 15px;
+  font-style: italic;
+  font-weight: 500;
+  line-height: 24px;
   letter-spacing: 0.4px;
-  padding-right: 200px;
+  padding-top: 0px;
+  padding-left: 1px;
+  padding-right: 220px;
 
   span {
     color: #D81159;
@@ -83,7 +87,8 @@ const HeroButton = styled.button`
   background: #FFBC42;
   border-radius: 3px;
   border: none;
-  margin-top: 26px;
+  margin-top: 20px;
+  margin-left: 0px;
 
   p {
     color: #22223B;
@@ -114,7 +119,7 @@ const ProductImage = styled.img`
 `;
 
 const ProductText = styled.p`
-  color: ${props => props.highlight ? '#D81159' : '#4A4E69'};
+  color: ${props => props.$highlight ? '#D81159' : '#4A4E69'};
   font-family: Montserrat;
   font-size: 16px;
   font-weight: 500;
@@ -128,10 +133,10 @@ const HomePage = () => {
   };
 
   const homePageProducts = [
-    { id: 1, image: product1, text: 'Hot Pick!', highlight: true },
-    { id: 2, image: product2, text: 'Back In Stock!', highlight: false },
-    { id: 3, image: product3, text: 'Top Seller', highlight: true },
-    { id: 4, image: newCollection, text: 'New Collection!', highlight: false }
+    { id: 1, image: product1, text: 'Hot Pick!', $highlight: true },
+    { id: 2, image: product2, text: 'Back In Stock!', $highlight: false },
+    { id: 3, image: product3, text: 'Top Seller', $highlight: true },
+    { id: 4, image: newCollection, text: 'New Collection!', $highlight: false }
   ];
 
   return (

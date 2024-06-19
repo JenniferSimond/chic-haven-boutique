@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { fetchProduct } from "../../API/product";
+import { addCartItem } from "../../API/cart";
 import { BASE_URL } from "../../API/apiConfig";
 import styled from "styled-components";
 import cartLight from '../../assets/icons-svg/cart/cartLight.svg'
@@ -41,7 +42,7 @@ const ProductImageCard = styled.div`
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  border-radius: 5px;
+  border-radius: 3px;
   margin-left: 10px;
   margin-bottom: 10px;
 `;
@@ -114,9 +115,10 @@ const WishlistIcon = styled.img`
   height: 20px;
 `;
 
-const Product = () => {
+const Product = ({userCartId, token}) => {
   const [selectedProduct, setSelectedProduct] = useState('');
   const { productId } = useParams();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const getProductById = async () => {
@@ -142,6 +144,22 @@ const Product = () => {
 
   const imageUrl = `${BASE_URL}${selectedProduct.image_url}`;
 
+  const handleAddCartClick = async () => {
+    if (!token){
+      navigate('/login')
+      return
+    }
+    try {
+      const addItem = await addCartItem(token, userCartId, selectedProduct.id, 1);
+      console.log('New cart item (product) -->',addItem);
+      navigate('/products');
+    } catch (error) {
+      console.error('Error adding item',error)
+    }
+
+  }
+
+
   return (
     <ProductWrapper>
       <NameImageWrapper>
@@ -152,14 +170,10 @@ const Product = () => {
         <Description>{selectedProduct.description}</Description>
         <Price>{`$${selectedProduct.price}`}</Price>
         <ButtonWrapper>
+          <Button onClick={handleAddCartClick}>
+            <CartIcon src={cartLight}/>Cart</Button>
           <Button>
-            <CartIcon src={cartLight} />
-            Cart 
-          </Button>
-          <Button>
-            <WishlistIcon src={wishlistLight} />
-              Wishlist
-          </Button>
+            <WishlistIcon src={wishlistLight} />Wishlist</Button>
         </ButtonWrapper>
       </DescriptionPrice>
     </ProductWrapper>
