@@ -3,15 +3,17 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components'
 import search from '../../assets/icons-svg/search.svg'
 
+import searchLight from '../../assets/icons-svg/searchLight.svg'
+
 const SearchBarWrapper = styled.form`
   display: flex;
   align-items: center;
   background-color: #F9F5E3;
-  border-radius: 3px;
+  border-radius: 2px;
   overflow: hidden;
   width: 300px;
-  height: 29px;
-  border: 2px solid #4A4E69;
+  height: 25px;
+  
 
 `;
 
@@ -19,7 +21,7 @@ const SearchBarWrapper = styled.form`
 const SearchBox = styled.input`
     background-color: #F9F5E3;
     width: 300px;
-    height: 25px;
+    height: 29px;
     border: none;
   
     margin: 8px;
@@ -38,13 +40,17 @@ const SearchButton = styled.button`
   cursor: pointer;
 
   &:hover {
-  background-color: #D81159;
+  background-color: #22223B;
   }
 `;
 
 const SearchIcon = styled.img`
-  width: 25px;
-  height: 25px;
+  width: 29px;
+  height: 29px;
+  ${SearchButton}:hover & {
+  opacity:0.8;
+    content: url(${props => props.$hoverIcon});
+  }
 `;
 
 const SearchBar = () => {
@@ -72,7 +78,7 @@ const SearchBar = () => {
         <SearchBarWrapper onSubmit={handleSubmit} >
             <SearchBox type='text' onChange={handleChange} value={searchInput} placeholder='Search products'/>
             <SearchButton>
-                <SearchIcon src={search} alt='Search Icon'/>
+                <SearchIcon src={search} $hoverIcon={searchLight} alt='Search Icon'/>
             </SearchButton>
         </SearchBarWrapper>
         

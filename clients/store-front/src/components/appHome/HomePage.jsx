@@ -5,25 +5,41 @@ import product1 from '../../assets/img-png/product1.png';
 import product2 from '../../assets/img-png/product2.png';
 import product3 from '../../assets/img-png/product3.png';
 import newCollection from '../../assets/img-png/newCollection.png';
+import Sidebar from '../shared/SideBar';
+
+
+const MainContainer = styled.div`
+ 
+  display: flex;
+  flex-direction: row;
+  align-content: center;
+  gap: 0%;
+  min-width: 100%;
+`;
 
 const HeroWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 30px;
-  margin-top: 55px;
-  margin-left: 105px;
-  margin-bottom: 10px;
+  width: 83.5%;
+  gap: 29px;
+  padding-top: 5%;
+  padding-left: 7%;
+  padding-bottom: 5px;
+ 
+  
 `;
 
 const InnerHeroWrapper = styled.div`
   display: flex;
+  align-self: start;
   flex-direction: row;
-  gap: 78px;
+  gap: 70px;
+  
 `;
 
 const HeroImage = styled.img`
-  max-height: 365px;
-  max-width: 365px;
+  max-height: 375px;
+  width: auto;
   border-radius: 3px;
 `;
 
@@ -104,7 +120,7 @@ const HeroButton = styled.button`
 const ProductsWrapper = styled.div`
   display: flex;
   flex-direction: row;
-  gap: 53px;
+  gap: 60px;
   margin-top: 40px;
 `;
 
@@ -119,10 +135,10 @@ const ProductImage = styled.img`
 `;
 
 const ProductText = styled.p`
-  color: ${props => props.$highlight ? '#D81159' : '#4A4E69'};
+  color: ${props => props.highlight ? '#D81159' : '#4A4E69'};
   font-family: Montserrat;
   font-size: 16px;
-  font-weight: 500;
+  font-weight: 550;
   margin-top: 10px;
 `;
 
@@ -133,13 +149,14 @@ const HomePage = () => {
   };
 
   const homePageProducts = [
-    { id: 1, image: product1, text: 'Hot Pick!', $highlight: true },
-    { id: 2, image: product2, text: 'Back In Stock!', $highlight: false },
-    { id: 3, image: product3, text: 'Top Seller', $highlight: true },
-    { id: 4, image: newCollection, text: 'New Collection!', $highlight: false }
+    { id: 1, image: product1, text: 'Hot Pick!', highlight: true },
+    { id: 2, image: product2, text: 'Back In Stock!', highlight: false },
+    { id: 3, image: product3, text: 'Top Seller', highlight: true },
+    { id: 4, image: newCollection, text: 'New Collection!', highlight: false }
   ];
 
   return (
+    <MainContainer>
     <HeroWrapper>
       <InnerHeroWrapper>
         <HeroImage src={homeHero} alt="Clothing models" />
@@ -156,7 +173,6 @@ const HomePage = () => {
           <HeroButton onClick={handleClick}>Sign Up!</HeroButton>
         </HeroTextContainer>
       </InnerHeroWrapper>
-
       <ProductsWrapper>
         {homePageProducts.map((product) => (
           <Product key={product.id}>
@@ -166,6 +182,8 @@ const HomePage = () => {
         ))}
       </ProductsWrapper>
     </HeroWrapper>
+    <Sidebar />
+    </MainContainer>
   );
 };
 

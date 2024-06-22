@@ -13,16 +13,21 @@ import Header from "./components/navBar/Header"
 import Footer from "./components/footer/Footer"
 import styled from "styled-components"
 
+
 const AppWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh
+ 
 `;
 
-const MainContent = styled.main`
-    margin-top: 0px;
-    margin-left: 0px;
-    flex-grow: 1;
+const InnerWrapper = styled.div` 
+    display: flex;
+    justify-content: center;
+    min-height: 100%;
+    // background-color: red;
+    margin-top: 5.8%;
+    margin-bottom: 4.7%;
+   
+    z-index: 2;
+    // flex-grow: 1;
 `
 function App() {
 // TOKEN --> Passed down to children that need user authentication --> // -UPDATE TO STORE TOKEN IN STOREAGE LATER
@@ -38,8 +43,8 @@ function App() {
 
   return (
     <AppWrapper>
-      <Header />
-      <MainContent>
+      <Header token={token}/>
+      <InnerWrapper>
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/home" element={<HomePage />} />
@@ -52,7 +57,7 @@ function App() {
           <Route path="/products" element={<Products userCartId={userCartId} />} />
           <Route path="/products/:productId" element={<Product token={token} userCartId={userCartId} />} />
         </Routes>
-      </MainContent>
+      </InnerWrapper>
       <Footer />
     </AppWrapper>
   );

@@ -13,9 +13,9 @@ const LI = styled.li`
         color: #19192D;
         text-align: center;
         font-family: Cinzel;
-        font-size: 15px;
+        font-size: 16px;
         font-style: normal;
-        font-weight: 700;
+        font-weight: 560;
         line-height: normal;
         letter-spacing: 0.5px;
         padding-right: 24px;

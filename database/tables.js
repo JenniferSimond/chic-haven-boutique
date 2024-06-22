@@ -159,13 +159,15 @@ CREATE TABLE cart_items(
     customer_cart_id UUID REFERENCES customer_cart(id) ON DELETE CASCADE,
     product_id UUID REFERENCES products(id) ON DELETE CASCADE,
     product_name VARCHAR(100),
+    product_description VARCHAR(255),
     product_price DECIMAL,
     product_img VARCHAR(100),
     quantity INTEGER,
     total_price DECIMAL,
     created_at TIMESTAMP DEFAULT current_timestamp,
     updated_at TIMESTAMP DEFAULT current_timestamp,
-    modified_by UUID REFERENCES users(id)
+    modified_by UUID REFERENCES users(id),
+    CONSTRAINT unique_cart_product UNIQUE (customer_cart_id, product_id)
 );
 
 CREATE TABLE customer_wishlist(

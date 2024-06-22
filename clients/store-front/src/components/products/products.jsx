@@ -2,26 +2,31 @@ import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { fetchAllProducts } from "../../API/product";
 import { ProductCard } from "./ProductCard";
+import Sidebar from "../shared/SideBar";
 import styled from "styled-components";
 
 const ProductSection = styled.div`
-margin-top: 0px;
-
-width: 100vw;
+// margin-top: 2%;
+overflow-y: hidden;
+width: 100%;
+// margin-bottom: 5%;
+// background-color: red;
 `
 const ProductWrapper = styled.div`
+    // background-color: blue;
    display: flex;
    flex-direction: row;
    flex-wrap: wrap;
-   row-gap: 45px;
+   row-gap: 40px;
    column-gap: 40px;
    justify-content: flex-start;  // Aligns items to the left
    align-content: flex-start;
    width: 90%;  
-   max-height: 700px;
-   overflow-y: auto;
-   margin-left: 90px;
-    margin-top: 25px;
+   max-height: 99.2%;
+//    overflow-y: auto;
+  margin-bottom: 2%;
+    margin-top: 2%;
+    
 
 `
 
@@ -66,6 +71,7 @@ return(
             <ProductCard key={product.id} product={product}/>
         ))}
     </ProductWrapper>
+        
     </ProductSection>
     
 )

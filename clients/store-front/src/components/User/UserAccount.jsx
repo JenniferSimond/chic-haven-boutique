@@ -6,6 +6,10 @@ import { fetchCart } from "../../API/cart";
 import styled from "styled-components";
 
 
+const OutterWrapper = styled.div`
+display: flex;
+flex-direction: row;
+`
 const AccountWrapper = styled.div`
     display: flex;
     flex-direction: column;
@@ -126,7 +130,7 @@ const UserAccount = ({token, setUserId, setUserCartId}) => {
     
           getUserCart();
         }
-      , [token, userDetails]);
+      , [token, userDetails.id]);
 
     
   

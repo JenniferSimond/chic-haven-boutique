@@ -8,23 +8,28 @@ import { fetchCart } from "../../API/cart";
 const OuterWrapper = styled.div`
 display: flex;
 flex-direction: column;
-margin-left: 105px;
-margin-top: 65px;
+margin-top: 3%;
 `
 
 const LoginWrapper = styled.div`
   display: flex;
   flex-direction: column;
-//   align-items: center;
-  gap: 35px;
-  margin-top: 45px;
+  margin-top: 6%;
   margin-bottom: 22px;
 `;
+
+const FormContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Center items vertically */
+  align-content: center;
+  width: 50%;
+  
+`
 
 const InnerFormWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
 `;
 
@@ -51,8 +56,6 @@ const Input = styled.input`
   line-height: normal;
   letter-spacing: 0.361px;
   text-align: center;
-  
-
   &::placeholder {
     color: #f9f5e3;
     opacity: 0.8;
@@ -60,8 +63,8 @@ const Input = styled.input`
 `;
 
 const Button = styled.button`
-  width: 53px;
-  height: 53px;
+  width: 60px;
+  height: 60px;
   border: none;
   border-radius: 50%;
   background-color: #4a4e69;
@@ -89,7 +92,6 @@ const ContentBox = styled.div`
   border: 3px solid #dc2e6a;
   align-items: center;
   position: relative;
-  margin-left: 15px;
   @media (max-width: 768px) {
     flex-direction: column;
   }
@@ -106,14 +108,15 @@ const YellowBox = styled.div`
 `;
 
 const ModelImg = styled.img`
+display: block
   width: auto;
   height: auto;
-  max-height: 463.425px;
-  max-width: 332.575px;
+  // max-height: 463.425px;
+  max-width: 40%;
   position: absolute;
   top: 45%;
   left: 15%;
-  transform: translate(-25%, -52.5%);
+  transform: translate(-25%, -54.1%);
   @media (max-width: 768px) {
     position: absolute;
     top: 0;
@@ -127,13 +130,12 @@ const ModelImg = styled.img`
 const H1 = styled.h1`
   color: #ffbc42;
   font-family: Cinzel;
-  font-size: 73px;
+  font-size: 75px;
   font-style: normal;
   font-weight: 700;
   line-height: normal;
   letter-spacing: 4.38px;
   text-align: start;
-
   text-transform: uppercase;
   span {
     color: #4a4e69;
@@ -146,17 +148,29 @@ const H1 = styled.h1`
 const P1 = styled.p`
   color: #d81159;
   font-family: Cinzel;
-  font-size: 70px;
+  font-size: 75px;
   font-style: normal;
-  font-weight: 300;
+  font-weight: 200;
   line-height: normal;
-  margin-left: 30px;
+  padding-left: 4px;
   text-transform: uppercase;
   @media (max-width: 768px) {
     text-align: center;
    
   }
 `;
+
+const H3 = styled.h3`
+font-family: Montserrat;
+font-size: 16.323px;
+font-style: normal;
+font-weight: 400;
+line-height: 26.932px; /* 165% */
+letter-spacing: 0.326px;
+
+position: relative;
+
+`
 
 const Login = ({ setToken }) => {
   const navigate = useNavigate();
@@ -207,11 +221,10 @@ const Login = ({ setToken }) => {
         </H1>
         
     <LoginWrapper>
-    
-      <div>
         <ContentBox>
           <YellowBox />
           <ModelImg src={loginModImg} />
+          <FormContainer>
           <form onSubmit={handleSubmit}>
             <InnerFormWrapper>
               <InputDivs>
@@ -235,11 +248,17 @@ const Login = ({ setToken }) => {
               <Button>Login</Button>
             </InnerFormWrapper>
           </form>
+        
+          <H3>Not a Member Yet, Sign Up Today!</H3>
+          </FormContainer>
+
         </ContentBox>
-      </div>
+      
      
     </LoginWrapper>
     <P1>Gorgeous</P1>
+
+   
     </OuterWrapper>
   );
 };

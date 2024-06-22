@@ -1,47 +1,30 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import { ItemListCard } from "./ItemListCard";
 import { fetchCartItems, updateCartItem, deleteCartItem } from "../../API/cart";
 
-const CartWrapper = styled.div`
-    display: flex;
-   flex-direction: row;
-   flex-wrap: wrap;
-   row-gap: 45px;
-   column-gap: 40px;
-   justify-content: flex-start;  // Aligns items to the left
-   align-content: flex-start;
-   width: 90%;  
-   max-height: 700px;
-   overflow-y: auto;
-   margin-left: 90px;
-    margin-top: 25px;
-`;
-
-const InnerCartWrapper = styled.div`
-    display: flex;
-    flex-direction: column;
+const CartSection = styled.div`
+    margin-top: 0px;
+    max-width: 100%;
+    min-height: 100%;
+    background-color: red;
+    overflow-y: hidden;
+    
+    
 `
 
-const CartItemsWrapper = styled.div`
-    display: flex;
-    flex-direction: column;
+const InnerCartWrapper = styled.div`
+ display: flex;
+ flex-direction: column;
+ row-gap: 30px;
+ align-items: start;
+ margin-left: 105px;
+ margin-top: 25px;
+ max-height: 700px;
+ overflow-y: auto;
 `;
 
-
-const ItemImageCard = styled.div`
-  width: 25px;
-  height: 25px;
-  background-image: url(${props => props.$imageUrl});
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  border-radius: 5px;
-`;
-
-const Button = styled.button`
-
-`;
 
 
 
@@ -54,15 +37,20 @@ const Cart = ({ userCartId, token}) => {
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
 
+    // come back and setup a logic for please log in
+
     useEffect(() => {
+        
      
         console.log('CartId (cart.jsx)-->', userCartId)
         const getCartItems = async () => {
            
             try {
-              
+                if (!token){
+                   navigate('/login')
+                }
                 const fetchedItems = await fetchCartItems(userCartId, token);
-                console.log('Fetched Items (cart) -->',fetchedItems);
+                console.log('CartItems (cart) -->',fetchedItems);
                 setCartItems(fetchedItems)
             } catch (error) {
                 console.error('Error fetching items')
@@ -72,11 +60,14 @@ const Cart = ({ userCartId, token}) => {
     }, [ token])
 
     return(
-      <CartWrapper>
+      <CartSection>
+        <h1>Cart</h1>
         <InnerCartWrapper>
-            
+            {cartItems.map(item => (
+                <ItemListCard key={item.id} item={item} />
+            ))}
         </InnerCartWrapper>
-      </CartWrapper>
+      </CartSection>
     );
 }
 

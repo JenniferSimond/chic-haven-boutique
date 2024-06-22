@@ -2,6 +2,7 @@ import {useNavigate} from 'react-router-dom'
 import styled from 'styled-components'
 import account from '../../assets/icons-svg/account/account.svg'
 import accountLight from '../../assets/icons-svg/account/accountLight.svg'
+import logo2Light from '../../assets/icons-svg/logo/logo2Light.svg'
 import logo from '../../assets/icons-svg/logo/logo.svg'
 import logoLight from '../../assets/icons-svg/logo/logoLight.svg'
 import cart from '../../assets/icons-svg/cart/cart.svg'
@@ -9,19 +10,23 @@ import cartLight from '../../assets/icons-svg/cart/cartLight.svg'
 import NavLinks from './NavLinks'
 import SearchBar from './searchBar'
 
-const Wrapper = styled.div`
+const Wrapper = styled.header`
+
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
     background-color: #9A8C98;
-    height: 127px;
-    width: 100vw;
-    // opacity: 0.9;
+    min-height: 100px;
+    width: 100%;
+    position: fixed;
+    top: 0;
+    z-index: 100; 
+
 `;
 
 const IconContainer = styled.div`
-    margin-right: 51px;
+    margin-right: 50px;
     display: flex;
     align-items: center;
     gap: 27px;
@@ -31,13 +36,14 @@ const IconContainer = styled.div`
 const SearchContainer = styled.div`
 display: flex;
 flex-direction: column;
-
-gap: 10px;
+margin-inline-trim: 30%;
+margin-top: 20px;
+gap: 11px;
 `;
 const Logo = styled.img`
-    margin-left: 51px;
-    width: 55px;
-    height: 38.36px;
+    margin-left: 50px;
+    width: 154px;
+    height: 49.63px;
     cursor: pointer;
     
 
@@ -48,9 +54,12 @@ const Logo = styled.img`
     }
 `;
 
+const NavLinksContainer = styled.div`
+ align-self: center;
+`
 const Account = styled.img`
-    width: 25px;
-    height: 25.069px;
+    width: 35px;
+    height: 35.069px;
     cursor: pointer;
 
     &:hover {
@@ -60,8 +69,8 @@ const Account = styled.img`
 `;
 
 const Cart = styled.img`
-    width: 31.225px;
-    height: 25px;
+    width: 43.225px;
+    height: 38px;
     cursor: pointer;
 
     &:hover {
@@ -71,7 +80,7 @@ const Cart = styled.img`
 `;
 
 
-const Header = () => {
+const Header = (token) => {
     const navigate = useNavigate();
 
     const logoClickHandler = () => {
@@ -89,14 +98,19 @@ const Header = () => {
 
     return(
         <Wrapper>
-            <Logo src={logo} alt='Logo' $hoverIcon={logoLight} onClick={logoClickHandler} />
+            <Logo src={logo2Light} alt='Logo'  onClick={logoClickHandler} />
             <SearchContainer>
                 <SearchBar />
+                <NavLinksContainer>
                 <NavLinks />
+                </NavLinksContainer>
+               
             </SearchContainer>
             <IconContainer>
                 <Account  src={account} alt='Account' $hoverIcon={accountLight} onClick={accountClickHandler}/>
                 <Cart src={cart} alt='Cart' $hoverIcon={cartLight} onClick={cartClickHandler}/>
+
+             
             </IconContainer>
             
          

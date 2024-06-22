@@ -38,7 +38,7 @@ const ProductImageCard = styled.div`
   background-position: center;
   background-repeat: no-repeat;
   border-radius: 3px;
-  margin-bottom: 10px;
+ margin-bottom: 5%;
 `;
 
 const PriceButtonWrapper = styled.div`
@@ -48,7 +48,7 @@ const PriceButtonWrapper = styled.div`
   justify-content: center;
   gap: 10px;
   width: 100%;
-  opacity: 0.9;
+  opacity: 1;
 `;
 
 const SvgIcon = styled.img`
@@ -57,7 +57,7 @@ const SvgIcon = styled.img`
     cursor: pointer;
 
     &:hover {
-    content: url(${props => props.$hoverIcon})
+    content: url(${props => props.$hoverIcon2})
 
     }
 
@@ -92,7 +92,7 @@ const ProductCard = ({ product }) => {
       <PriceButtonWrapper>
         <SvgIcon 
         src={viewEye} 
-        $hoverIcon={viewPink}
+        $hoverIcon2={viewPink}
         onClick={handleViewClick}
         />
         <Price>${product.price}</Price>
@@ -100,7 +100,7 @@ const ProductCard = ({ product }) => {
         width={'21px'}
         height={'21px'}
         src={wishlist} 
-        $hoverIcon={wishlistPink}
+        $hoverIcon2={wishlistPink}
        
         />
       </PriceButtonWrapper>

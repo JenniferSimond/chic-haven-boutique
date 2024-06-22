@@ -93,7 +93,7 @@ const Button = styled.button`
   font-weight: 500;
   padding: 10px 20px;
   border: none;
-  border-radius: 5px;
+  border-radius: 3px;
   display: flex;
   justify-content: center;
   align-items: center;
