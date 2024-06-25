@@ -24,13 +24,14 @@ const FormContainer = styled.div`
   align-items: center; /* Center items vertically */
   align-content: center;
   width: 50%;
-  
+  // background-color: blue;
 `
 
 const InnerFormWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  // background-color: blue;
 `;
 
 const InputDivs = styled.div`

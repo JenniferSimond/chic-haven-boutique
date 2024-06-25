@@ -1,6 +1,9 @@
 const { client } = require('../tables.js');
 const { v4: uuidv4 } = require('uuid');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+const { findUserByToken } = require('./auth.js');
+const secret = process.env.JWT_SECRET || 'shhhhhlocal';
 
 // CREATE CUSTOMERS
 const createUserCustomer = async ({
@@ -11,10 +14,9 @@ const createUserCustomer = async ({
   phone_number,
 }) => {
   const SQL = `
-          INSERT INTO users(id, last_name, 
-            first_name, password, email, phone_number, user_role, can_post_reviews) 
-            VALUES ($1, $2, $3, $4, $5, $6, 'customer', TRUE) RETURNING *
-          `;
+    INSERT INTO users(id, last_name, first_name, password, email, phone_number, user_role, can_post_reviews) 
+    VALUES ($1, $2, $3, $4, $5, $6, 'customer', TRUE) RETURNING *
+  `;
   const response = await client.query(SQL, [
     uuidv4(),
     last_name,
@@ -23,15 +25,30 @@ const createUserCustomer = async ({
     email,
     phone_number,
   ]);
-  return response.rows[0];
+
+  const newUser = response.rows[0];
+
+  const token = jwt.sign(
+    {
+      id: newUser.id,
+      user_role: newUser.user_role,
+      can_post_reviews: newUser.can_post_reviews,
+    },
+    secret,
+    { expiresIn: '1h' }
+  );
+
+  const userDetails = await findUserByToken(token);
+
+  return { userDetails, token };
 };
 
 // FETCH USERS (customers)
 const fetchAllUsers = async () => {
   const SQL = `
-      SELECT * FROM users 
-      WHERE user_role = 'customer'
-      `;
+    SELECT * FROM users 
+    WHERE user_role = 'customer'
+  `;
   const response = await client.query(SQL);
   return response.rows;
 };
@@ -39,8 +56,8 @@ const fetchAllUsers = async () => {
 // FETCH USER BY ID
 const fetchUserById = async (id) => {
   const SQL = `
-      SELECT * FROM users WHERE id = $1
-      `;
+    SELECT * FROM users WHERE id = $1
+  `;
   const response = await client.query(SQL, [id]);
   return response.rows[0];
 };
@@ -71,20 +88,20 @@ const updateUser = async (id, customerNewData, modifiedBy) => {
   }
 
   const SQL = `
-      UPDATE users
-      SET 
-        last_name = COALESCE($2, last_name),
-        first_name = COALESCE($3, first_name),
-        email = COALESCE($4, email),
-        password = COALESCE($5, password),
-        phone_number = COALESCE($6, phone_number),
-        user_role = COALESCE($7, user_role),
-        can_post_reviews = $8,
-        modified_by = $9,
-        updated_at = CURRENT_TIMESTAMP
-      WHERE id = $1
-      RETURNING *;
-      `;
+    UPDATE users
+    SET 
+      last_name = COALESCE($2, last_name),
+      first_name = COALESCE($3, first_name),
+      email = COALESCE($4, email),
+      password = COALESCE($5, password),
+      phone_number = COALESCE($6, phone_number),
+      user_role = COALESCE($7, user_role),
+      can_post_reviews = $8,
+      modified_by = $9,
+      updated_at = CURRENT_TIMESTAMP
+    WHERE id = $1
+    RETURNING *;
+  `;
 
   const response = await client.query(SQL, [
     id,
@@ -104,8 +121,8 @@ const updateUser = async (id, customerNewData, modifiedBy) => {
 // DELETE USER
 const deleteUser = async (id) => {
   const SQL = `
-      DELETE FROM users WHERE id = $1;
-      `;
+    DELETE FROM users WHERE id = $1;
+  `;
   await client.query(SQL, [id]);
 };
 

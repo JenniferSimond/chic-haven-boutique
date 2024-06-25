@@ -87,7 +87,7 @@ router.post(
 
 // update cart item
 router.put(
-  '/carts/:customer_cart_id/items/:id',
+  '/carts/items/:id',
   isAuthenticated,
   isAuthorizedCustomer,
   async (req, res, next) => {

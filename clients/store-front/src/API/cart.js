@@ -66,7 +66,24 @@ const fetchCartItems = async (userCartId, token) => {
 
 // Update Cart Item
 
-const updateCartItem = async (itemId) => {};
+const updateCartItem = async (itemId, quantity, token) => {
+  try {
+    const response = await fetch(`${API_URL}/carts/items/${itemId}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({ quantity }),
+    });
+
+    const updatedItem = await response.json();
+    console.log('Updated Cart Item (API) -->', updatedItem);
+    return updatedItem;
+  } catch (error) {
+    console.error('Error updating cart item -->', error);
+  }
+};
 
 // Delete Cart Item
 const deleteCartItem = async (itemId, token) => {

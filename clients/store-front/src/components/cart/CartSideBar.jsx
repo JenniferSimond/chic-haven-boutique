@@ -1,13 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
 
-
-const CartSideBar = () => {
-
-
-    const SidebarWrapper = styled.div`
+const SidebarWrapper = styled.div`
   width: 20%;
-  min-height: 90vh;
+  min-height: 80vh;
   background-color: #ffbc42;
   padding: 20px;
   display: flex;
@@ -16,6 +12,11 @@ const CartSideBar = () => {
   align-items: center;
 `;
 
+
+const CartSideBar = () => {
+
+
+    
 return(
     <SidebarWrapper>
 
@@ -23,4 +24,4 @@ return(
 )
 }
 
-export {CartSideBar}
+export default CartSideBar
