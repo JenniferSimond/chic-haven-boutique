@@ -3,12 +3,11 @@ import styled from 'styled-components'
 import account from '../../assets/icons-svg/account/account.svg'
 import accountLight from '../../assets/icons-svg/account/accountLight.svg'
 import logo2Light from '../../assets/icons-svg/logo/logo2Light.svg'
-import logo from '../../assets/icons-svg/logo/logo.svg'
-import logoLight from '../../assets/icons-svg/logo/logoLight.svg'
 import cart from '../../assets/icons-svg/cart/cart.svg'
 import cartLight from '../../assets/icons-svg/cart/cartLight.svg'
 import NavLinks from './NavLinks'
 import SearchBar from './searchBar'
+import { getToken, removeToken } from '../shared/auth'
 
 const Wrapper = styled.header`
 
@@ -26,7 +25,7 @@ const Wrapper = styled.header`
 `;
 
 const IconContainer = styled.div`
-    margin-right: 50px;
+  
     display: flex;
     align-items: center;
     gap: 27px;
@@ -79,8 +78,23 @@ const Cart = styled.img`
 }
 `;
 
+const IconWrapper = styled.div`
+margin-right: 50px;
+display: flex;
+flex-direction: column;
+// background-color: blue;
+gap: 4px;
+max-width: 6%;
+`
 
-const Header = (token) => {
+const LogInOut = styled.button`
+
+`
+
+const Header = () => {
+
+    const token = getToken()
+    
     const navigate = useNavigate();
 
     const logoClickHandler = () => {
@@ -95,6 +109,14 @@ const Header = (token) => {
         navigate('/cart')
     }
 
+    const loginClickHandler = () => {
+        navigate('/login')
+    }
+
+    const logoutClickHandler = () => {
+        removeToken()
+        navigate('/home')
+    }
 
     return(
         <Wrapper>
@@ -104,15 +126,16 @@ const Header = (token) => {
                 <NavLinksContainer>
                 <NavLinks />
                 </NavLinksContainer>
-               
             </SearchContainer>
+           
+            <IconWrapper>
             <IconContainer>
                 <Account  src={account} alt='Account' $hoverIcon={accountLight} onClick={accountClickHandler}/>
                 <Cart src={cart} alt='Cart' $hoverIcon={cartLight} onClick={cartClickHandler}/>
-
-             
             </IconContainer>
-            
+            {token ? <LogInOut onClick={logoutClickHandler}>Logout</LogInOut> : <LogInOut onClick={loginClickHandler} >Login</LogInOut>}
+            </IconWrapper>
+          
          
         </Wrapper>
     );

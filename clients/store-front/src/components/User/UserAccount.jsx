@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { getUserDetails } from "../../API/user";
 import { fetchCart } from "../../API/cart";
+import { getToken } from "../shared/auth";
 
 import styled from "styled-components";
 
@@ -78,10 +79,10 @@ const WishlistTile = styled.div`
 
 
 
-const UserAccount = ({token, setUserId, setUserCartId}) => {
+const UserAccount = ({ setUserId, setUserCartId}) => {
+  const token = getToken()
   const navigate = useNavigate();
   const [userDetails, setUserDetails] = useState('')
-  const [carId, setCarId] = useState('')
   const [loading, setLoadingState] = useState(false); // used to change view is user not signed it
   const [pageRefresh, setPageRefresh] = useState(false); // page refresh will be used if user updates account information --> Maybe, may change layout
   const [error, setError] = useState(null);

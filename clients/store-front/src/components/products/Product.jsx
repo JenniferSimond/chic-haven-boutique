@@ -6,6 +6,7 @@ import { BASE_URL } from "../../API/apiConfig";
 import styled from "styled-components";
 import cartLight from '../../assets/icons-svg/cart/cartLight.svg'
 import wishlistLight from '../../assets/icons-svg/wishlist/wishlistLight.svg'
+import { getToken } from "../shared/auth";
 
 const ProductWrapper = styled.div`
   display: flex;
@@ -13,6 +14,7 @@ const ProductWrapper = styled.div`
   margin-top: 30px;
   margin-left: 105px;
   align-items: center;
+  justify-content: center;
   gap: 20px;
 `;
 
@@ -115,7 +117,8 @@ const WishlistIcon = styled.img`
   height: 20px;
 `;
 
-const Product = ({userCartId, token}) => {
+const Product = ({userCartId}) => {
+  const token = getToken()
   const [selectedProduct, setSelectedProduct] = useState('');
   const { productId } = useParams();
   const navigate = useNavigate();

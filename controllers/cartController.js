@@ -131,7 +131,7 @@ router.post(
 );
 
 router.delete(
-  '/carts/:customer_cart_id/items/:id',
+  '/carts/items/:id',
   isAuthenticated,
   isAuthorizedCustomer,
   async (req, res, next) => {

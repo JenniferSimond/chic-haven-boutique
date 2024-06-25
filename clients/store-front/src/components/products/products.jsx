@@ -6,14 +6,14 @@ import Sidebar from "../shared/SideBar";
 import styled from "styled-components";
 
 const ProductSection = styled.div`
-// margin-top: 2%;
+display: flex;
+justify-content: center;
 overflow-y: hidden;
 width: 100%;
-// margin-bottom: 5%;
-// background-color: red;
+
 `
 const ProductWrapper = styled.div`
-    // background-color: blue;
+
    display: flex;
    flex-direction: row;
    flex-wrap: wrap;
@@ -23,7 +23,7 @@ const ProductWrapper = styled.div`
    align-content: flex-start;
    width: 90%;  
    max-height: 99.2%;
-//    overflow-y: auto;
+
   margin-bottom: 2%;
     margin-top: 2%;
     

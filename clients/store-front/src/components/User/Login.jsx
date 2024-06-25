@@ -3,7 +3,7 @@ import { customerLogin } from "../../API/user";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import loginModImg from '../../assets/img-png/loginModImg.png';
-import { fetchCart } from "../../API/cart";
+import { setToken } from "../shared/auth";
 
 const OuterWrapper = styled.div`
 display: flex;
@@ -108,7 +108,7 @@ const YellowBox = styled.div`
 `;
 
 const ModelImg = styled.img`
-display: block
+display: block;
   width: auto;
   height: auto;
   // max-height: 463.425px;
@@ -172,7 +172,7 @@ position: relative;
 
 `
 
-const Login = ({ setToken }) => {
+const Login = () => {
   const navigate = useNavigate();
   const [loginFormData, setLoginFormData] = useState({
     email: '',
@@ -189,7 +189,9 @@ const Login = ({ setToken }) => {
       console.log('token-->', Data.token);
 
       if (Data.token) {
-        setToken(Data.token);
+
+        setToken(Data.token)
+        // setToken(Data.token);
         navigate('/account');
       } else {
         console.error('Log in error');

@@ -36,4 +36,20 @@ const getUserDetails = async (token) => {
   }
 };
 
-export { customerLogin, getUserDetails };
+const customerSignup = async (registrationData) => {
+  try {
+    const response = await fetch(`${API_URL}/signup`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(registrationData),
+    });
+    const newUser = await response.json();
+    console.log(newUser);
+  } catch (error) {
+    console.error('Signup error:', error);
+  }
+};
+
+export { customerLogin, getUserDetails, customerSignup };

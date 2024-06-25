@@ -70,7 +70,7 @@ const updateCartItem = async (itemId) => {};
 
 // Delete Cart Item
 const deleteCartItem = async (itemId, token) => {
-  const response = await fetch(`${API_URL}/cart/items/${itemId}`, {
+  const response = await fetch(`${API_URL}/carts/items/${itemId}`, {
     method: 'DELETE',
     headers: {
       'Content-Type': 'application/json',

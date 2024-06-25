@@ -2,9 +2,9 @@ import React from "react";
 import styled from "styled-components";
 import { BASE_URL } from '../../API/apiConfig.js';
 import viewEye from '../../assets/icons-svg/eye/viewEye.svg'
-import viewPink from '../../assets/icons-svg/eye/viewPink.svg'
+import viewEye2 from '../../assets/icons-svg/eye/viewEye2.svg'
 import wishlist from '../../assets/icons-svg/wishlist/wishlist.svg'
-import wishlistPink  from '../../assets/icons-svg/wishlist/wishlistPink.svg'
+import wishlist2 from '../../assets/icons-svg/wishlist/wishlist2.svg'
 import { useNavigate } from "react-router-dom";
 
 const CardWrapper = styled.div`
@@ -92,7 +92,7 @@ const ProductCard = ({ product }) => {
       <PriceButtonWrapper>
         <SvgIcon 
         src={viewEye} 
-        $hoverIcon2={viewPink}
+        $hoverIcon2={viewEye2}
         onClick={handleViewClick}
         />
         <Price>${product.price}</Price>
@@ -100,7 +100,7 @@ const ProductCard = ({ product }) => {
         width={'21px'}
         height={'21px'}
         src={wishlist} 
-        $hoverIcon2={wishlistPink}
+        $hoverIcon2={wishlist2}
        
         />
       </PriceButtonWrapper>

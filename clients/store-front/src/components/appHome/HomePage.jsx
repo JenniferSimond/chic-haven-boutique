@@ -14,7 +14,8 @@ const MainContainer = styled.div`
   flex-direction: row;
   align-content: center;
   gap: 0%;
-  min-width: 100%;
+  width: 100%;
+
 `;
 
 const HeroWrapper = styled.div`

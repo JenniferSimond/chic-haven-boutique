@@ -33,29 +33,28 @@ function App() {
 // TOKEN --> Passed down to children that need user authentication --> // -UPDATE TO STORE TOKEN IN STOREAGE LATER
 // UserId --> Passed down to children that need UserId -->
 // Remember --> PROPS are like Parameters 
-  const [token, setToken] = useState('');
   const [userId, setUserId] = useState('');
   const [userCartId, setUserCartId] = useState('');
   
-  console.log('TOKEN APP -->',token);
+  
   console.log('USER ID APP -->',userId);
   console.log('CART ID --> ', userCartId)
 
   return (
     <AppWrapper>
-      <Header token={token}/>
+      <Header />
       <InnerWrapper>
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/home" element={<HomePage />} />
           <Route path="/signup" element={<Register />} />
           <Route path="/about" element={<About />} />
-          <Route path="/login" element={<Login  setToken={setToken} />} />
-          <Route path="/account" element={<UserAccount token={token} setUserId={setUserId} setUserCartId={setUserCartId} />} />
-          <Route path="/cart" element={<Cart userId={userId}  token={token} userCartId={userCartId} />} />
+          <Route path="/login" element={<Login  />} />
+          <Route path="/account" element={<UserAccount setUserId={setUserId} setUserCartId={setUserCartId} />} />
+          <Route path="/cart" element={<Cart userId={userId} userCartId={userCartId} />} />
           <Route path="/wishlist" element={<Wishlist userId={userId}/>} />
           <Route path="/products" element={<Products userCartId={userCartId} />} />
-          <Route path="/products/:productId" element={<Product token={token} userCartId={userCartId} />} />
+          <Route path="/products/:productId" element={<Product userCartId={userCartId} />} />
         </Routes>
       </InnerWrapper>
       <Footer />

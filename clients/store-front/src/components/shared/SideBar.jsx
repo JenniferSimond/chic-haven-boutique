@@ -8,7 +8,7 @@ import tiktok from '../../assets/icons-svg/social-media/tiktok.svg'
 
 const SidebarWrapper = styled.div`
   width: 20%;
-  min-height: 79vh;
+  min-height: 80vh;
   background-color: #ffbc42;
   padding: 20px;
   display: flex;
@@ -18,7 +18,7 @@ const SidebarWrapper = styled.div`
 `;
 
 const PromoBox = styled.div`
-  height: 50px;
+  min-height: 10%;
   background-color: #fff;
   color: #000;
   padding: 15px;
