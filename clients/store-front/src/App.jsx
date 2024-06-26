@@ -9,6 +9,7 @@ import UserAccount from "./components/User/UserAccount";
 import Products from './components/products/products';
 import Product from './components/products/Product';
 import Cart from "./components/cart/Cart";
+import CheckOut from './components/cart/CheckOut';
 import Header from "./components/navBar/Header";
 import Footer from "./components/footer/Footer";
 import { getToken } from "./components/shared/auth";
@@ -26,7 +27,8 @@ const InnerWrapper = styled.div`
   margin-bottom: 4.7%;
   z-index: 2;
 `;
-
+//needed to store cartId and userId globally to account for browser refresh
+// cart fetches data seperatley to re-render when cart is updated
 function App() {
   const [userId, setUserId] = useState('');
   const [userCartId, setUserCartId] = useState('');
@@ -54,8 +56,8 @@ function App() {
     initializeUser();
   }, [navigate]);
 
-  console.log('USER ID APP -->', userId);
-  console.log('CART ID --> ', userCartId);
+  console.log('USER ID (APP) -->', userId);
+  console.log('CART (ID) --> ', userCartId);
 
   return (
     <AppWrapper>
@@ -69,6 +71,7 @@ function App() {
           <Route path="/login" element={<Login setUserId={setUserId} />} />
           <Route path="/account" element={<UserAccount userId={userId} />} />
           <Route path="/cart" element={<Cart userId={userId} />} />
+          <Route path="/cart/checkout" element={<CheckOut userId={userId} />} />
           <Route path="/wishlist" element={<Wishlist userId={userId} />} />
           <Route path="/products" element={<Products userCartId={userCartId} />} />
           <Route path="/products/:productId" element={<Product userCartId={userCartId} userId={userId}/>} />

@@ -95,7 +95,7 @@ const UserAccount = ({ userId }) => {
       }
     };
     fetchUserDetails();
-  }, [token, pageRefresh, navigate]);
+  }, [token, pageRefresh, navigate]); // -> adding all dependenies used in useEffect in dependency array 
 
   const refreshHandler = () => {
     setPageRefresh(!pageRefresh); // toggle opposite value

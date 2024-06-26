@@ -4,7 +4,7 @@ import { deleteCartItem, updateCartItem } from "../../API/cart";
 import { getToken } from "../shared/auth";
 
 const CardWrapper = styled.div`
-  min-width: 80%;
+  min-width: 90%;
 `;
 
 const Card = styled.div`
@@ -15,7 +15,7 @@ const Card = styled.div`
   border-radius: 5px;
   height: 200px;
   max-width: 800px;
-  margin: 3%;
+  margin: 2%;
 `;
 
 const ItemImage = styled.img`
@@ -54,14 +54,14 @@ const ItemListCard = ({ item, refresh }) => {
   const BASE_URL = 'http://localhost:3000'; 
   const imageUrl = `${BASE_URL}${item.product_img}`;
   const [itemQty, setItemQty] = useState(item.quantity);
-
+  console.log('ITEM (cartItems) -->', item)
   const handleQtyChange = async (event) => {
     const newQuantity = parseInt(event.target.value);
     setItemQty(newQuantity);
-
+    refresh();
     try {
       await updateCartItem(item.id, newQuantity, token); // Fixed the call to updateCartItem
-      refresh();
+      
       console.log('Item quantity updated successfully');
     } catch (error) {
       console.error('Error updating item quantity:', error);
@@ -88,7 +88,8 @@ const ItemListCard = ({ item, refresh }) => {
         </Text>
         <ButtonWrapper>
           <div>
-            <p>{`$${item.product_price}`}</p>
+            <p>{`Price: $${item.product_price}`}</p>
+            <p>{`Total: $${item.product_price * item.quantity}`}</p>
           </div>
           <QtyDropDown value={itemQty} onChange={handleQtyChange}>
             {[...Array(10).keys()].map((num) => (
