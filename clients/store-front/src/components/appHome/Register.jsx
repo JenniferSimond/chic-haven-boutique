@@ -1,18 +1,26 @@
 import React, { useState } from "react";
 import { customerSignup } from "../../API/user";
 import styled from "styled-components";
-import { setToken, getToken } from "../shared/auth";
-import signupPic from '../../assets/img-png/signupPic.png'
+import { useNavigate } from "react-router-dom";
+import { setToken } from "../shared/auth";
+import { fetchCart } from "../../API/cart";
+import signupPic from "../../assets/img-png/signupPic.png"
 
+
+const OuterWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-top: 4%;
+  justify-content: center;
+align-items: center;
+anign-content: center;
+`;
 
 const RegistrationWrapper = styled.div`
 display: flex;
-flex-direction: column;
-margin-top: 2%;
-width: 100%;
-justify-content: center;
-align-items: center;
-anign-content: center;
+  flex-direction: column;
+  margin-top: 8%;
+  margin-bottom: 22px;
 `
 
 const InnerWrapper = styled.div`
@@ -34,7 +42,8 @@ const ContentBox = styled.div`
   border: 3px solid #dc2e6a;
   align-items: center;
   position: relative;
-  margin-top: 8%;
+  // margin-top: 8%;
+  
   @media (max-width: 768px) {
     flex-direction: column;
   }
@@ -71,10 +80,11 @@ display: block;
 `;
 
 const FormContainer = styled.div`
-  display: flex;
+   display: flex;
   flex-direction: column;
   align-items: center; /* Center items vertically */
   align-content: center;
+  width: 50%;
   
 `;
 
@@ -83,6 +93,7 @@ const InnerFormWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+ 
 `;
 
 const InputDivs = styled.div`
@@ -153,42 +164,127 @@ const H1 = styled.h1`
   }
 `;
 
-const Register = () => {
+const Register = ({ setUserId, setUserCartId }) => {
+  const navigate = useNavigate();
+  const [registerFormData, setRegisterFormData] = useState({
+    email: '',
+    password: '',
+    first_name: '',
+    last_name: '',
+    phone_number: ''
+  });
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    console.log('I AM FORM!');
+
+    try {
+      const Data = await customerSignup(registerFormData);
+      console.log('User Data >>>-->', Data);
+      console.log('UserID >>>---(REGISTER)--->', Data.userDetails.id);
+      console.log('token-->', Data.token);
+
+      if (Data) {
+        setUserId(Data.userDetails.id);
+        setToken(Data.token);
+
+        // Fetch the user cart ID after registration
+        const userCart = await fetchCart(Data.userDetails.id, Data.token);
+        setUserCartId(userCart.id);
+
+        navigate('/account');
+      } else {
+        console.error('Registration error');
+      }
+    } catch (error) {
+      console.error(error);
+    }
+
+    setRegisterFormData({
+      email: '',
+      password: '',
+      first_name: '',
+      last_name: '',
+      phone_number: ''
+    });
+  };
+
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    setRegisterFormData((prevState) => ({
+      ...prevState,
+      [name]: value
+    }));
+  };
+
+  console.log('Register Data (Register) ->', registerFormData);
 
     return(
-        <RegistrationWrapper>
-          <H1>Become <span>a Member</span> Today!</H1>
+      <OuterWrapper>
 
+        <H1>Become <span>a Member</span> Today!</H1>
+    
+        <RegistrationWrapper>
+      
             <ContentBox>
                 <YellowBox />
             <ModelImage src={signupPic} />
             <FormContainer>
-                <form>
-                    <InnerFormWrapper>
-                <InputDivs>
-                <Input name='lastName' type='text' placeholder='Last Name'/>
-                </InputDivs>    
-
-                <InputDivs> 
-                <Input name='firstName' type='text' placeholder='First Name'/>
-                </InputDivs>
-                <InputDivs>
-                <Input name='password' type='password' placeholder='Password'/>
-                </InputDivs>
-                <InputDivs> 
-                <Input name='email' type='text' placeholder='Email Address'/>
-                </InputDivs>
-                <InputDivs>
-
-                <Input name='phone_numer' type='text' placeholder='Phone Number'/>
-                </InputDivs>
-                <Button>Signup</Button>
-                    </InnerFormWrapper>
-                </form>
+            <form onSubmit={handleSubmit}>
+            <InnerFormWrapper>
+              <InputDivs>
+                <Input
+                  name="first_name"
+                  type="text"
+                  onChange={handleChange}
+                  value={registerFormData.first_name}
+                  placeholder="First Name"
+                />
+              </InputDivs>
+              <InputDivs>
+                <Input
+                  name="last_name"
+                  type="text"
+                  onChange={handleChange}
+                  value={registerFormData.last_name}
+                  placeholder="Last Name"
+                />
+              </InputDivs>
+              <InputDivs>
+                <Input
+                  name="email"
+                  type="text"
+                  onChange={handleChange}
+                  value={registerFormData.email}
+                  placeholder="Email"
+                />
+              </InputDivs>
+              <InputDivs>
+                <Input
+                  name="phone_number"
+                  type="text"
+                  onChange={handleChange}
+                  value={registerFormData.phone_number}
+                  placeholder="Phone Number"
+                />
+              </InputDivs>
+              <InputDivs>
+                <Input
+                  name="password"
+                  type="password"
+                  onChange={handleChange}
+                  value={registerFormData.password}
+                  placeholder="Password"
+                />
+              </InputDivs>
+              <Button>Register</Button>
+            </InnerFormWrapper>
+          </form>
             </FormContainer>
             </ContentBox>
 
         </RegistrationWrapper>
+        </OuterWrapper>
     );
 }
 

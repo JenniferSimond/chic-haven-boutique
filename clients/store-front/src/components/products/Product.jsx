@@ -13,7 +13,7 @@ const ProductWrapper = styled.div`
   display: flex;
   flex-direction: row;
   margin-top: 30px;
-  margin-left: 105px;
+  margin-left: 0;
   align-items: center;
   justify-content: center;
   gap: 20px;
@@ -56,12 +56,13 @@ const InnerWrapper = styled.div`
   flex-direction: column;
   gap: 20px;
   margin-left: 120px;
+  margin-top: 8%;
 `;
 
 const Description = styled.p`
   color: #4A4E69;
   font-family: Montserrat;
-  font-size: 25px;
+  font-size: 20px;
   text-align: start;
   font-style: normal;
   font-weight: 300;
