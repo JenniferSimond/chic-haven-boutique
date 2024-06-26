@@ -1,5 +1,5 @@
 const express = require('express');
-const router = express('router');
+const router = express.Router();
 const {
   createUserCustomer,
   authenticateUser,
@@ -34,7 +34,8 @@ router.post('/signup', async (req, res, next) => {
 
 router.post('/login', async (req, res, next) => {
   try {
-    res.send(await authenticateUser(req.body));
+    const { userDetails, token } = await authenticateUser(req.body);
+    res.json({ userDetails, token });
   } catch (error) {
     next(error);
   }
