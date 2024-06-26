@@ -71,7 +71,7 @@ function App() {
           <Route path="/cart" element={<Cart userId={userId} />} />
           <Route path="/wishlist" element={<Wishlist userId={userId} />} />
           <Route path="/products" element={<Products userCartId={userCartId} />} />
-          <Route path="/products/:productId" element={<Product userCartId={userCartId} />} />
+          <Route path="/products/:productId" element={<Product userCartId={userCartId} userId={userId}/>} />
         </Routes>
       </InnerWrapper>
       <Footer />

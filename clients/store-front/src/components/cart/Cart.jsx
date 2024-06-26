@@ -8,26 +8,32 @@ import Sidebar from "../shared/SideBar";
 import CartSideBar from "./CartSideBar";
 
 const CartWrapper = styled.div`
+  // margin-top: 1%;
   display: flex;
   flex-direction: row;
   width: 100%;
+  
 `;
 
 const CartSection = styled.div`
-  margin-top: 0%;
+  // margin-top: 5%;
   width: 100%;
   min-height: 100%;
   overflow-y: hidden;
+  // background-color: blue;
 `;
 
 const InnerCartWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  row-gap: 10px;
+  width: 80%;
+  margin-top: 5%;
+  row-gap: 0px;
   align-items: start;
   margin-left: 105px;
   max-height: 700px;
   overflow-y: auto;
+  // background-color: red;
 `;
 
 const NullCart = styled.div`
@@ -39,6 +45,7 @@ const Cart = ({ userId }) => {
   const [cartItems, setCartItems] = useState([]);
   const [pageRefresh, setPageRefresh] = useState(false);
   const [userCartId, setUserCartId] = useState(null);
+  const [cartDetails, setCartDetails] = useState('')
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -46,6 +53,7 @@ const Cart = ({ userId }) => {
       try {
         const userCart = await fetchCart(userId, token);
         setUserCartId(userCart.id);
+        setCartDetails(userCart)
       } catch (error) {
         console.error('Error fetching cart', error);
       }
@@ -54,7 +62,7 @@ const Cart = ({ userId }) => {
     if (userId) {
       getUserCart();
     }
-  }, [token, userId]);
+  }, [token, userId, pageRefresh]);
 
   useEffect(() => {
     const getCartItems = async () => {
@@ -92,11 +100,11 @@ const Cart = ({ userId }) => {
         <CartSection>
           <InnerCartWrapper>
             {cartItems.map((item) => (
-              <ItemListCard key={item.id} item={item} refresh={refreshHandler} />
+              <ItemListCard key={item.id} item={item} refresh={refreshHandler} /> //refresh items list when new item added to cart
             ))}
           </InnerCartWrapper>
         </CartSection>
-        <CartSideBar />
+        <CartSideBar cartDetails={cartDetails} />
       </CartWrapper>
     );
   }

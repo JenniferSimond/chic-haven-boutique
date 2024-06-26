@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { fetchProduct } from "../../API/product";
 import { addCartItem } from "../../API/cart";
+import { ProductReview } from "./ProductReview";
 import { BASE_URL } from "../../API/apiConfig";
 import styled from "styled-components";
 import cartLight from '../../assets/icons-svg/cart/cartLight.svg'
@@ -49,7 +50,7 @@ const ProductImageCard = styled.div`
   margin-bottom: 10px;
 `;
 
-const DescriptionPrice = styled.div`
+const InnerWrapper = styled.div`
   width: 650px;
   display: flex;
   flex-direction: column;
@@ -117,7 +118,7 @@ const WishlistIcon = styled.img`
   height: 20px;
 `;
 
-const Product = ({userCartId}) => {
+const Product = ({userCartId, userId}) => {
   const token = getToken()
   const [selectedProduct, setSelectedProduct] = useState('');
   const { productId } = useParams();
@@ -169,7 +170,7 @@ const Product = ({userCartId}) => {
         <ProductName>{selectedProduct.name}</ProductName>
         <ProductImageCard $imageUrl={imageUrl} />
       </NameImageWrapper>
-      <DescriptionPrice>
+      <InnerWrapper>
         <Description>{selectedProduct.description}</Description>
         <Price>{`$${selectedProduct.price}`}</Price>
         <ButtonWrapper>
@@ -178,7 +179,9 @@ const Product = ({userCartId}) => {
           <Button>
             <WishlistIcon src={wishlistLight} />Wishlist</Button>
         </ButtonWrapper>
-      </DescriptionPrice>
+        <ProductReview selectedProduct={selectedProduct} userId={userId} />
+      </InnerWrapper>
+    
     </ProductWrapper>
   );
 };
