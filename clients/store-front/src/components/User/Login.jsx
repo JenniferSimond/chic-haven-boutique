@@ -1,15 +1,15 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { customerLogin } from "../../API/user";
 import styled from "styled-components";
-import { useNavigate } from "react-router-dom";
 import loginModImg from '../../assets/img-png/loginModImg.png';
 import { setToken } from "../shared/auth";
 
 const OuterWrapper = styled.div`
-display: flex;
-flex-direction: column;
-margin-top: 3%;
-`
+  display: flex;
+  flex-direction: column;
+  margin-top: 3%;
+`;
 
 const LoginWrapper = styled.div`
   display: flex;
@@ -24,14 +24,12 @@ const FormContainer = styled.div`
   align-items: center; /* Center items vertically */
   align-content: center;
   width: 50%;
-  // background-color: blue;
-`
+`;
 
 const InnerFormWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  // background-color: blue;
 `;
 
 const InputDivs = styled.div`
@@ -79,9 +77,9 @@ const Button = styled.button`
   text-transform: capitalize;
 
   &:hover {
-  background-color: #FFBC42;
-  color: #D81159;
-  font-size: 15px;
+    background-color: #FFBC42;
+    color: #D81159;
+    font-size: 15px;
   }
 `;
 
@@ -109,10 +107,9 @@ const YellowBox = styled.div`
 `;
 
 const ModelImg = styled.img`
-display: block;
+  display: block;
   width: auto;
   height: auto;
-  // max-height: 463.425px;
   max-width: 40%;
   position: absolute;
   top: 45%;
@@ -157,23 +154,20 @@ const P1 = styled.p`
   text-transform: uppercase;
   @media (max-width: 768px) {
     text-align: center;
-   
   }
 `;
 
 const H3 = styled.h3`
-font-family: Montserrat;
-font-size: 16.323px;
-font-style: normal;
-font-weight: 400;
-line-height: 26.932px; /* 165% */
-letter-spacing: 0.326px;
+  font-family: Montserrat;
+  font-size: 16.323px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 26.932px; /* 165% */
+  letter-spacing: 0.326px;
+  position: relative;
+`;
 
-position: relative;
-
-`
-
-const Login = () => {
+const Login = ({ setUserId }) => {
   const navigate = useNavigate();
   const [loginFormData, setLoginFormData] = useState({
     email: '',
@@ -182,17 +176,13 @@ const Login = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log('I AM FORM!');
-
     try {
-      const Data = await customerLogin(loginFormData);
-      console.log('User Data -->', Data);
-      console.log('token-->', Data.token);
+      const data = await customerLogin(loginFormData);
+      console.log('User Data >>>-->', data);
 
-      if (Data.token) {
-
-        setToken(Data.token)
-        // setToken(Data.token);
+      if (data) {
+        setUserId(data.userDetails.id);
+        setToken(data.token);
         navigate('/account');
       } else {
         console.error('Log in error');
@@ -215,55 +205,47 @@ const Login = () => {
     }));
   };
 
-  console.log('Login Data (Login) ->', loginFormData);
   return (
     <OuterWrapper>
-
-        <H1>
+      <H1>
         Welcome <span>Back</span>
-        </H1>
-        
-    <LoginWrapper>
+      </H1>
+      <LoginWrapper>
         <ContentBox>
           <YellowBox />
           <ModelImg src={loginModImg} />
           <FormContainer>
-          <form onSubmit={handleSubmit}>
-            <InnerFormWrapper>
-              <InputDivs>
-                <Input
-                  name="email"
-                  type="text"
-                  onChange={handleChange}
-                  value={loginFormData.email}
-                  placeholder="Email"
-                />
-              </InputDivs>
-              <InputDivs>
-                <Input
-                  name="password"
-                  type="password"
-                  onChange={handleChange}
-                  value={loginFormData.password}
-                  placeholder="Password"
-                />
-              </InputDivs>
-              <Button>Login</Button>
-            </InnerFormWrapper>
-          </form>
-        
-          <H3>Not a Member Yet, Sign Up Today!</H3>
+            <form onSubmit={handleSubmit}>
+              <InnerFormWrapper>
+                <InputDivs>
+                  <Input
+                    name="email"
+                    type="text"
+                    onChange={handleChange}
+                    value={loginFormData.email}
+                    placeholder="Email"
+                  />
+                </InputDivs>
+                <InputDivs>
+                  <Input
+                    name="password"
+                    type="password"
+                    onChange={handleChange}
+                    value={loginFormData.password}
+                    placeholder="Password"
+                  />
+                </InputDivs>
+                <Button>Login</Button>
+              </InnerFormWrapper>
+            </form>
+            <H3>Not a Member Yet, Sign Up Today!</H3>
           </FormContainer>
-
         </ContentBox>
-      
-     
-    </LoginWrapper>
-    <P1>Gorgeous</P1>
-
-   
+      </LoginWrapper>
+      <P1>Gorgeous</P1>
     </OuterWrapper>
   );
 };
 
 export default Login;
+

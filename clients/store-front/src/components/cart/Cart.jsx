@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { ItemListCard } from "./ItemListCard";
 import { getToken } from "../shared/auth";
-import { fetchCartItems } from "../../API/cart";
+import { fetchCartItems, fetchCart } from "../../API/cart";
 import Sidebar from "../shared/SideBar";
 import CartSideBar from "./CartSideBar";
 
@@ -34,23 +34,37 @@ const NullCart = styled.div`
   margin-top: 5%;
 `;
 
-const Cart = ({ userCartId }) => {
+const Cart = ({ userId }) => {
   const token = getToken();
-  console.log('Token from Cart -->', token);
-  console.log('Cart ID (cart 1)', userCartId);
   const [cartItems, setCartItems] = useState([]);
   const [pageRefresh, setPageRefresh] = useState(false);
-
+  const [userCartId, setUserCartId] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
-    const getCartItems = async () => {
+    const getUserCart = async () => {
       try {
-        const fetchedItems = await fetchCartItems(userCartId, token);
-        console.log('CartItems (cart) -->', fetchedItems);
-        setCartItems(fetchedItems);
+        const userCart = await fetchCart(userId, token);
+        setUserCartId(userCart.id);
       } catch (error) {
-        console.error('Error fetching items', error);
+        console.error('Error fetching cart', error);
+      }
+    };
+
+    if (userId) {
+      getUserCart();
+    }
+  }, [token, userId]);
+
+  useEffect(() => {
+    const getCartItems = async () => {
+      if (userCartId) {
+        try {
+          const fetchedItems = await fetchCartItems(userCartId, token);
+          setCartItems(fetchedItems);
+        } catch (error) {
+          console.error('Error fetching items', error);
+        }
       }
     };
     getCartItems();

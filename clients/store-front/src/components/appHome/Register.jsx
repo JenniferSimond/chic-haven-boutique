@@ -1,69 +1,21 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { customerSignup } from "../../API/user";
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
 import { setToken } from "../shared/auth";
-import signupPic from '../../assets/img-png/signupPic.png';
+import { fetchCart } from "../../API/cart";
 
-const RegistrationWrapper = styled.div`
+const OuterWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  margin-top: 2%;
-  width: 100%;
-  justify-content: center;
-  align-items: center;
-  align-content: center;
+  margin-top: 3%;
 `;
 
-const InnerWrapper = styled.div`
-  margin-top: 7%;
+const RegisterWrapper = styled.div`
   display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  align-content: center;
-`;
-
-const ContentBox = styled.div`
-  display: flex;
-  flex-direction: row;
-  width: 858px;
-  height: 397px;
-  border: 3px solid #dc2e6a;
-  align-items: center;
-  position: relative;
-  @media (max-width: 768px) {
-    flex-direction: column;
-  }
-`;
-
-const YellowBox = styled.div`
-  width: 50%;
-  height: 100%;
-  background-color: #ffbc42;
-  @media (max-width: 768px) {
-    width: 100%;
-    height: 200px;
-  }
-`;
-
-const ModelImage = styled.img`
-  display: block;
-  width: auto;
-  height: auto;
-  max-width: 45%;
-  position: absolute;
-  top: 45%;
-  left: 15%;
-  transform: translate(-25%, -56%);
-  @media (max-width: 768px) {
-    position: absolute;
-    top: 0;
-    left: 50%;
-    transform: translate(-50%, 0);
-    width: 100%;
-    height: auto;
-  }
+  flex-direction: column;
+  margin-top: 6%;
+  margin-bottom: 22px;
 `;
 
 const FormContainer = styled.div`
@@ -110,8 +62,8 @@ const Input = styled.input`
 `;
 
 const Button = styled.button`
-  width: 65px;
-  height: 65px;
+  width: 60px;
+  height: 60px;
   border: none;
   border-radius: 50%;
   background-color: #4a4e69;
@@ -125,8 +77,8 @@ const Button = styled.button`
   text-transform: capitalize;
 
   &:hover {
-    background-color: #ffbc42;
-    color: #d81159;
+    background-color: #FFBC42;
+    color: #D81159;
     font-size: 15px;
   }
 `;
@@ -149,86 +101,145 @@ const H1 = styled.h1`
   }
 `;
 
-const Register = () => {
- 
+const P1 = styled.p`
+  color: #d81159;
+  font-family: Cinzel;
+  font-size: 75px;
+  font-style: normal;
+  font-weight: 200;
+  line-height: normal;
+  padding-left: 4px;
+  text-transform: uppercase;
+  @media (max-width: 768px) {
+    text-align: center;
+  }
+`;
+
+const H3 = styled.h3`
+  font-family: Montserrat;
+  font-size: 16.323px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 26.932px; /* 165% */
+  letter-spacing: 0.326px;
+  position: relative;
+`;
+
+const Register = ({ setUserId, setUserCartId }) => {
   const navigate = useNavigate();
-  const [signupFormData, setSignupFormData] = useState({
-    last_name: '',
-    first_name: '',
-    password: '',
+  const [registerFormData, setRegisterFormData] = useState({
     email: '',
+    password: '',
+    first_name: '',
+    last_name: '',
     phone_number: ''
   });
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log('I AM FORM');
+    console.log('I AM FORM!');
 
     try {
-      const data = await customerSignup(signupFormData);
-      console.log('Signup Data -->', data);
+      const Data = await customerSignup(registerFormData);
+      console.log('User Data >>>-->', Data);
+      console.log('UserID >>>---(REGISTER)--->', Data.userDetails.id);
+      console.log('token-->', Data.token);
 
-      if (data) {
-        setToken(data.token);
-        navigate('/home');
+      if (Data) {
+        setUserId(Data.userDetails.id);
+        setToken(Data.token);
+
+        // Fetch the user cart ID after registration
+        const userCart = await fetchCart(Data.userDetails.id, Data.token);
+        setUserCartId(userCart.id);
+
+        navigate('/account');
       } else {
-        console.error('Signup error');
+        console.error('Registration error');
       }
     } catch (error) {
-      console.error('Signup Error: ', error);
+      console.error(error);
     }
 
-    setSignupFormData({
-        last_name: '',
-        first_name: '',
-        password: '',
-        email: '',
-        phone_number: ''
-    })
+    setRegisterFormData({
+      email: '',
+      password: '',
+      first_name: '',
+      last_name: '',
+      phone_number: ''
+    });
   };
 
   const handleChange = (event) => {
     const { name, value } = event.target;
-    setSignupFormData((prevState) => ({
+    setRegisterFormData((prevState) => ({
       ...prevState,
       [name]: value
     }));
   };
 
-  console.log('Registration Data (Signup) ->', signupFormData);
-
+  console.log('Register Data (Register) ->', registerFormData);
   return (
-    <RegistrationWrapper>
-      <H1>Become <span>a Member</span> Today!</H1>
-      <InnerWrapper>
-        <ContentBox>
-          <YellowBox />
-          <ModelImage src={signupPic} />
-          <FormContainer>
-            <form onSubmit={handleSubmit}>
-              <InnerFormWrapper>
-                <InputDivs>
-                  <Input name='last_name' type='text' onChange={handleChange} value={signupFormData.last_name} placeholder='Last Name' />
-                </InputDivs>
-                <InputDivs>
-                  <Input name='first_name' type='text' onChange={handleChange} value={signupFormData.first_name} placeholder='First Name' />
-                </InputDivs>
-                <InputDivs>
-                  <Input name='password' type='password' onChange={handleChange} value={signupFormData.password} placeholder='Password' />
-                </InputDivs>
-                <InputDivs>
-                  <Input name='email' type='text' onChange={handleChange} value={signupFormData.email} placeholder='Email Address' />
-                </InputDivs>
-                <InputDivs>
-                  <Input name='phone_number' type='text' onChange={handleChange} value={signupFormData.phone_number} placeholder='Phone Number' />
-                </InputDivs>
-                <Button type='submit'>Signup</Button>
-              </InnerFormWrapper>
-            </form>
-          </FormContainer>
-        </ContentBox>
-      </InnerWrapper>
-    </RegistrationWrapper>
+    <OuterWrapper>
+      <H1>
+        Join <span>Us</span>
+      </H1>
+      <RegisterWrapper>
+        <FormContainer>
+          <form onSubmit={handleSubmit}>
+            <InnerFormWrapper>
+              <InputDivs>
+                <Input
+                  name="first_name"
+                  type="text"
+                  onChange={handleChange}
+                  value={registerFormData.first_name}
+                  placeholder="First Name"
+                />
+              </InputDivs>
+              <InputDivs>
+                <Input
+                  name="last_name"
+                  type="text"
+                  onChange={handleChange}
+                  value={registerFormData.last_name}
+                  placeholder="Last Name"
+                />
+              </InputDivs>
+              <InputDivs>
+                <Input
+                  name="email"
+                  type="text"
+                  onChange={handleChange}
+                  value={registerFormData.email}
+                  placeholder="Email"
+                />
+              </InputDivs>
+              <InputDivs>
+                <Input
+                  name="phone_number"
+                  type="text"
+                  onChange={handleChange}
+                  value={registerFormData.phone_number}
+                  placeholder="Phone Number"
+                />
+              </InputDivs>
+              <InputDivs>
+                <Input
+                  name="password"
+                  type="password"
+                  onChange={handleChange}
+                  value={registerFormData.password}
+                  placeholder="Password"
+                />
+              </InputDivs>
+              <Button>Register</Button>
+            </InnerFormWrapper>
+          </form>
+        </FormContainer>
+      </RegisterWrapper>
+      <P1>Today</P1>
+    </OuterWrapper>
   );
 };
 

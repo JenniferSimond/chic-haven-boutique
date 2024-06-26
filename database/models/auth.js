@@ -35,7 +35,11 @@ const authenticateUser = async ({ email, password }) => {
     secret,
     {}
   );
-  return { token };
+
+  // Fetch user details to return along with the token
+  const userDetails = await findUserByToken(token);
+
+  return { userDetails, token };
 };
 
 const findUserByToken = async (token) => {
