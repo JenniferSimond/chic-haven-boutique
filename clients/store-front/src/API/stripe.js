@@ -1,25 +1,24 @@
 import { API_URL } from './apiConfig';
 
-const createStripePaymentIntent = async (paymentMethodId, amount) => {
+const createPaymentIntent = async (amount) => {
   try {
     const response = await fetch(`${API_URL}/stripe/process-payment`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({
-        paymentMethodId,
-        amount,
-      }),
+      body: JSON.stringify({ amount }),
     });
-
     const paymentData = await response.json();
-    console.log('Stripe paymentData (API) -->', paymentData);
-    return paymentData;
+    if (paymentData.clientSecret) {
+      return paymentData.clientSecret;
+    } else {
+      throw new Error('Client secret not received');
+    }
   } catch (error) {
-    console.error('Error processing payment:', error);
-    return { error: error.message };
+    console.error('Error creating payment intent:', error);
+    throw error;
   }
 };
 
-export { createStripePaymentIntent };
+export { createPaymentIntent };

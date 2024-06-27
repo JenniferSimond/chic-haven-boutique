@@ -21,7 +21,6 @@ const fetchCart = async (userId, token) => {
 };
 
 // Add Item to Cart
-
 const addCartItem = async (token, userCartId, productId, quantity) => {
   try {
     const response = await fetch(`${API_URL}/carts/${userCartId}/items`, {
@@ -65,7 +64,6 @@ const fetchCartItems = async (userCartId, token) => {
 };
 
 // Update Cart Item
-
 const updateCartItem = async (itemId, quantity, token) => {
   try {
     const response = await fetch(`${API_URL}/carts/items/${itemId}`, {
@@ -96,8 +94,7 @@ const deleteCartItem = async (itemId, token) => {
   });
 };
 
-//checkout -->
-
+// Checkout
 const cartCheckOut = async (userId, userCartId, token) => {
   try {
     const response = await fetch(

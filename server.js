@@ -1,6 +1,7 @@
 // server.js
 const express = require('express');
 const cors = require('cors');
+const dotenv = require('dotenv').config();
 const path = require('path');
 const { client, createTables } = require('./database/tables.js');
 const { seedDatabase } = require('./database/seedDatabase.js');
@@ -16,6 +17,7 @@ const orders = require('./controllers/orderController.js');
 const reviews = require('./controllers/reviewsController.js');
 const wishlist = require('./controllers/wishlistController.js');
 const categories = require('./controllers/categoryController.js');
+const stripe = require('./controllers/stripeController.js');
 
 app.use(
   cors({
@@ -40,6 +42,7 @@ app.use('/api', orders);
 app.use('/api', wishlist);
 app.use('/api', reviews);
 app.use('/api', categories);
+app.use('/api/stripe', stripe);
 
 const init = async () => {
   try {

@@ -125,6 +125,7 @@ router.post(
       const checkOut = await cartCheckOut(userId, cartId, modifiedBy);
       res.status(201).json(checkOut);
     } catch (error) {
+      console.error('Checkout error:', error);
       next(error);
     }
   }
