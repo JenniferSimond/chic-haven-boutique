@@ -71,7 +71,7 @@ function App() {
           <Route path="/login" element={<Login setUserId={setUserId} />} />
           <Route path="/account" element={<UserAccount userId={userId} />} />
           <Route path="/cart" element={<Cart userId={userId} />} />
-          <Route path="/cart/checkout" element={<CheckOut userId={userId} />} />
+          <Route path="/cart/checkout" element={<CheckOut userId={userId} userCartId={userCartId} />} />
           <Route path="/wishlist" element={<Wishlist userId={userId} />} />
           <Route path="/products" element={<Products userCartId={userCartId} />} />
           <Route path="/products/:productId" element={<Product userCartId={userCartId} userId={userId}/>} />

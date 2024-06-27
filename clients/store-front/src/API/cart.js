@@ -98,7 +98,26 @@ const deleteCartItem = async (itemId, token) => {
 
 //checkout -->
 
-const cartCheckOut = async (userId, cartId) => {};
+const cartCheckOut = async (userId, userCartId, token) => {
+  try {
+    const response = await fetch(
+      `${API_URL}/users/${userId}/carts/${userCartId}/checkout`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    const checkoutData = await response.json();
+    console.log('Checkout response (API) -->', checkoutData);
+    return checkoutData;
+  } catch (error) {
+    console.error('Error during cart checkout -->', error);
+  }
+};
 
 export {
   fetchCart,
