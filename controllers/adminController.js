@@ -56,7 +56,7 @@ router.post(
 router.post('/login', async (req, res, next) => {
   try {
     res.send(await authenticateUser(req.body));
-    res.status(201).json();
+    res.status(201).json({ userDetails, token });
   } catch (error) {
     next(error);
   }

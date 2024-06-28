@@ -15,14 +15,6 @@ import Footer from "./components/footer/Footer";
 import { getToken } from "./components/shared/auth";
 import { getUserDetails } from "./API/user";
 import { fetchCart } from "./API/cart";
-import AdminHome from './admin/adminHome';
-import AdminLogin from './admin/adminLogin';
-import ManageUsers from './admin/manageUsers';
-import ManageProducts from './admin/manageProducts';
-import ManageReviews from './admin/manageReviews';
-import ManageOrders from './admin/manageOrders';
-
-
 
 import styled from "styled-components";
 
@@ -50,16 +42,14 @@ function App() {
         try {
           const userDetails = await getUserDetails(token);
           setUserId(userDetails.id);
-
+          console.log('UserDeets (APP)-->',userDetails)
           const userCart = await fetchCart(userDetails.id, token);
           setUserCartId(userCart.id);
         } catch (error) {
           console.error('Error initializing user', error);
           navigate('/login');
         }
-      } else {
-        navigate('/login');
-      }
+      } 
     };
 
     initializeUser();
@@ -84,12 +74,6 @@ function App() {
           <Route path="/wishlist" element={<Wishlist userId={userId} />} />
           <Route path="/products" element={<Products userCartId={userCartId} />} />
           <Route path="/products/:productId" element={<Product userCartId={userCartId} userId={userId}/>} />
-          <Route path="/admin/login" element={<AdminLogin />} />
-          <Route path="/admin/home" element={<AdminHome />} />
-          <Route path="/admin/users" element={<ManageUsers />} />
-          <Route path="/admin/products" element={<ManageProducts />} />
-          <Route path="/admin/reviews" element={<ManageReviews />} />
-          <Route path="/admin/orders" element={<ManageOrders />} />
          
         </Routes>
       </InnerWrapper>

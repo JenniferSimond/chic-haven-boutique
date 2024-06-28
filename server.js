@@ -19,9 +19,10 @@ const wishlist = require('./controllers/wishlistController.js');
 const categories = require('./controllers/categoryController.js');
 const stripe = require('./controllers/stripeController.js');
 
+// PORT 5173: store-front || PORT 5174: admin-portal
 app.use(
   cors({
-    origin: 'http://localhost:5173',
+    origin: ['http://localhost:5173', 'http://localhost:5174'],
     credentials: true,
   })
 );

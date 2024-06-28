@@ -166,8 +166,8 @@ CREATE TABLE cart_items(
     total_price DECIMAL,
     created_at TIMESTAMP DEFAULT current_timestamp,
     updated_at TIMESTAMP DEFAULT current_timestamp,
-    modified_by UUID REFERENCES users(id),
-    CONSTRAINT unique_cart_product UNIQUE (customer_cart_id, product_id)
+    modified_by UUID REFERENCES users(id)
+  
 );
 
 CREATE TABLE customer_wishlist(
