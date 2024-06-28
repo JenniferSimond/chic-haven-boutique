@@ -31,11 +31,11 @@ const adminLogin = async (loginData) => {
       body: JSON.stringify(loginData),
     });
 
-    const { userDetails, token } = await response.json();
-    console.log('Admin Login (API) -->', userDetails, token);
-    return { userDetails, token };
+    const adminData = await response.json();
+    console.log('Admin Login >--(API)-->', adminData);
+    return adminData;
   } catch (error) {
-    console.error('Error logging in admin', error);
+    console.error('Login Error:', error);
   }
 };
 

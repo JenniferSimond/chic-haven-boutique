@@ -55,8 +55,16 @@ router.post(
 // admin login --> since they have two portals, I want them to have seperate routes for login
 router.post('/login', async (req, res, next) => {
   try {
-    res.send(await authenticateUser(req.body));
-    res.status(201).json({ userDetails, token });
+    const { userDetails, token } = await authenticateUser(req.body);
+
+    if (
+      userDetails.user_role !== 'site_admin' &&
+      userDetails.user_role !== 'super_admin'
+    ) {
+      return res.status(403).json({ message: 'Access Denied' });
+    }
+
+    res.json({ userDetails, token });
   } catch (error) {
     next(error);
   }
