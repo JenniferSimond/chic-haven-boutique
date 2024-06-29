@@ -1,5 +1,3 @@
-// src/theme.js
-// theme.js
 import { createTheme } from '@mui/material/styles';
 
 const theme = createTheme({
@@ -77,9 +75,42 @@ const theme = createTheme({
               borderColor: '#4A4E69',
             },
             '&.Mui-focused fieldset': {
-              borderColor: '#22223B',
+              borderColor: '#9A8C98',
+            },
+            '& input': {
+              color: '#4A4E69', // Change the text color
+              backgroundColor: '#F9F5E3', // Ensure background color matches theme on focus
             },
           },
+        },
+      },
+    },
+    MuiDrawer: {
+      styleOverrides: {
+        paper: {
+          backgroundColor: '#22223B', // setting the drawer background color
+          color: '#F9F5E3', // setting the drawer text color
+        },
+      },
+    },
+    MuiListItemIcon: {
+      styleOverrides: {
+        root: {
+          color: '#9A8C98', // setting the icon color
+        },
+      },
+    },
+    MuiListItemText: {
+      styleOverrides: {
+        primary: {
+          color: '#F9F5E3', // setting the text color for the list items
+        },
+      },
+    },
+    MuiIconButton: {
+      styleOverrides: {
+        root: {
+          color: '#F9F5E3',
         },
       },
     },

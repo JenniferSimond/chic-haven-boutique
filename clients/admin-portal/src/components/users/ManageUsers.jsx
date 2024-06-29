@@ -1,11 +1,9 @@
 
-
 const ManageUsers = () => {
 
     return(
-        <h2>Manage Users</h2>
-    );
-
+        <h1>Users</h1>
+    )
 }
 
 export default ManageUsers
