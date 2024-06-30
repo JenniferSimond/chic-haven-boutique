@@ -76,8 +76,10 @@ module.exports = {
   createAdmin,
   createUserCustomer,
   fetchAllUsers,
+
   fetchUserById,
   updateUser,
+
   deleteUser,
   createCategory,
   fetchAllCategories,

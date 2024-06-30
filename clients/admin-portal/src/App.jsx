@@ -9,6 +9,8 @@ import ProductsHome from './components/products/ProductsHome';
 import ManageProduct from './components/products/ManageProduct';
 import ManageOrders from './components/orders/ManageOrders';
 import ManageReviews from './components/reviews/ManageReviews';
+import UsersHome from './components/users/UserHome';
+import ManageUsers from './components/users/ManageUsers';
 import Settings from './components/users/Settings';
 import MiniDrawer from './components/menu/MiniDrawer';
 import theme from './theme'
@@ -39,7 +41,8 @@ function App() {
 
       <Route path='/' element={<ProtectedRoute><AdminHome /></ProtectedRoute>} />
       <Route path='/home' element={ <ProtectedRoute><AdminHome /></ProtectedRoute>} />
-      <Route path='/users' element={<ProtectedRoute><ManageAdmins /></ProtectedRoute>} />
+      <Route path='/users' element={<ProtectedRoute><UsersHome /></ProtectedRoute>} />
+      <Route path='/users/:userId/edit' element={<ProtectedRoute><ManageUsers /></ProtectedRoute>} />
       <Route path='/products' element={<ProtectedRoute><ProductsHome /></ProtectedRoute>} />
       <Route path='/products/:productId/edit' element={<ProtectedRoute><ManageProduct /></ProtectedRoute>} />
       <Route path='/orders' element={<ProtectedRoute><ManageOrders /></ProtectedRoute>} />
