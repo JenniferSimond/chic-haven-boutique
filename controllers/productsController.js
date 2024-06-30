@@ -1,12 +1,13 @@
 const express = require('express');
 const router = express.Router();
-const upload = require('./config/multerConfig.js'); // Correct the path here
+const upload = require('./config/multerConfig.js');
 
 const {
   createProduct,
   fetchProducts,
   fetchProductById,
   updateProduct,
+  updateProductImage,
   deleteProduct,
 } = require('../database/index');
 
@@ -69,39 +70,47 @@ router.get('/:id', async (req, res, next) => {
 });
 
 // UPDATE
+router.put('/:id', isAuthenticated, isSuperAdmin, async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const { name, description, price, category, product_status } = req.body;
+    const user_id = req.user.id;
+
+    const updatedProduct = await updateProduct({
+      id,
+      name,
+      description,
+      price,
+      category,
+      product_status,
+      user_id,
+    });
+    res.status(200).json(updatedProduct);
+  } catch (error) {
+    next(error);
+  }
+});
+
+// UPDATE IMAGE
 router.put(
-  '/:id',
+  '/:id/image',
   isAuthenticated,
   isSuperAdmin,
   upload.single('image'),
   async (req, res, next) => {
     try {
       const { id } = req.params;
-      const { name, description, price, category, merchant_id, status } =
-        req.body;
-      const user_id = req.user.id;
       const image_url = req.file
         ? `/product-images/${req.file.filename}`
         : null;
 
-      const updatedProduct = await updateProduct({
-        id,
-        name,
-        description,
-        price,
-        category,
-        merchant_id,
-        status,
-        image_url,
-        user_id,
-      });
+      const updatedProduct = await updateProductImage(id, image_url);
       res.status(200).json(updatedProduct);
     } catch (error) {
       next(error);
     }
   }
 );
-
 // DELETE
 router.delete('/:id', isAuthenticated, isSuperAdmin, async (req, res, next) => {
   try {

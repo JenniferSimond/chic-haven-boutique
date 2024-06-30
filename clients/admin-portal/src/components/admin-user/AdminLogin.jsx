@@ -69,7 +69,7 @@ const AdminLogin = ({ setAdminRole, setAdminId, setStateToken  }) => {
                         value={adminLoginFormData.email}
                         sx={{ 
                             '& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-input': {
-                                backgroundColor: '#F9F5E3' // Ensure background color matches theme on focus
+                                backgroundColor: '#F9F5E3' //setting background color for onFocous
                             },
                         }}
                     />
@@ -84,7 +84,7 @@ const AdminLogin = ({ setAdminRole, setAdminId, setStateToken  }) => {
                         value={adminLoginFormData.password}
                         sx={{ 
                             '& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-input': {
-                                backgroundColor: '#F9F5E3' // Ensure background color matches theme on focus
+                                backgroundColor: '#F9F5E3' 
                             },
                         }}
                     />

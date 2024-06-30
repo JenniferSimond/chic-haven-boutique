@@ -79,10 +79,9 @@ const updateProduct = async ({
       description = COALESCE($3, description),
       price = COALESCE($4, price),
       category_id = COALESCE($5, category_id),
-      product_status = COALESCE($6, product_status), 
-      image_url = COALESCE($7, image_url),
+      product_status = COALESCE($6, product_status),
       updated_at = CURRENT_TIMESTAMP, 
-      modified_by = $8
+      modified_by = $7
     WHERE id = $1 
     RETURNING *;
   `;
@@ -94,15 +93,37 @@ const updateProduct = async ({
     price,
     categoryRow ? categoryRow.id : null,
     product_status,
-    image_url,
     user_id,
   ]);
+
+  if (image_url) {
+    const imageSQL = `
+      UPDATE products 
+      SET 
+        image_url = $2,
+        updated_at = CURRENT_TIMESTAMP 
+      WHERE id = $1 
+      RETURNING *;
+    `;
+
+    await client.query(imageSQL, [id, image_url]);
+  }
 
   return response.rows[0];
 };
 
-module.exports = {
-  updateProduct,
+const updateProductImage = async (id, image_url) => {
+  const SQL = `
+    UPDATE products 
+    SET 
+      image_url = $2,
+      updated_at = CURRENT_TIMESTAMP
+    WHERE id = $1 
+    RETURNING *;
+  `;
+
+  const response = await client.query(SQL, [id, image_url]);
+  return response.rows[0];
 };
 
 // DELETE PRODUCT
@@ -119,5 +140,6 @@ module.exports = {
   fetchProducts,
   fetchProductById,
   updateProduct,
+  updateProductImage,
   deleteProduct,
 };

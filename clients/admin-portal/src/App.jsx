@@ -12,12 +12,13 @@ import ManageReviews from './components/reviews/ManageReviews';
 import Settings from './components/users/Settings';
 import MiniDrawer from './components/menu/MiniDrawer';
 import theme from './theme'
-import {Container, CssBaseline, ThemeProvider} from '@mui/material'
+import {Box, Container, CssBaseline, ThemeProvider} from '@mui/material'
 
 
 
 function App() {
   const location = useLocation();
+  const [drawerOpen, setDrawerOpen] = useState(false)
   const [adminRole, setAdminRole] = useState('');
   const [adminId, setAdminId] = useState('');
  
@@ -29,8 +30,8 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      {location.pathname !== '/login' && <MiniDrawer />}
-    <Container >
+      {location.pathname !== '/login' && <MiniDrawer open={drawerOpen} setOpen={setDrawerOpen} />}
+    <Box component='main' sx={{ flexFlow: 1, p:3, marginLeft: drawerOpen ? '240px' : '58px', transition: 'margin 300ms'}}>
 
     <Routes>
       {/* login is the only public route in admin portal */}
@@ -46,7 +47,7 @@ function App() {
       <Route path='/settings' element={<ProtectedRoute><Settings /></ProtectedRoute>} />
       
     </Routes>
-    </Container>
+    </Box>
     </ThemeProvider>
 
   )

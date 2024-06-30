@@ -10,7 +10,7 @@ const theme = createTheme({
     },
     background: {
       default: '#F9F5E3', // body color of app
-      paper: '#FFFFFF',
+      paper: '#F9F5E3',
     },
     text: {
       primary: '#4A4E69', // purple-2
@@ -20,6 +20,7 @@ const theme = createTheme({
       main: '#D81159', // accent-pink
     },
   },
+
   typography: {
     fontFamily: 'Roboto, sans-serif',
     h1: {
@@ -43,6 +44,7 @@ const theme = createTheme({
       color: '#FFFFFF',
     },
   },
+
   components: {
     MuiButton: {
       styleOverrides: {
@@ -96,7 +98,7 @@ const theme = createTheme({
     MuiListItemIcon: {
       styleOverrides: {
         root: {
-          color: '#9A8C98', // setting the icon color
+          color: '#22223B', // setting the icon color
         },
       },
     },

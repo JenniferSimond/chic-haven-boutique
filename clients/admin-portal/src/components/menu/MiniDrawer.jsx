@@ -42,7 +42,7 @@ const openedMixin = (theme) => ({
     duration: theme.transitions.duration.enteringScreen,
   }),
   overflowX: 'hidden',
-  backgroundColor: '#22223B', // CHANGED BACKGROUND COLOR TO #22223B
+  backgroundColor: '#9A8C98', // CHANGED BACKGROUND COLOR TO #22223B
   color: '#F9F5E3', // CHANGED TEXT COLOR TO #F9F5E3
 });
 
@@ -57,7 +57,7 @@ const closedMixin = (theme) => ({
   [theme.breakpoints.up('sm')]: {
     width: `calc(${theme.spacing(8)} + 1px)`,
   },
-  backgroundColor: '#22223B', // CHANGED BACKGROUND COLOR TO #22223B
+  backgroundColor: '#9A8C98', // CHANGED BACKGROUND COLOR TO #22223B
   color: '#F9F5E3', // CHANGED TEXT COLOR TO #F9F5E3
 });
 
@@ -79,6 +79,7 @@ const AppBar = styled(MuiAppBar, {
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.leavingScreen,
   }),
+  backgroundColor: '#22223B' ,
   ...(open && {
     marginLeft: drawerWidth,
     width: `calc(100% - ${drawerWidth}px)`,
@@ -107,9 +108,9 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
   }),
 );
 
-export default function MiniDrawer() {
+export default function MiniDrawer({open, setOpen}) {
   const theme = useTheme(); 
-  const [open, setOpen] = React.useState(false); 
+  // const [open, setOpen] = React.useState(false); 
   const navigate = useNavigate(); 
 
   const handleDrawerOpen = () => {
@@ -127,6 +128,7 @@ export default function MiniDrawer() {
   const handleLogout = () => {
     removeAdminToken();
     navigate('/login');
+    setOpen(false);
   };
 
   return (
@@ -146,14 +148,14 @@ export default function MiniDrawer() {
           >
             <MenuIcon /> {/* Icon to open the drawer */}
           </IconButton>
-          <Typography variant="h6" noWrap component="div">
+          <Typography variant="h6" noWrap component="div" sx={{color: '#F9F5E3'}}>
             Admin Portal
           </Typography>
         </Toolbar>
       </AppBar>
       <Drawer variant="permanent" open={open}> {/* Permanent drawer */}
         <DrawerHeader>
-          <IconButton onClick={handleDrawerClose} sx={{ color: '#F9F5E3' }}> {/* Icon to close the drawer */}
+          <IconButton onClick={handleDrawerClose} sx={{ color: '#22223B' }}> {/* Icon to close the drawer */}
             {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
           </IconButton>
         </DrawerHeader>
@@ -180,7 +182,7 @@ export default function MiniDrawer() {
                     minWidth: 0,
                     mr: open ? 3 : 'auto',
                     justifyContent: 'center',
-                    color: '#F9F5E3', // SET ICON COLOR TO #F9F5E3
+                    color: '#22223B', // SET ICON COLOR TO #F9F5E3
                   }}
                 >
                   {item.icon}
@@ -210,7 +212,7 @@ export default function MiniDrawer() {
                     minWidth: 0,
                     mr: open ? 3 : 'auto',
                     justifyContent: 'center',
-                    color: '#F9F5E3', // SET ICON COLOR TO #F9F5E3
+                    color: '#22223B', // SET ICON COLOR TO #F9F5E3
                   }}
                 >
                   {item.icon}
@@ -228,3 +230,4 @@ export default function MiniDrawer() {
     </Box>
   );
 }
+

@@ -5,7 +5,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { BASE_URL } from "../../API/apiConfig";
 import { styled, useTheme } from '@mui/material/styles';
-import { Button, Box } from "@mui/material";
+import { Button, Box, ListItem, Divider, Container, Typography } from "@mui/material";
 
 const ProductList = ({ product }) => {
     const $imageUrl = `${BASE_URL}${product.image_url}`;
@@ -16,14 +16,24 @@ const ProductList = ({ product }) => {
     };
 
     return (
-        <Box sx={{ marginBottom: 2 }}>
-            <img src={$imageUrl} alt={product.name} style={{ width: '100px', height: '100px' }} />
-            <h3>{product.name}</h3>
-            <p>{product.description}</p>
-            <Button variant="contained" onClick={handleEdit}>
+     
+        <Container >
+
+        <Divider />
+        <ListItem sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
+            <img src={$imageUrl} alt={product.name} style={{ width: 80, height: 80, marginRight: 10 }} />
+            <Box sx={{flex: 1}}>
+                <Typography variant='h6' noWrap>{product.name}</Typography>
+                <Typography variant="body2">{product.description}</Typography>
+            </Box>
+         
+            <Button variant="contained"  onClick={handleEdit} sx={{color: '#22223B', borderRadius: '2px'}}>
                 Edit
             </Button>
-        </Box>
+        </ListItem>
+        {/* <Divider /> */}
+        </Container>
+    
     );
 };
 

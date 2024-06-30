@@ -3,6 +3,7 @@ const {
   fetchProducts,
   fetchProductById,
   updateProduct,
+  updateProductImage,
   deleteProduct,
 } = require('./models/products.js');
 
@@ -70,6 +71,7 @@ module.exports = {
   fetchProducts,
   fetchProductById,
   updateProduct,
+  updateProductImage,
   deleteProduct,
   createAdmin,
   createUserCustomer,
