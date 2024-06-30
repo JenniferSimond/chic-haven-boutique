@@ -8,7 +8,7 @@ const UserList = ({ user }) => {
     const navigate = useNavigate();
 
     const handleEdit = () => {
-        navigate(`/users/${user.id}/edit`); // Adjust the route as necessary
+        navigate(`/users/${user.id}/edit`); 
     };
 
     return (
