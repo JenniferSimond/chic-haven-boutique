@@ -5,12 +5,20 @@ const dotenv = require('dotenv').config();
 
 // const client = new pg.Client({ connectionString: process.env.DATABASE_URL });
 
-const client = new pg.Client({
+// const client = new pg.Client({
+//   connectionString: process.env.DATABASE_URL,
+//   ssl: {
+//     rejectUnauthorized: false,
+//   },
+// });
+
+const isProduction = process.env.NODE_ENV === 'production';
+const connectionOptions = {
   connectionString: process.env.DATABASE_URL,
-  ssl: {
-    rejectUnauthorized: false,
-  },
-});
+  ssl: isProduction ? { rejectUnauthorized: false } : false,
+};
+
+const client = new pg.Client(connectionOptions);
 
 const createTables = async () => {
   const SQL = `
