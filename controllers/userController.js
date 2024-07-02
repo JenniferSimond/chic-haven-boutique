@@ -127,7 +127,7 @@ router.delete(
   }
 );
 
-router.get('/users/:user_id/reviews', async (req, res, next) => {
+router.get('/:user_id/reviews', async (req, res, next) => {
   try {
     const userId = req.params.user_id;
     const customerReviews = await fetchReviewsByUser(userId);
