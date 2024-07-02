@@ -35,12 +35,6 @@ app.use(
   express.static(path.join(__dirname, 'public/productImages'))
 );
 
-const path = require('path');
-
-// app.get('/', (req, res) =>
-//   res.sendFile(path.join(__dirname, '../../client/dist/index.html'))
-// );
-
 app.use('/api/products', products);
 app.use('/api/admins', admins);
 app.use('/api/users', user);
