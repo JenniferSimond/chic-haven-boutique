@@ -48,6 +48,17 @@ app.use('/api', reviews);
 app.use('/api', categories);
 app.use('/api/stripe', stripe);
 
+app.use(express.static(path.join(__dirname, 'clients/store-front/dist')));
+app.use(express.static(path.join(__dirname, 'clients/admin-portal/dist')));
+
+app.get('/admin/*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'clients/admin-portal/dist/index.html'));
+});
+
+app.get('/*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'clients/store-front/dist/index.html'));
+});
+
 const init = async () => {
   try {
     await client.connect();

@@ -1,0 +1,22 @@
+services:
+  - type: web
+    name: chic-haven-backend
+    env: node
+    plan: free
+    buildCommand: npm install && npm run heroku-postbuild
+    startCommand: npm start
+    envVars:
+      - key: DATABASE_URL
+        value: YOUR_DATABASE_URL
+      - key: JWT_SECRET
+        value: YOUR_JWT_SECRET
+      - key: STRIPE_PRIVATE_KEY
+        value: YOUR_STRIPE_PRIVATE_KEY
+    staticPublishPath: clients/store-front/dist
+    routes:
+      - type: rewrite
+        source: /admin/*
+        destination: /clients/admin-portal/dist/index.html
+      - type: rewrite
+        source: /*
+        destination: /clients/store-front/dist/index.html
