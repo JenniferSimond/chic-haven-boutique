@@ -456,8 +456,8 @@ const {
   createUserCustomer,
   createAdmin,
   createProduct,
-  createProductReview,
   createCustomerOrder,
+  createProductReview,
   addOrderedItems,
 } = require('./index');
 
@@ -635,10 +635,10 @@ const seedDatabase = async () => {
     },
   ];
 
-  const newTestAdmins = await Promise.all(testAdmins.map(createAdmin));
-  console.log('Test admins ->', newTestAdmins);
+  const createdAdmins = await Promise.all(testAdmins.map(createAdmin));
+  console.log('Test admins ->', createdAdmins);
 
-  const adminUserId = newTestAdmins.find(
+  const adminUserId = createdAdmins.find(
     (admin) => admin.user_role === 'super_admin'
   ).id;
   console.log('Super admin id ->', adminUserId);
@@ -896,48 +896,16 @@ const seedDatabase = async () => {
     },
   ];
 
-  const createdProducts = await Promise.all(
-    testProducts.map(async (product) => {
-      console.log('Creating product ->', product);
-      const createdProduct = await createProduct(product);
-      console.log('New Product ->', createdProduct);
-      return createdProduct;
-    })
-  );
+  const createdProducts = await Promise.all(testProducts.map(createProduct));
+  console.log('Test Products ->', createdProducts);
 
-  console.log('Test Product Count ->', createdProducts.length);
-
-  // Seed Reviews
   const reviewComments = ['Great product!', 'Very satisfied', 'Will buy again'];
-  for (const product of createdProducts) {
-    for (let i = 0; i < 3; i++) {
-      const randomUser =
-        createdUsers[Math.floor(Math.random() * createdUsers.length)];
-      const reviewData = {
-        product_id: product.id,
-        user_id: randomUser.id,
-        rating: Math.floor(Math.random() * 5) + 1,
-        comment: reviewComments[i],
-        modified_by: randomUser.id,
-      };
-      console.log('Creating review ->', reviewData);
-      await createProductReview(
-        reviewData.user_id,
-        reviewData.product_id,
-        reviewData.rating,
-        reviewData.comment,
-        reviewData.modified_by
-      );
-      console.log('Review created ->', reviewData);
-    }
-  }
 
-  // Seed Orders
+  // Create orders and reviews for each user
   for (const user of createdUsers) {
     for (let i = 0; i < 2; i++) {
-      console.log('Creating order for user ->', user.id);
       const newOrder = await createCustomerOrder({
-        userId: user.id,
+        userId: user.userDetails.id,
         modifiedBy: adminUserId,
       });
       console.log('Order created ->', newOrder);
@@ -953,13 +921,31 @@ const seedDatabase = async () => {
             randomProduct.price * (Math.floor(Math.random() * 5) + 1),
         },
       ];
-      console.log('Adding ordered items ->', orderedItems);
       await addOrderedItems({
         orderId: newOrder.id,
         cartItems: orderedItems,
         modifiedBy: adminUserId,
       });
       console.log('Ordered items added ->', orderedItems);
+
+      // Create reviews for products
+      for (let j = 0; j < 3; j++) {
+        const reviewData = {
+          product_id: randomProduct.id,
+          user_id: user.userDetails.id,
+          rating: Math.floor(Math.random() * 5) + 1,
+          comment: reviewComments[j],
+          modified_by: user.userDetails.id,
+        };
+        await createProductReview(
+          reviewData.user_id,
+          reviewData.product_id,
+          reviewData.rating,
+          reviewData.comment,
+          reviewData.modified_by
+        );
+        console.log('Review created ->', reviewData);
+      }
     }
   }
 

@@ -1,5 +1,5 @@
 const pg = require('pg');
-// const jwt = require('jsonwebtoken');
+const jwt = require('jsonwebtoken');
 const secret = process.env.JWT_SECRET || 'shhhhhlocal';
 const dotenv = require('dotenv').config();
 
@@ -134,8 +134,8 @@ CREATE TABLE product_reviews(
     comment VARCHAR(255),
     created_at TIMESTAMP DEFAULT current_timestamp,
     updated_at TIMESTAMP DEFAULT current_timestamp,
-    modified_by UUID REFERENCES users(id),
-    CONSTRAINT unique_user_review UNIQUE (product_id, user_id)
+    modified_by UUID REFERENCES users(id)
+    
 );
 
 CREATE TABLE customer_orders(
