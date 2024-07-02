@@ -5,6 +5,7 @@ const {
   authenticateUser,
   fetchAllUsers,
   fetchUserById,
+  fetchReviewsByUser,
   updateUser,
   deleteUser,
 } = require('../database/index.js');
