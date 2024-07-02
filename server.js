@@ -52,8 +52,8 @@ const init = async () => {
   try {
     await client.connect();
     console.log('Connected to database');
-    // await createTables();
-    // await seedDatabase();
+    await createTables();
+    await seedDatabase();
     app.listen(port, () => {
       console.log(`Server running on port ${port}`);
     });
