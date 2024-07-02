@@ -1,22 +1,30 @@
+# render.yaml
 services:
   - type: web
-    name: chic-haven-backend
+    name: chic-haven-boutique-backend
     env: node
-    plan: free
-    buildCommand: npm install && npm run heroku-postbuild
-    startCommand: npm start
+    buildCommand: npm install
+    startCommand: node server.js
     envVars:
       - key: DATABASE_URL
-        value: YOUR_DATABASE_URL
+        fromDatabase:
+          name: chic_haven
+          property: connectionString
       - key: JWT_SECRET
-        value: YOUR_JWT_SECRET
+        value: voltron9722
       - key: STRIPE_PRIVATE_KEY
-        value: YOUR_STRIPE_PRIVATE_KEY
+        value: sk_test_51PW06KEFbQzMVIJe2wvFYldAzyEBmrXqwXLxSIGUVxqSbW0ZyId1LoXERTyYnwR6OjUh6xNMpmtCjqpiZyHu9PEM00aoOgHxbx
+      - key: NODE_ENV
+        value: production
+
+  - type: web
+    name: chic-haven-storefront
+    env: static
     staticPublishPath: clients/store-front/dist
-    routes:
-      - type: rewrite
-        source: /admin/*
-        destination: /clients/admin-portal/dist/index.html
-      - type: rewrite
-        source: /*
-        destination: /clients/store-front/dist/index.html
+    buildCommand: cd clients/store-front && npm install && npm run build
+
+  - type: web
+    name: chic-haven-admin-portal
+    env: static
+    staticPublishPath: clients/admin-portal/dist
+    buildCommand: cd clients/admin-portal && npm install && npm run build
