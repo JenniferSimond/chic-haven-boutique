@@ -22,7 +22,10 @@ const stripe = require('./controllers/stripeController.js');
 // PORT 5173: store-front || PORT 5174: admin-portal
 app.use(
   cors({
-    origin: ['http://localhost:5173', 'http://localhost:5174'],
+    origin: [
+      'https://chic-haven-storefront.onrender.com',
+      'https://chic-haven-admin-portal.onrender.com',
+    ],
     credentials: true,
   })
 );
