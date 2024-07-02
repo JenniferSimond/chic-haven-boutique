@@ -1,4 +1,4 @@
-import { API_URL } from './apiConfig';
+import { API_URL } from './adminApiConfig';
 
 // Create a new review
 const createReview = async (token, userId, productId, rating, comment) => {

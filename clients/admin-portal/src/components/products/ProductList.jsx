@@ -3,7 +3,7 @@
 
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { BASE_URL } from "../../API/apiConfig";
+import { BASE_URL } from "../../API/adminApiConfig";
 import { styled, useTheme } from '@mui/material/styles';
 import { Button, Box, ListItem, Divider, Container, Typography } from "@mui/material";
 

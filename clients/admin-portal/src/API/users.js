@@ -1,4 +1,4 @@
-import { API_URL } from './apiConfig';
+import { API_URL } from './adminApiConfig';
 
 async function fetchAllUsers(token) {
   try {
