@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { getAdminToken } from "../../shared/adminAuth";
-import { BASE_URL } from "../../API/apiConfig";
+import { BASE_URL } from "../../API/adminApiConfig";
 import { fetchProduct, updateProduct, updateProductImage, deleteProduct } from "../../API/products";
 import { Box, Button, Container, TextField, Typography } from "@mui/material";
 
