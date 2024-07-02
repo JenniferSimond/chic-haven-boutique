@@ -3,7 +3,14 @@ const pg = require('pg');
 const secret = process.env.JWT_SECRET || 'shhhhhlocal';
 const dotenv = require('dotenv').config();
 
-const client = new pg.Client({ connectionString: process.env.DATABASE_URL });
+// const client = new pg.Client({ connectionString: process.env.DATABASE_URL });
+
+const client = new pg.Client({
+  connectionString: process.env.DATABASE_URL,
+  ssl: {
+    rejectUnauthorized: false,
+  },
+});
 
 const createTables = async () => {
   const SQL = `
