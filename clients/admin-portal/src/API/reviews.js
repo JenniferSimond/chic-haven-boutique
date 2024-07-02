@@ -33,6 +33,7 @@ const fetchAllReviews = async (token) => {
       },
     });
     const reviews = await response.json();
+    console.log('Reviews >--(API)-->', reviews);
     return reviews;
   } catch (error) {
     console.error('Error fetching reviews', error);

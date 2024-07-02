@@ -10,7 +10,7 @@ display: flex;
 justify-content: center;
 overflow-y: hidden;
 width: 100%;
-
+margin-bottom: 2%;
 `
 const ProductWrapper = styled.div`
 

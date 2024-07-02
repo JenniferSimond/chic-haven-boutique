@@ -16,7 +16,7 @@ const Wrapper = styled.header`
     justify-content: space-between;
     align-items: center;
     background-color: #9A8C98;
-    min-height: 100px;
+    min-height: 10%;
     width: 100%;
     position: fixed;
     top: 0;
