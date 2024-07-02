@@ -1,34 +1,3 @@
-# # render.yaml
-# services:
-#   - type: web
-#     name: chic-haven-boutique-backend
-#     env: node
-#     buildCommand: npm install
-#     startCommand: node server.js
-#     envVars:
-#       - key: DATABASE_URL
-#         fromDatabase:
-#           name: chic_haven
-#           property: connectionString
-#       - key: JWT_SECRET
-#         value: voltron9722
-#       - key: STRIPE_PRIVATE_KEY
-#         value: sk_test_51PW06KEFbQzMVIJe2wvFYldAzyEBmrXqwXLxSIGUVxqSbW0ZyId1LoXERTyYnwR6OjUh6xNMpmtCjqpiZyHu9PEM00aoOgHxbx
-#       - key: NODE_ENV
-#         value: production
-
-#   - type: web
-#     name: chic-haven-storefront
-#     env: static
-#     staticPublishPath: clients/store-front/dist
-#     buildCommand: cd clients/store-front && npm install && npm run build
-
-#   - type: web
-#     name: chic-haven-admin-portal
-#     env: static
-#     staticPublishPath: clients/admin-portal/dist
-#     buildCommand: cd clients/admin-portal && npm install && npm run build
-
 # render.yaml
 services:
   - type: web
@@ -52,12 +21,10 @@ services:
     name: chic-haven-storefront
     env: static
     staticPublishPath: dist
-    buildCommand: npm install && npm run build
-    rootDirectory: clients/store-front
+    buildCommand: cd clients/store-front && npm install && npm run build
 
   - type: web
     name: chic-haven-admin-portal
     env: static
     staticPublishPath: dist
-    buildCommand: npm install && npm run build
-    rootDirectory: clients/admin-portal
+    buildCommand: cd clients/admin-portal && npm install && npm run build
