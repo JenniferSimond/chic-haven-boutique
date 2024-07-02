@@ -920,6 +920,7 @@ const seedDatabase = async () => {
         comment: reviewComments[i],
         modified_by: randomUser.id,
       };
+      console.log('Creating review ->', reviewData);
       await createProductReview(
         reviewData.user_id,
         reviewData.product_id,
@@ -927,16 +928,20 @@ const seedDatabase = async () => {
         reviewData.comment,
         reviewData.modified_by
       );
+      console.log('Review created ->', reviewData);
     }
   }
 
   // Seed Orders
   for (const user of createdUsers) {
     for (let i = 0; i < 2; i++) {
+      console.log('Creating order for user ->', user.id);
       const newOrder = await createCustomerOrder({
         userId: user.id,
         modifiedBy: adminUserId,
       });
+      console.log('Order created ->', newOrder);
+
       const randomProduct =
         createdProducts[Math.floor(Math.random() * createdProducts.length)];
       const orderedItems = [
@@ -948,11 +953,13 @@ const seedDatabase = async () => {
             randomProduct.price * (Math.floor(Math.random() * 5) + 1),
         },
       ];
+      console.log('Adding ordered items ->', orderedItems);
       await addOrderedItems({
         orderId: newOrder.id,
         cartItems: orderedItems,
         modifiedBy: adminUserId,
       });
+      console.log('Ordered items added ->', orderedItems);
     }
   }
 
