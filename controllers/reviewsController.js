@@ -72,20 +72,20 @@ router.get('/products/:product_id/reviews', async (req, res, next) => {
   }
 });
 
-router.get('/users/:user_id/reviews', async (req, res, next) => {
-  try {
-    const userId = req.params.user_id;
-    const customerReviews = await fetchReviewsByUser(userId);
+// router.get('/users/:user_id/reviews', async (req, res, next) => {
+//   try {
+//     const userId = req.params.user_id;
+//     const customerReviews = await fetchReviewsByUser(userId);
 
-    if (!customerReviews.length) {
-      return res.status(404).json({ message: 'User Reviews Not Found' });
-    }
+//     if (!customerReviews.length) {
+//       return res.status(404).json({ message: 'User Reviews Not Found' });
+//     }
 
-    res.json(customerReviews);
-  } catch (error) {
-    next(error);
-  }
-});
+//     res.json(customerReviews);
+//   } catch (error) {
+//     next(error);
+//   }
+// });
 
 // update review
 router.put(
