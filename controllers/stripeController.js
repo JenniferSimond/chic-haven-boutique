@@ -7,7 +7,7 @@ router.post('/process-payment', async (req, res) => {
   const { amount } = req.body;
   try {
     const paymentIntent = await stripe.paymentIntents.create({
-      amount, // Amount is already expected to be in cents from the client
+      amount, // Amount is in cents for stripe
       currency: 'usd',
       payment_method_types: ['card'],
     });
