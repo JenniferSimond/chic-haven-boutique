@@ -108,7 +108,7 @@ const canPostReviews = (req, res, next) => {
 
     if (
       req.user.user_role === 'customer' &&
-      req.user.can_post_reviews === true // Assuming can_post_reviews is a boolean
+      req.user.can_post_reviews === true
     ) {
       return next();
     }
