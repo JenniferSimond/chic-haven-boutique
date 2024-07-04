@@ -59,11 +59,6 @@ app.get('/admin/*', (req, res) => {
   res.sendFile(path.join(__dirname, 'clients/admin-portal/dist/index.html'));
 });
 
-// Catch-all route to serve index.html for any other requests
-// app.get('/*', (req, res) => {
-//   res.sendFile(path.join(__dirname, 'clients/store-front/dist/index.html'));
-// });
-
 const init = async () => {
   try {
     await client.connect();
