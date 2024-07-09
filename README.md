@@ -12,7 +12,7 @@ Chic Haven Boutique is a full-stack e-commerce web application built with the PE
 - [Usage](#usage)
 - [API Endpoints](#api-endpoints)
 - [Deployment](#deployment)
-- [Live Demo](##demo)
+- [Live Demo](#demo)
 - [Contact](#contact)
 
 ## Features
